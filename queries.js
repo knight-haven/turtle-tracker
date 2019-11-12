@@ -28,9 +28,9 @@ const getTurtles = (request, response) => {
   }
 
   const createTurtle = (request, response) => {
-    const { mark, sex } = request.body
+    const { number, mark, sex } = request.body
   
-    pool.query('INSERT INTO turtle (mark, sex) VALUES ($1, $2)', [mark, sex], (error, results) => {
+    pool.query('INSERT INTO turtle (turtle_number, mark, sex) VALUES ($1, $2, $3)', [number, mark, sex], (error, results) => {
       if (error) {
         throw error
       }
@@ -40,11 +40,11 @@ const getTurtles = (request, response) => {
 
   const updateTurtle = (request, response) => {
     const id = parseInt(request.params.id)
-    const { mark, sex } = request.body
+    const { number, mark, sex } = request.body
   
     pool.query(
-      'UPDATE turtle SET mark = $1, sex = $2 WHERE id = $3',
-      [firstName, lastName, id],
+      'UPDATE turtle SET turtle_numer = $1, mark = $2, sex = $3 WHERE id = $4',
+      [number, mark, sex, id],
       (error, results) => {
         if (error) {
           throw error

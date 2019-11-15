@@ -5,6 +5,9 @@ const pool = new Pool({
   database: 'pgithsli',
   password: 'IyT1o_L7Uiz2Mfyt0a7vXwdkWVGNyYqH',
   port: 5432,
+  max: 3,
+  min: 0,
+  idle: 10000
 })
 
 const getTurtles = (request, response) => {
@@ -43,7 +46,7 @@ const getTurtles = (request, response) => {
     const { number, mark, sex } = request.body
   
     pool.query(
-      'UPDATE turtle SET turtle_numer = $1, mark = $2, sex = $3 WHERE id = $4',
+      'UPDATE turtle SET turtle_number = $1, mark = $2, sex = $3 WHERE id = $4',
       [number, mark, sex, id],
       (error, results) => {
         if (error) {

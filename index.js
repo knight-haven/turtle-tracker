@@ -2,7 +2,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const db = require('./queries')
-const port = 3000
 
 app.use(bodyParser.json())
 app.use(
@@ -27,6 +26,11 @@ app.put('/sighting/:id', db.updateSighting)
 app.delete('/sighting/:id', db.deleteSighting)
 app.get('/sighting/turtle/:turtleId', db.getSightingByTurtleId)
 
+
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })

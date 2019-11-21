@@ -104,7 +104,7 @@ const getTurtles = (request, response) => {
     const { turtleId, time, location, latitude, longitude, length, notes } = request.body
   
     pool.query(
-      'UPDATE turtle SET turtle_id = $1, time_seen = $2, turtle_location = $3, latitude = $4, longitude = $5, carapace_length = $6, notes = $7 WHERE id = $8',
+      'UPDATE sighting SET turtle_id = $1, time_seen = $2, turtle_location = $3, latitude = $4, longitude = $5, carapace_length = $6, notes = $7 WHERE id = $8',
       [turtleId, time, location, latitude, longitude, length, notes, id ],
       (error, results) => {
         if (error) {

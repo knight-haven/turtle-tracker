@@ -33,11 +33,11 @@ const getTurtles = (request, response) => {
   const createTurtle = (request, response) => {
     const { number, mark, sex } = request.body
   
-    pool.query('INSERT INTO turtle (turtle_number, mark, sex) VALUES ($1, $2, $3)', [number, mark, sex], (error, results) => {
+    pool.query('INSERT INTO turtle (turtle_number, mark, sex) VALUES ($1, $2, $3) RETURNING id', [number, mark, sex], (error, results) => {
       if (error) {
         throw error
       }
-      response.status(201).send(`Turtle added with ID: ${results.insertId}`)
+      response.status(201).send(`Turtle added with ID: ${results.rows[0].id}`)
     })
   }
 
@@ -91,11 +91,11 @@ const getTurtles = (request, response) => {
   const createSighting = (request, response) => {
     const { turtleId, time, location, latitude, longitude, length, notes } = request.body
   
-    pool.query('INSERT INTO sighting (turtle_id, time_seen, turtle_location, latitude, longitude, carapace_length, notes) VALUES ($1, $2, $3, $4, $5, $6, $7)', [turtleId, time, location, latitude, longitude, length, notes], (error, results) => {
+    pool.query('INSERT INTO sighting (turtle_id, time_seen, turtle_location, latitude, longitude, carapace_length, notes) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id', [turtleId, time, location, latitude, longitude, length, notes], (error, results) => {
       if (error) {
         throw error
       }
-      response.status(201).send(`Sighting added with ID: ${results.insertId}`)
+      response.status(201).send(`Sighting added with ID: ${results.rows[0].id}`)
     })
   }
 

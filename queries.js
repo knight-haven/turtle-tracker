@@ -137,6 +137,88 @@ const getTurtles = (request, response) => {
     })
   }
 
+  const getPhotos = (request, response) => {
+    pool.query('SELECT * FROM photo', (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+
+  const getPhotoById = (request, response) => {
+    const id = parseInt(request.params.id)
+  
+    pool.query('SELECT * FROM photo WHERE id = $1', [id], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+
+  const createPhoto = (request, response) => {
+    const { sightingId, turtleId, photo } = request.body
+  
+    pool.query('INSERT INTO photo (sighting_id, turtle_id, photo) VALUES ($1, $2, $3) RETURNING id', [sightingId, turtleId, photo], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(201).send(`${results.rows[0].id}`)
+    })
+  }
+
+  const updatePhoto = (request, response) => {
+    const id = parseInt(request.params.id)
+    const { turtleId, sightingId, photo } = request.body
+  
+    pool.query(
+      'UPDATE photo SET sighting_id = $1, turtle_id = $2, photo = $3 WHERE id = $8',
+      [sightingId, turtleId, photo, id ],
+      (error, results) => {
+        if (error) {
+          throw error
+        }
+        response.status(200).send(`Photo modified with ID: ${id}`)
+      }
+    )
+  }
+
+  const deletePhoto = (request, response) => {
+    const id = parseInt(request.params.id)
+  
+    pool.query('DELETE FROM photo WHERE id = $1', [id], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).send(`Photo deleted with ID: ${id}`)
+    })
+  }
+
+  const getPhotoBySightingId = (request, response) => {
+    const sightingId = parseInt(request.params.sightingId)
+  
+    pool.query('SELECT * FROM photo WHERE sighting_id = $1', [sightingId], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+
+  const getPhotoByTurtleId = (request, response) => {
+    const turtleId = parseInt(request.params.turtleId)
+  
+    pool.query('SELECT * FROM photo WHERE turtle.id = $1', [turtleId], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+
+
+
   module.exports = {
     getTurtles,
     getTurtleById,
@@ -149,4 +231,11 @@ const getTurtles = (request, response) => {
     updateSighting,
     deleteSighting,
     getSightingByTurtleId,
+    getPhotos,
+    getPhotoById,
+    createPhoto,
+    updatePhoto,
+    deletePhoto,
+    getPhotoBySightingId,
+    getPhotoByTurtleId
   }

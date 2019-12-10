@@ -40,8 +40,8 @@ app.get('/sighting/turtle/:turtleId', db.getSightingByTurtleId)
 app.get('/photo', db.getPhotos)
 app.get('/photo/:id', db.getPhotoById)
 app.post('/photo', upload.array('photo', 6), (req, res) => {
-  console.log('file', req.files)
-  console.log('body', req.body)
+  console.log('file', JSON.stringify(req.files))
+  console.log('body', JSON.stringify(req.body))
   res.status(200).json({
     message: 'success!',
   })

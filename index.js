@@ -25,7 +25,13 @@ app.post('/sighting', db.createSighting)
 app.put('/sighting/:id', db.updateSighting)
 app.delete('/sighting/:id', db.deleteSighting)
 app.get('/sighting/turtle/:turtleId', db.getSightingByTurtleId)
-
+app.get('/photo', db.getPhotos)
+app.get('/photo/:id', db.getPhotoById)
+app.post('/photo', db.createPhoto)
+app.put('/photo/:id', db.updatePhoto)
+app.delete('/photo/:id', db.deletePhoto)
+app.get('/photo/sighting/:id', db.getPhotoBySightingId)
+app.get('/photo/turtle/:id', db.getPhotoByTurtleId)
 
 let port = process.env.PORT;
 if (port == null || port == "") {

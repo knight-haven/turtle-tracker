@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const multer = require('multer')
 const app = express()
 const db = require('./queries')
 
@@ -9,6 +10,17 @@ app.use(
     extended: true,
   })
 )
+
+const Storage = multer.diskStorage({
+  destination(req, file, callback) {
+    callback(null, './images')
+  },
+  filename(req, file, callback) {
+    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`)
+  },
+})
+
+const upload = multer({ storage: Storage })
 
 app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express, and Postgres API' })
@@ -27,7 +39,13 @@ app.delete('/sighting/:id', db.deleteSighting)
 app.get('/sighting/turtle/:turtleId', db.getSightingByTurtleId)
 app.get('/photo', db.getPhotos)
 app.get('/photo/:id', db.getPhotoById)
-app.post('/photo', db.createPhoto)
+app.post('/photo', upload.array('photo', 6), (req, res) => {
+  console.log('file', req.files)
+  console.log('body', req.body)
+  res.status(200).json({
+    message: 'success!',
+  })
+})
 app.put('/photo/:id', db.updatePhoto)
 app.delete('/photo/:id', db.deletePhoto)
 app.get('/photo/sighting/:id', db.getPhotoBySightingId)

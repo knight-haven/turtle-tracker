@@ -4,6 +4,14 @@ const multer = require('multer')
 const app = express()
 const db = require('./queries')
 
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://jde27:ShellSquad@cluster0-drgwd.mongodb.net/test?retryWrites=true&w=majority"
+
+MongoClient.connect(uri, (err, client) => {
+  if (err) return console.log(err)
+  mongoDB = client.db('test') 
+})
+
 app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({
@@ -11,16 +19,16 @@ app.use(
   })
 )
 
-const Storage = multer.diskStorage({
-  destination(req, file, callback) {
-    callback(null, './images')
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
   },
-  filename(req, file, callback) {
-    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`)
-  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
 })
-
-const upload = multer({ storage: Storage })
+ 
+var upload = multer({ storage: storage })
 
 app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express, and Postgres API' })
@@ -37,19 +45,26 @@ app.post('/sighting', db.createSighting)
 app.put('/sighting/:id', db.updateSighting)
 app.delete('/sighting/:id', db.deleteSighting)
 app.get('/sighting/turtle/:turtleId', db.getSightingByTurtleId)
-app.get('/photo', db.getPhotos)
-app.get('/photo/:id', db.getPhotoById)
-app.post('/photo', upload.array('photo', 6), (req, res) => {
-  console.log('file', req.files)
-  console.log('body', req.body)
-  res.status(200).json({
-    message: 'success!',
+
+// https://code.tutsplus.com/tutorials/file-upload-with-multer-in-node--cms-32088
+app.post('/photo', upload.single('photo'), (req, res) => {
+	var img = fs.readFileSync(req.file.path);
+  var encode_image = img.toString('base64');
+  var finalImg = {
+      contentType: req.file.mimetype,
+      image:  new Buffer(encode_image, 'base64')
+   };
+  db.collection('mycollection').insertOne(finalImg, (err, result) => {
+  	console.log(result)
+
+    if (err) return console.log(err)
+
+    console.log('Saved to database!')
+    res.redirect('/')
+  
+    
   })
-})
-app.put('/photo/:id', db.updatePhoto)
-app.delete('/photo/:id', db.deletePhoto)
-app.get('/photo/sighting/:id', db.getPhotoBySightingId)
-app.get('/photo/turtle/:id', db.getPhotoByTurtleId)
+});
 
 let port = process.env.PORT;
 if (port == null || port == "") {

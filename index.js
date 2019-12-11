@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const multer = require('multer')
 const app = express()
 const db = require('./queries')
+fs = require('fs-extra')
 
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb://heroku_8wwclj27:rlbqdqs4aiht7jend70laecogs@ds253398.mlab.com:53398/heroku_8wwclj27"

@@ -5,7 +5,7 @@ const app = express()
 const db = require('./queries')
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://jde27:ShellSquad@cluster0-drgwd.mongodb.net/test?retryWrites=true&w=majority"
+const uri = "mongodb://heroku_8wwclj27:rlbqdqs4aiht7jend70laecogs@ds253398.mlab.com:53398/heroku_8wwclj27"
 
 MongoClient.connect(uri, (err, client) => {
   if (err) return console.log(err)

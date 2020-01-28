@@ -1,51 +1,46 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Button, Platform, Image, StyleSheet, View, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import IconButton from '../components/IconButton';
 import * as firebase from 'firebase';
 
-export default class CameraGallery extends Component {
+export default function CameraGallery(props) {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      image_array: this.props.images == null ? [{uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg'}] : this.props.images,
-    };
-  }
+  const [images, setImages] = useState([{uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg'}]);
 
-  // takes an image using the camera and appends it to the image_array
-  takeImage= async () => {
+  // takes an image using the camera and appends it to the images
+  async function takeImage() {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false,
     });
-     this.saveImage(result);
+     saveImage(result);
     };
 
   // retrieves an image from a gallery
-  pickImage= async () => { 
+  async function pickImage() { 
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false
      });
-     this.saveImage(result);
+     saveImage(result);
   }
 
-  saveImage = (result) => {
+  function saveImage(result) {
     if (!result.cancelled) {
       
-      if (this.state.image_array[0].uri == 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg') {
-        this.state.image_array.splice(0, 1);  
+      if (images[0].uri == 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg') {
+        setImages([result]);  
       }
-    
-      this.setState(prevState => ({
-        image_array: [...prevState.image_array, result]
-      }))
-      this.uploadPhoto(result.uri, `${this.props.turtleId}`)
+      else {
+        setImages([...images, result])
+      }
+
+      uploadPhoto(result.uri, `${props.turtleId}`)
     }
   }
 
-  uploadPhoto = (uri, imageName) => {
+  function uploadPhoto(uri, imageName) {
     fetch(uri)
     .then((response) => response.blob())
     .then((responseBlob) => {
@@ -56,41 +51,37 @@ export default class CameraGallery extends Component {
       console.log(error)
     })
   };
-  
-  render() {
-    let { image_array } = this.state;
 
-    // creates the buttons and shows the selected images
-    return (
-      <View>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
-          <Image source={{uri: image_array[0] != null ? image_array[0].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-          <Image source={{uri: image_array[1] != null ? image_array[1].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-          <Image source={{uri: image_array[2] != null ? image_array[2].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-          <Image source={{uri: image_array[3] != null ? image_array[3].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-          <Image source={{uri: image_array[4] != null ? image_array[4].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-          <Image source={{uri: image_array[5] != null ? image_array[5].uri : null, width: 200, height: 200}} style={styles.imageStyle}/> 
-        </ScrollView>
+  // creates the buttons and shows the selected images
+  return (
+    <View>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
+        <Image source={{uri: images[0] != null ? images[0].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
+        <Image source={{uri: images[1] != null ? images[1].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
+        <Image source={{uri: images[2] != null ? images[2].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
+        <Image source={{uri: images[3] != null ? images[3].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
+        <Image source={{uri: images[4] != null ? images[4].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
+        <Image source={{uri: images[5] != null ? images[5].uri : null, width: 200, height: 200}} style={styles.imageStyle}/> 
+      </ScrollView>
 
       <View style={styles.takePicButtons}>
         <IconButton
           size = {35} 
-          onPress={this.takeImage}
+          onPress={takeImage}
           name = {'add-a-photo'}
           styles = {{alignSelf: 'center', position: 'relative', paddingTop: 5, paddingBottom: 5}} 
           />
         
         <IconButton
           size = {35} 
-          onPress={this.pickImage}
+          onPress={pickImage}
           name = {'perm-media'}
           styles = {{alignSelf: 'center', position: 'relative', paddingTop: 5, paddingBottom: 5}} 
           />
 
       </View>
-      </View>
-    );
-  }
+    </View>
+  );
 }
 
 const styles= StyleSheet.create({
@@ -116,9 +107,3 @@ const styles= StyleSheet.create({
 });
 
 // reference/source: https://docs.expo.io/versions/latest/sdk/imagepicker/
-
-
-
-
-
-

@@ -47,12 +47,11 @@ export default function CameraGallery({parentCallback}) {
   return (
     <View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
-        <Image source={{uri: images[0] != null ? images[0].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-        <Image source={{uri: images[1] != null ? images[1].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-        <Image source={{uri: images[2] != null ? images[2].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-        <Image source={{uri: images[3] != null ? images[3].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-        <Image source={{uri: images[4] != null ? images[4].uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-        <Image source={{uri: images[5] != null ? images[5].uri : null, width: 200, height: 200}} style={styles.imageStyle}/> 
+        {
+          images.map((item, index) => (
+            <Image key={index} source={{uri: item != null ? item.uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
+          ))
+        }
       </ScrollView>
 
       <View style={styles.takePicButtons}>

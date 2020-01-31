@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Button, Platform, Image, StyleSheet, View, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import IconButton from '../components/IconButton';
-import * as firebase from 'firebase';
 
-export default function CameraGallery(props) {
+export default function CameraGallery({parentCallback}) {
 
   const [images, setImages] = useState([{uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg'}]);
 
@@ -30,27 +29,19 @@ export default function CameraGallery(props) {
     if (!result.cancelled) {
       
       if (images[0].uri == 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg') {
-        setImages([result]);  
+        setImages([result]);
+        if (parentCallback != undefined) {
+          parentCallback([result]);
+        }
       }
       else {
         setImages([...images, result])
+        if (parentCallback != undefined) {
+          parentCallback([...images, result]);
+        }
       }
-
-      uploadPhoto(result.uri, `${props.turtleId}`)
     }
   }
-
-  function uploadPhoto(uri, imageName) {
-    fetch(uri)
-    .then((response) => response.blob())
-    .then((responseBlob) => {
-        var ref = firebase.storage().ref().child("images/" + imageName);
-        ref.put(responseBlob); 
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-  };
 
   // creates the buttons and shows the selected images
   return (

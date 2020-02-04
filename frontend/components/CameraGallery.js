@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Button, Platform, Image, StyleSheet, View, ScrollView } from 'react-native';
+import React, { createRef } from 'react';
+import { StyleSheet, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import IconButton from '../components/IconButton';
+import Gallery from '../components/Gallery';
 
 export default function CameraGallery({parentCallback}) {
-
-  const [images, setImages] = useState([{uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg'}]);
+  const galleryRef = createRef();
 
   // takes an image using the camera and appends it to the images
   async function takeImage() {
@@ -28,16 +28,16 @@ export default function CameraGallery({parentCallback}) {
   function saveImage(result) {
     if (!result.cancelled) {
       
-      if (images[0].uri == 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg') {
-        setImages([result]);
+      if (galleryRef.current.state.images[0].uri == 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg') {
+        galleryRef.current.setAllImages([result]);
         if (parentCallback != undefined) {
           parentCallback([result]);
         }
       }
       else {
-        setImages([...images, result])
+        galleryRef.current.addImage(result);
         if (parentCallback != undefined) {
-          parentCallback([...images, result]);
+          parentCallback(galleryRef.current.state.images);
         }
       }
     }
@@ -46,13 +46,7 @@ export default function CameraGallery({parentCallback}) {
   // creates the buttons and shows the selected images
   return (
     <View>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
-        {
-          images.map((item, index) => (
-            <Image key={index} source={{uri: item != null ? item.uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-          ))
-        }
-      </ScrollView>
+      <Gallery ref={galleryRef} images={[{uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg'}]}/>
 
       <View style={styles.takePicButtons}>
         <IconButton

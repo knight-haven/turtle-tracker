@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, Image, ScrollView } from 'react-native';
 
 export default class Gallery extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
-          images: this.props.images == null ? [{uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg'}] : this.props.images,
+          images: this.props.images == null ? [] : this.props.images,
         };
       }
 

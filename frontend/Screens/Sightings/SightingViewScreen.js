@@ -3,8 +3,10 @@ import { View, Button, Image, ScrollView, RefreshControl, Platform } from 'react
 import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
 import IconButton from '../../components/IconButton';
+import Gallery from '../../components/Gallery';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
+import * as firebase from 'firebase';
 
 /*
 Turtle Sighting Screen for information on one particular sighting
@@ -44,6 +46,26 @@ export default function SightingViewScreen({ navigation }) {
             });
     }
 
+    function getSightingImages(turtleId) {
+        return fetch(`https://turtletrackerbackend.herokuapp.com/photo/sighting/${sightingId}`)
+            .then((response) => response.json())
+            .then(async (responseJson) => {
+                var imageList = []
+                for (var i = 0; i < responseJson.length; i++) {
+                    imageList.push({uri: await getPhoto(responseJson[i].name)})
+                }
+                onImagesChange(imageList);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    async function getPhoto(photoName) {
+        const ref = firebase.storage().ref().child(`images/${photoName}`);
+        return await ref.getDownloadURL();
+    }
+
     sightingId = navigation.getParam('sightingId');
     turtleId = navigation.getParam('turtleId');
     const [length, setLength] = useState();
@@ -53,8 +75,12 @@ export default function SightingViewScreen({ navigation }) {
     const [notes, setNotes] = useState();
     const [turtleNumber, setTurtleNumber] = useState();
     const [markerList, setMarkerList] = useState([]);
-    useEffect(() => { getSightingById(sightingId) }, []);
-    useEffect(() => { getTurtleById(turtleId) }, []);
+    const [images, onImagesChange] = useState([{uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg'}]);
+    useEffect(() => { 
+        getSightingById(sightingId)
+        getTurtleById(turtleId)
+        getSightingImages(sightingId)
+     }, []);
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -63,6 +89,7 @@ export default function SightingViewScreen({ navigation }) {
         turtleId = navigation.getParam('turtleId');
         getSightingById(sightingId);
         getTurtleById(turtleId);
+        getSightingImages(sightingId);
     }
 
     const onRefresh = useCallback(() => {
@@ -79,7 +106,6 @@ export default function SightingViewScreen({ navigation }) {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
         >
-            <Image />
             <View style={{ justifyContent: 'space-evenly' }}>
                 {/* TODO: Replace sightingId with the number sighting for the specific turtle. */}
                 {/* <TurtleText titleText={`Sighting #${sightingId}`} /> */}
@@ -93,6 +119,7 @@ export default function SightingViewScreen({ navigation }) {
             <View style={{ width: '100%', height: 200 }}>
                 <TurtleMapView markers={markerList}/>
             </View>
+            <Gallery images={images}/>
             <TurtleText titleText="Notes: " baseText={notes} />
         </ScrollView>
     );

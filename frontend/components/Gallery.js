@@ -1,41 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Image, ScrollView } from 'react-native';
 
-export default class Gallery extends React.Component {
+export default function Gallery({ images }) {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-          images: this.props.images == null ? [] : this.props.images,
-        };
-      }
-
-    addImage(image) {
-        this.setState(prevState => ({
-            images: [...prevState.images, image]
-        }))
-    }
-
-    setAllImages(imagesList) {
-        this.setState(() => ({
-            images: imagesList
-        }))
-    }
-
-    render() {
-        let { images } = this.state
-
-        return (
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
-              {
-                images.map((item, index) => (
-                  <Image key={index} source={{uri: item != null ? item.uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
-                ))
-              }
-            </ScrollView>
-          );
-    }
-    
+  return (
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
+        {
+          images.map((item, index) => (
+            <Image key={index} source={{uri: item != null ? item.uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
+          ))
+        }
+      </ScrollView>
+    );
 }
 
 const styles= StyleSheet.create({

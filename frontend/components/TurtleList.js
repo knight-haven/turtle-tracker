@@ -36,7 +36,6 @@ export default function TurtleList(props) {
     try {
       let response = await fetch(`https://turtletrackerbackend.herokuapp.com/photo/turtle/${turtleId}`);
       let responseJson = await response.json();
-      console.log(JSON.stringify(responseJson))
       if (responseJson.length > 0) {
         return responseJson[0].name;
       }

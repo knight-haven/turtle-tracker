@@ -15,8 +15,12 @@ export default function TurtleList(props) {
       .then(async (responseJson) => {
         for (var i = 0; i < responseJson.length; i++) {
           try {
-            var url = await getPhoto(responseJson[i].id)
-            responseJson[i].pictures = [url]
+            let turtleId = responseJson[i].id
+            let photoName = await getTurtleAvatar(turtleId)
+            if (photoName != null) {
+              let url = await getPhoto(photoName)
+              responseJson[i].avatar = url
+            }
           } catch (e) {
             console.log(e)
           }
@@ -28,8 +32,23 @@ export default function TurtleList(props) {
       });
   }
 
-  async function getPhoto(turtleId) {
-    const ref = firebase.storage().ref().child(`images/${turtleId}`);
+  async function getTurtleAvatar(turtleId) {
+    try {
+      let response = await fetch(`https://turtletrackerbackend.herokuapp.com/photo/turtle/${turtleId}`);
+      let responseJson = await response.json();
+      console.log(JSON.stringify(responseJson))
+      if (responseJson.length > 0) {
+        return responseJson[0].name;
+      }
+      return null;
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function getPhoto(photoName) {
+    const ref = firebase.storage().ref().child(`images/${photoName}`);
     return await ref.getDownloadURL();
   }
 

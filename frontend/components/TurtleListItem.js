@@ -9,7 +9,7 @@ export default class TurtleListItem extends Component {
   render() {
       return (
         <ListItem
-          leftAvatar={{source: {uri: this.props.item.pictures != undefined ? this.props.item.pictures[0]: null}} }
+          leftAvatar={{source: {uri: this.props.item.avatar != undefined ? this.props.item.avatar: null}} }
           title={
             <View>
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>{this.props.item.mark}</Text>

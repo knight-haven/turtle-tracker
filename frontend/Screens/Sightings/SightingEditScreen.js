@@ -137,8 +137,8 @@ export default function SightingEditScreen({ navigation }) {
         .then(responseJson => {
             for (var i = 0; i < images.length; i++) {
                 var UUID = uuidv1();
-                createPhoto(turtleId, responseJson, UUID);
                 uploadPhoto(images[i].uri, UUID);
+                createPhoto(turtleId, responseJson, UUID);
             }
         });
     }

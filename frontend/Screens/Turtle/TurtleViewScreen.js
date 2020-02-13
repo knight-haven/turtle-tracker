@@ -123,8 +123,14 @@ export default function TurtleViewScreen({ navigation }) {
     }
 
     async function getPhoto(photoName) {
-        const ref = firebase.storage().ref().child(`images/${photoName}`);
-        return await ref.getDownloadURL();
+        try {
+            const ref = firebase.storage().ref().child(`images/${photoName}`);
+            return await ref.getDownloadURL();
+        }
+        catch (error) {
+            console.log(error);
+            return null;
+        }
     }
 
     turtleId = navigation.getParam('turtleId');

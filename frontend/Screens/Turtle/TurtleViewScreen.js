@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, Button, Image, ScrollView, StyleSheet, TouchableOpacity, RefreshControl, Platform } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl, Platform } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
+import * as firebase from 'firebase';
 import moment from 'moment';
 import IconButton from '../../components/IconButton';
 import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
-import * as firebase from 'firebase';
-
+import Screen from '../../components/Screen';
 
 /*
     TurtleViewScreen views the contents of one turtle
@@ -20,21 +20,21 @@ export default function TurtleViewScreen({ navigation }) {
     function elementButton(value, navParams) {
         return (
             <TouchableOpacity
-                style={{zIndex: 5}}
+                style={{ zIndex: 5 }}
                 onPress={() => _navigate_sighting(navParams)}
                 onPressIn={() => Haptics.impactAsync('medium')}
             >
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{marginLeft:10}}>{value}</Text>
+                    <Text style={{ marginLeft: 10 }}>{value}</Text>
                     {/* <IconButton
                         disabled={true}
                         size={10}
                         onPress={() => {} }
                         name={'info'} /> */}
                     <View style={styles.iconContainer} >
-                        <Icon name={'info'} size={10}  style={{color:'white'}}/>
+                        <Icon name={'info'} size={10} style={{ color: 'white' }} />
                     </View>
-                    
+
                 </View>
             </TouchableOpacity>
 
@@ -113,7 +113,7 @@ export default function TurtleViewScreen({ navigation }) {
             .then(async (responseJson) => {
                 var imageList = []
                 for (var i = 0; i < responseJson.length; i++) {
-                    imageList.push({uri: await getPhoto(responseJson[i].name)})
+                    imageList.push({ uri: await getPhoto(responseJson[i].name) })
                 }
                 onImagesChange(imageList);
             })
@@ -142,7 +142,7 @@ export default function TurtleViewScreen({ navigation }) {
     const [originalDate, onOriginalDateChange] = useState(new Date(99999999999999));
     const [recentDate, onRecentDateChange] = useState(new Date(0));
     const [recentLength, onRecentLengthChange] = useState(0);
-    const [images, onImagesChange] = useState([{uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg'}]);
+    const [images, onImagesChange] = useState([{ uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg' }]);
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -163,12 +163,11 @@ export default function TurtleViewScreen({ navigation }) {
         getTurtleById(turtleId)
         getSightingByTurtleId(turtleId)
         getTurtleImages(turtleId)
-        navigation.setParams({refreshTurtleView: refresh})
+        navigation.setParams({ refreshTurtleView: refresh })
     }, []);
 
     return (
-        <ScrollView 
-            style={{ padding: 7 }}
+        <Screen
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
@@ -193,7 +192,7 @@ export default function TurtleViewScreen({ navigation }) {
                 markers={markerList}
                 pointerEvents="none"
             />
-            <Gallery images={images}/>
+            <Gallery images={images} />
             {/* Make this into a component in the future */}
             {
                 tableData.length == 0
@@ -206,7 +205,7 @@ export default function TurtleViewScreen({ navigation }) {
                         </TableWrapper>
                     </Table>
             }
-        </ScrollView>
+        </Screen>
     );
 
 }
@@ -221,9 +220,9 @@ const styles = StyleSheet.create({
     text: { textAlign: 'center' },
     btn: { width: 58, height: 18, marginLeft: 15, backgroundColor: '#c8e1ff', borderRadius: 2 },
     btnText: { textAlign: 'center' },
-    iconContainer:{
-        marginLeft:'auto',
-        marginRight:10,
+    iconContainer: {
+        marginLeft: 'auto',
+        marginRight: 10,
         backgroundColor: "green",
         borderRadius: 100,
         padding: 5,
@@ -239,9 +238,9 @@ TurtleViewScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('turtle') == null ? '' : navigation.getParam('turtle').mark,
     headerRight: () => (
 
-    //react-native-platform chooses which button to load based off of device's OS
-    Component = Platform.select({
-        ios: <IconButton
+        //react-native-platform chooses which button to load based off of device's OS
+        Component = Platform.select({
+            ios: <IconButton
                 size={20}
                 onPress={() => navigation.navigate('TurtleEdit', {
                     edit: "true",
@@ -252,39 +251,39 @@ TurtleViewScreen.navigationOptions = ({ navigation }) => ({
                 name={'edit'}
                 styles={{ right: '10%', paddingRight: 15, paddingTop: 2 }}
             />,
-        android: <Icon.Button
-                    size={20}
-                    onPress={() => navigation.navigate('TurtleEdit', {
-                        edit: "true",
-                        turtle: navigation.getParam('turtle'), originalDate: navigation.getParam('originalDate'),
-                        recentDate: navigation.getParam('recentDate'), recentLength: navigation.getParam('recentLength'),
-                        refresh: navigation.getParam('refresh'),
-                    })}
-                    name={'edit'}
-                    iconStyle={{ right: '10%',  paddingTop: 2, paddingLeft: 10 }}
-                    backgroundColor="green"
-                    color = "white"
-                />,
+            android: <Icon.Button
+                size={20}
+                onPress={() => navigation.navigate('TurtleEdit', {
+                    edit: "true",
+                    turtle: navigation.getParam('turtle'), originalDate: navigation.getParam('originalDate'),
+                    recentDate: navigation.getParam('recentDate'), recentLength: navigation.getParam('recentLength'),
+                    refresh: navigation.getParam('refresh'),
+                })}
+                name={'edit'}
+                iconStyle={{ right: '10%', paddingTop: 2, paddingLeft: 10 }}
+                backgroundColor="green"
+                color="white"
+            />,
         })
     ),
     headerLeft: () => (
 
-    //react-native-platform chooses which button to load based off of device's OS
-    Component = Platform.select({
-        ios: <IconButton
+        //react-native-platform chooses which button to load based off of device's OS
+        Component = Platform.select({
+            ios: <IconButton
                 size={20}
                 onPress={() => navigation.goBack()}
                 name={'navigate-before'}
-                styles={{ paddingTop: 2, paddingLeft: 15 }} 
+                styles={{ paddingTop: 2, paddingLeft: 15 }}
             />,
-        android: <Icon.Button
-                    size={20}
-                    onPress={() => navigation.goBack()}
-                    name={'navigate-before'}
-                    iconStyle = {{paddingLeft: 7}}
-                    backgroundColor="green"
-                    color = "white" 
-                />,
+            android: <Icon.Button
+                size={20}
+                onPress={() => navigation.goBack()}
+                name={'navigate-before'}
+                iconStyle={{ paddingLeft: 7 }}
+                backgroundColor="green"
+                color="white"
+            />,
         })
     ),
 });

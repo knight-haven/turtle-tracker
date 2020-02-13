@@ -7,6 +7,8 @@ import moment from 'moment';
 import IconButton from '../../components/IconButton';
 import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
+import Gallery from '../../components/Gallery';
+import * as firebase from 'firebase';
 
 
 /*
@@ -105,6 +107,32 @@ export default function TurtleViewScreen({ navigation }) {
             });
     }
 
+    function getTurtleImages(turtleId) {
+        return fetch(`https://turtletrackerbackend.herokuapp.com/photo/turtle/${turtleId}`)
+            .then((response) => response.json())
+            .then(async (responseJson) => {
+                var imageList = []
+                for (var i = 0; i < responseJson.length; i++) {
+                    imageList.push({uri: await getPhoto(responseJson[i].name)})
+                }
+                onImagesChange(imageList);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    async function getPhoto(photoName) {
+        try {
+            const ref = firebase.storage().ref().child(`images/${photoName}`);
+            return await ref.getDownloadURL();
+        }
+        catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
     turtleId = navigation.getParam('turtleId');
     const tableHead = ['Sighting #', 'Date', 'Location', 'Length']
     const [tableTitle, onTableTitleChange] = useState(['']);
@@ -114,6 +142,7 @@ export default function TurtleViewScreen({ navigation }) {
     const [originalDate, onOriginalDateChange] = useState(new Date(99999999999999));
     const [recentDate, onRecentDateChange] = useState(new Date(0));
     const [recentLength, onRecentLengthChange] = useState(0);
+    const [images, onImagesChange] = useState([{uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg'}]);
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -121,6 +150,7 @@ export default function TurtleViewScreen({ navigation }) {
         turtleId = navigation.getParam('turtleId');
         getTurtleById(turtleId);
         getSightingByTurtleId(turtleId);
+        getTurtleImages(turtleId);
     }
 
     const onRefresh = useCallback(() => {
@@ -132,6 +162,7 @@ export default function TurtleViewScreen({ navigation }) {
     useEffect(() => {
         getTurtleById(turtleId)
         getSightingByTurtleId(turtleId)
+        getTurtleImages(turtleId)
         navigation.setParams({refreshTurtleView: refresh})
     }, []);
 
@@ -162,6 +193,7 @@ export default function TurtleViewScreen({ navigation }) {
                 markers={markerList}
                 pointerEvents="none"
             />
+            <Gallery images={images}/>
             {/* Make this into a component in the future */}
             {
                 tableData.length == 0

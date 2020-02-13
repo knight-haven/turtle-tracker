@@ -1,3 +1,4 @@
+// Deploy with: git subtree push --prefix backend heroku master
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()

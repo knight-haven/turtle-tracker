@@ -9,6 +9,8 @@ import TurtleMapView from '../../components/TurtleMapView';
 import IconButton from '../../components/IconButton';
 import { OutlinedTextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import uuidv1 from 'uuid/v1';
+import * as firebase from 'firebase';
 
 /*
 Define a couple useful styles
@@ -52,6 +54,7 @@ export default function SightingEditScreen({ navigation }) {
     const [location, setLocation] = useState('');
     const [notes, setNotes] = useState('');
     const [markerList, setMarkerList] = useState([]);
+    const [images, setImages] = useState([]);
 
     sighting = navigation.getParam('sighting');
     isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
@@ -130,9 +133,25 @@ export default function SightingEditScreen({ navigation }) {
                 notes
             })
         })
-            .catch((error) => {
-                console.error(error);
-            });
+        .then(response => response.json())
+        .then(responseJson => {
+            for (var i = 0; i < images.length; i++) {
+                var UUID = uuidv1();
+                uploadPhoto(images[i].uri, UUID);
+                createPhoto(turtleId, responseJson, UUID);
+            }
+        });
+    }
+
+    function createPhoto(turtleId, sightingId, name) {
+        return fetch(`https://turtletrackerbackend.herokuapp.com/photo`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                turtleId,
+                sightingId,
+                name
+            })
+        })
     }
 
     async function getCameraPermission() {
@@ -151,6 +170,22 @@ export default function SightingEditScreen({ navigation }) {
         } else {
             throw new Error('Location permission not granted');
         }
+    }
+
+    function uploadPhoto(uri, imageName) {
+        fetch(uri)
+        .then((response) => response.blob())
+        .then((responseBlob) => {
+            var ref = firebase.storage().ref().child("images/" + imageName);
+            ref.put(responseBlob); 
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    };
+
+    function callback(image) {
+        setImages(image);
     }
 
     // TODO: Move this to ask when button is pressed.
@@ -184,7 +219,7 @@ export default function SightingEditScreen({ navigation }) {
                 markers={markerList}
                 pointerEvents="none"
             />
-            <CameraGallery turtleId={turtle.id}/>
+            <CameraGallery parentCallback={callback}/>
             <View style={styles.container}>
                 {isEdit
                     ?

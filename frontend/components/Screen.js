@@ -11,7 +11,7 @@ export default function Screen(props) {
             refreshControl={props.refreshControl}
         >
             <View
-                style={styles.content}
+                style={[styles.content, props.contentStyle]}
             >
                 {props.children}
             </View>

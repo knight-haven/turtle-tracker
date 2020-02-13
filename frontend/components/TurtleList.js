@@ -8,6 +8,7 @@ import Screen from '../components/Screen';
 /*
   TurtleList displays a list of all of the turtles in the Eco Preserve.
   Each list element is a turtle which can be tapped on to get more info.
+  TODO: Fix this naming convetion. This has a screen but is a component.
 */
 export default function TurtleList(props) {
   function getTurtles() {

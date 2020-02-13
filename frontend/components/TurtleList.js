@@ -1,8 +1,9 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView, View, Text, RefreshControl, SnapshotViewIOS } from 'react-native';
-import TurtleListItem from './TurtleListItem'
 import { ListItem } from 'react-native-elements';
 import * as firebase from 'firebase';
+import TurtleListItem from './TurtleListItem';
+import Screen from '../components/Screen';
 
 /*
   TurtleList displays a list of all of the turtles in the Eco Preserve.
@@ -59,34 +60,33 @@ export default function TurtleList(props) {
 
   const [turtleList, onTurtleListChange] = useState([])
   const [refreshing, setRefreshing] = useState(false)
-  useEffect(() => {getTurtles()}, []);
+  useEffect(() => { getTurtles() }, []);
   return (
-    <ScrollView 
-      style = {props.style}
+    <Screen
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }>
-    { props.navigation.state.routeName == "SelectTurtle" ? 
-    <View>
-      <ListItem
-        leftAvatar
-        title="New Turtle"
-        chevron
-        bottomDivider
-        onPress={() => {props.navigation.navigate('TurtleEdit')}}
-      />
-      <Text style={{fontSize: 18, fontWeight: 'bold', paddingTop: 8, textAlign: 'center'}}>Existing Turtles</Text> 
-    </View>: null }
+      }>
+      {props.navigation.state.routeName == "SelectTurtle" ?
+        <View>
+          <ListItem
+            leftAvatar
+            title="New Turtle"
+            chevron
+            bottomDivider
+            onPress={() => { props.navigation.navigate('TurtleEdit') }}
+          />
+          <Text style={{ fontSize: 18, fontWeight: 'bold', paddingTop: 8, textAlign: 'center' }}>Existing Turtles</Text>
+        </View> : null}
       {
         turtleList.map((item, index) => (
           <TurtleListItem
-            key={index+1}
+            key={index + 1}
             item={item}
             onPressPage={props.onPressPage}
             navigation={props.navigation}
           />
         ))
       }
-      </ScrollView>
+    </Screen>
   )
 }

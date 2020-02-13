@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ScrollView, View, Text, RefreshControl, SnapshotViewIOS } from 'react-native';
+import { View, Text, RefreshControl } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import * as firebase from 'firebase';
 import TurtleListItem from './TurtleListItem';

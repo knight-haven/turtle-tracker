@@ -36,7 +36,8 @@ export default function MapScreen({ navigation }) {
       .then((response) => response.json())
       .then((responseJson) => {
         var markers = []
-        for (var i = 0; i < responseJson.length; i++) {
+        // TODO: This is temporary.
+        for (var i = 0; i < responseJson.length - responseJson.length + 4; i++) {
           markers.push({
             "turtleId": responseJson[i].turtle_id,
             "coordinate": {

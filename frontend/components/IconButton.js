@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
+import s from './Styles';
 
 // define styles
 const styles = StyleSheet.create({
@@ -11,16 +12,12 @@ const styles = StyleSheet.create({
     },
     icon: {
         color: "white",
-        
     },
     opacity: {
         backgroundColor: "green",
         borderRadius: 100,
         padding: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
+        shadowOpacity: 0.3,
     },
 })
 
@@ -29,19 +26,17 @@ const styles = StyleSheet.create({
     It will take a onPress function, the icon name,
     and additional styles.
 */
-export default class IconButton extends Component {
-    render() {
-        return (
-            <View style={[styles.container, this.props.styles]}>
-                <TouchableOpacity
-                    disabled={this.props.disabled}
-                    onPress={this.props.onPress}
-                    style={styles.opacity}
-                    borderRadius={'100%'}
-                    onPressIn={() => Haptics.impactAsync('medium')}>
-                    <Icon name={this.props.name} style={styles.icon} size={this.props.size} />
-                </TouchableOpacity>
-            </View>
-        )
-    }
+export default function IconButton(props) {
+    return (
+        <View style={[styles.container, props.styles]}>
+            <TouchableOpacity
+                disabled={props.disabled}
+                onPress={props.onPress}
+                style={[s.shadow, styles.opacity]}
+                borderRadius={'100%'}
+                onPressIn={() => Haptics.impactAsync('medium')}>
+                <Icon name={props.name} style={styles.icon} size={props.size} />
+            </TouchableOpacity>
+        </View>
+    )
 }

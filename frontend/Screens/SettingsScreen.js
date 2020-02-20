@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, Platform, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import IconButton from '../components/IconButton';
+import { Text } from 'react-native';
 import Screen from '../components/Screen';
+import HeaderButton from '../components/HeaderButton';
 
 /*
     SettingsScreen will be used to toggle the specific user settings.
@@ -10,24 +9,7 @@ import Screen from '../components/Screen';
 export default class SettingsScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
         headerLeft: () => (
-
-        //react-native-platform chooses which button to load based off of device's OS
-        Component = Platform.select({
-            ios: <IconButton 
-                    size = {20} 
-                    onPress={() => navigation.goBack()} 
-                    name = {'navigate-before'} 
-                    styles = {{paddingLeft: 7}} 
-                    />,
-            android: <Icon.Button 
-                        size = {20} 
-                        onPress={() => navigation.goBack()}
-                        name = {'navigate-before'} 
-                        iconStyle = {{paddingLeft: 7}} 
-                        backgroundColor="green" 
-                        color = "white" 
-                    />,
-            })
+            <HeaderButton navigation={navigation} />
         )
     })
  

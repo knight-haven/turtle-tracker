@@ -2,7 +2,7 @@ import * as Permissions from 'expo-permissions';
 import moment from 'moment';
 import * as firebase from 'firebase';
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, ScrollView, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Platform, StyleSheet, TouchableOpacity } from 'react-native';
 import { OutlinedTextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import uuidv1 from 'uuid/v1';

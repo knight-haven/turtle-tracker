@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-/* Global shadow style.
+/* A Shared StyleSheet
 */
 
 export default StyleSheet.create({

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
-import s from './Shadow';
+import s from './Styles';
 
 /*
     Basic Screen wrapper for all screens.

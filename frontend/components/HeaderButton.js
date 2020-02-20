@@ -10,7 +10,7 @@ export default function HeaderButton(props) {
             size={20}
             onPress={() => navigation.goBack()}
             name={'navigate-before'}
-            styles={{ paddingLeft: 7 }}
+            containerStyle={{ paddingLeft: 7 }}
         />
     )
 }

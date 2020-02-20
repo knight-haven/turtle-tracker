@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import TurtleList from '../components/TurtleList';
 import HeaderButton from '../components/HeaderButton';
 
-export default function SelectTurtleScreen( {navigation} ) {
+export default function SelectTurtleScreen({ navigation }) {
     return (
         <View style={{ justifyContent: 'center' }}>
             <TurtleList

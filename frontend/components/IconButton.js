@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
@@ -6,10 +6,6 @@ import s from './Styles';
 
 // define styles
 const styles = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        flexDirection: 'row',
-    },
     icon: {
         color: "white",
     },
@@ -17,7 +13,6 @@ const styles = StyleSheet.create({
         backgroundColor: "green",
         borderRadius: 100,
         padding: 5,
-        shadowOpacity: 0.3,
     },
 })
 
@@ -27,15 +22,24 @@ const styles = StyleSheet.create({
     and additional styles.
 */
 export default function IconButton(props) {
+    const {
+        onPress,
+        name,
+        containerStyle,
+        type,
+        disabled
+    } = props
+
+    iconType = type == undefined ? 'materal' : type
     return (
-        <View style={[styles.container, props.styles]}>
+        <View style={[containerStyle]}>
             <TouchableOpacity
-                disabled={props.disabled}
-                onPress={props.onPress}
+                disabled={disabled}
+                onPress={onPress}
                 style={[s.shadow, styles.opacity]}
                 borderRadius={'100%'}
                 onPressIn={() => Haptics.impactAsync('medium')}>
-                <Icon name={props.name} style={styles.icon} size={props.size} />
+                <Icon name={name} style={styles.icon} size={props.size} />
             </TouchableOpacity>
         </View>
     )

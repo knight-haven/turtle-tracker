@@ -1,16 +1,17 @@
 import * as Permissions from 'expo-permissions';
 import moment from 'moment';
+import * as firebase from 'firebase';
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { OutlinedTextField } from 'react-native-material-textfield';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import uuidv1 from 'uuid/v1';
 import TurtleText from '../../components/TurtleText';
 import TurtleTextInput from '../../components/TurtleTextInput';
 import CameraGallery from '../../components/CameraGallery';
 import TurtleMapView from '../../components/TurtleMapView';
 import IconButton from '../../components/IconButton';
-import { OutlinedTextField } from 'react-native-material-textfield';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import uuidv1 from 'uuid/v1';
-import * as firebase from 'firebase';
+import Screen from '../../components/Screen';
 
 /*
 Define a couple useful styles
@@ -133,14 +134,14 @@ export default function SightingEditScreen({ navigation }) {
                 notes
             })
         })
-        .then(response => response.json())
-        .then(responseJson => {
-            for (var i = 0; i < images.length; i++) {
-                var UUID = uuidv1();
-                uploadPhoto(images[i].uri, UUID);
-                createPhoto(turtleId, responseJson, UUID);
-            }
-        });
+            .then(response => response.json())
+            .then(responseJson => {
+                for (var i = 0; i < images.length; i++) {
+                    var UUID = uuidv1();
+                    uploadPhoto(images[i].uri, UUID);
+                    createPhoto(turtleId, responseJson, UUID);
+                }
+            });
     }
 
     function createPhoto(turtleId, sightingId, name) {
@@ -174,14 +175,14 @@ export default function SightingEditScreen({ navigation }) {
 
     function uploadPhoto(uri, imageName) {
         fetch(uri)
-        .then((response) => response.blob())
-        .then((responseBlob) => {
-            var ref = firebase.storage().ref().child("images/" + imageName);
-            ref.put(responseBlob); 
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+            .then((response) => response.blob())
+            .then((responseBlob) => {
+                var ref = firebase.storage().ref().child("images/" + imageName);
+                ref.put(responseBlob);
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     };
 
     function callback(image) {
@@ -193,8 +194,8 @@ export default function SightingEditScreen({ navigation }) {
     getCameraRollPermission()
 
     return (
-        <ScrollView>
-            <View style={{ padding: 8 }}>
+        <Screen>
+            <View>
                 <TurtleText titleText="Mark: " baseText={turtle.mark} />
                 {isEdit
                     ? <TurtleTextInput titleText='Turtle Number: ' onChangeText={turtleNumber => setTurtleNumber(turtleNumber)} value={turtleNumber} placeholder="#" />
@@ -219,14 +220,14 @@ export default function SightingEditScreen({ navigation }) {
                 markers={markerList}
                 pointerEvents="none"
             />
-            <CameraGallery parentCallback={callback}/>
+            <CameraGallery parentCallback={callback} />
             <View style={styles.container}>
                 {isEdit
                     ?
                     <TouchableOpacity style={styles.button} onPress={() => {
                         editSightingById(sighting.id, turtle.id),
-                        navigation.goBack(),
-                        navigation.state.params.refreshSightingView()
+                            navigation.goBack(),
+                            navigation.state.params.refreshSightingView()
                     }} >
                         <Text style={styles.buttonText}>{"SUBMIT"}</Text>
                     </TouchableOpacity>
@@ -241,9 +242,8 @@ export default function SightingEditScreen({ navigation }) {
                         <Text style={styles.buttonText}>{"SUBMIT"}</Text>
                     </TouchableOpacity>}
             </View>
-        </ScrollView>
+        </Screen>
     );
-
 }
 
 // Sets the navigation options.

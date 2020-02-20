@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import { ScrollView, View, Text, RefreshControl, SnapshotViewIOS } from 'react-native';
+import { ScrollView, View, Text, RefreshControl, ActivityIndicator, StyleSheet } from 'react-native';
 import TurtleListItem from './TurtleListItem'
 import { ListItem } from 'react-native-elements';
 import * as firebase from 'firebase';
@@ -10,6 +10,7 @@ import * as firebase from 'firebase';
 */
 export default function TurtleList(props) {
   function getTurtles() {
+    setLoading(true);
     return fetch(`https://turtletrackerbackend.herokuapp.com/turtle`)
       .then((response) => response.json())
       .then(async (responseJson) => {
@@ -26,6 +27,7 @@ export default function TurtleList(props) {
           }
         }
         onTurtleListChange(responseJson);
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -59,6 +61,7 @@ export default function TurtleList(props) {
 
   const [turtleList, onTurtleListChange] = useState([])
   const [refreshing, setRefreshing] = useState(false)
+  const [loading, setLoading] = useState(false);
   useEffect(() => {getTurtles()}, []);
   return (
     <ScrollView 
@@ -66,6 +69,15 @@ export default function TurtleList(props) {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     }>
+      {
+        loading && 
+        <ActivityIndicator
+          animating = {loading}
+          size = "large"
+          color = 'green'
+          style = {styles.activityIndicator}/>
+      }
+    
     { props.navigation.state.routeName == "SelectTurtle" ? 
     <View>
       <ListItem
@@ -90,3 +102,12 @@ export default function TurtleList(props) {
       </ScrollView>
   )
 }
+
+const styles = StyleSheet.create ({
+  activityIndicator: {
+     flex: 1,
+     justifyContent: 'center',
+     alignItems: 'center',
+     height: 80
+  }
+})

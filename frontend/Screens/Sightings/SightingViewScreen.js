@@ -8,6 +8,7 @@ import TurtleMapView from '../../components/TurtleMapView';
 import IconButton from '../../components/IconButton';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 /*
 Turtle Sighting Screen for information on one particular sighting
@@ -56,6 +57,8 @@ export default function SightingViewScreen({ navigation }) {
                     imageList.push({ uri: await getPhoto(responseJson[i].name) })
                 }
                 onImagesChange(imageList);
+                setLoading(false);
+                setRefreshing(false);
             })
             .catch((error) => {
                 console.error(error);
@@ -77,7 +80,10 @@ export default function SightingViewScreen({ navigation }) {
     const [turtleNumber, setTurtleNumber] = useState();
     const [markerList, setMarkerList] = useState([]);
     const [images, onImagesChange] = useState([{ uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg' }]);
+    const [loading, setLoading] = useState(false);
+    
     useEffect(() => {
+        setLoading(true);
         getSightingById(sightingId)
         getTurtleById(turtleId)
         getSightingImages(sightingId)
@@ -96,7 +102,6 @@ export default function SightingViewScreen({ navigation }) {
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         refresh();
-        setRefreshing(false);
     }, [refreshing]);
     useEffect(() => { navigation.setParams({ refreshSightingView: refresh }); }, []);
 
@@ -106,21 +111,30 @@ export default function SightingViewScreen({ navigation }) {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
         >
-            <View style={{ justifyContent: 'space-evenly' }}>
-                {/* TODO: Replace sightingId with the number sighting for the specific turtle. */}
-                {/* <TurtleText titleText={`Sighting #${sightingId}`} /> */}
-                <TurtleText titleText={`Turtle #${turtleNumber}`} />
-                <TurtleText titleText="Mark: " baseText={mark} />
-                <TurtleText titleText="Date: " baseText={moment(date).format('l')} />
-                <TurtleText titleText="Length: " baseText={`${length} mm`} />
-                <TurtleText titleText="Location: " baseText={location} />
-            </View>
-            {/* map */}
-            <View style={{ width: '100%', height: 200 }}>
-                <TurtleMapView markers={markerList} />
-            </View>
-            <Gallery images={images} />
-            <TurtleText titleText="Notes: " baseText={notes} />
+            {
+                loading && !refreshing &&
+                <LoadingSpinner animating={loading}/>
+            }
+            {
+                !loading &&
+                <View>
+                    <View style={{ justifyContent: 'space-evenly' }}>
+                        {/* TODO: Replace sightingId with the number sighting for the specific turtle. */}
+                        {/* <TurtleText titleText={`Sighting #${sightingId}`} /> */}
+                        <TurtleText titleText={`Turtle #${turtleNumber}`} />
+                        <TurtleText titleText="Mark: " baseText={mark} />
+                        <TurtleText titleText="Date: " baseText={moment(date).format('l')} />
+                        <TurtleText titleText="Length: " baseText={`${length} mm`} />
+                        <TurtleText titleText="Location: " baseText={location} />
+                    </View>
+                    {/* map */}
+                    <View style={{ width: '100%', height: 200 }}>
+                        <TurtleMapView markers={markerList} />
+                    </View>
+                    <Gallery images={images} />
+                    <TurtleText titleText="Notes: " baseText={notes} />
+                </View>
+            }
         </Screen>
     );
 }

@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import { ScrollView, View, Text, RefreshControl, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, RefreshControl } from 'react-native';
 import TurtleListItem from './TurtleListItem'
 import { ListItem } from 'react-native-elements';
 import * as firebase from 'firebase';
 import Screen from '../components/Screen';
+import LoadingSpinner from './LoadingSpinner';
 
 /*
   TurtleList displays a list of all of the turtles in the Eco Preserve.
@@ -30,6 +31,7 @@ export default function TurtleList(props) {
         }
         onTurtleListChange(responseJson);
         setLoading(false);
+        setRefreshing(false);
       })
       .catch((error) => {
         console.error(error);
@@ -58,7 +60,6 @@ export default function TurtleList(props) {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     getTurtles();
-    setRefreshing(false);
   }, [refreshing]);
 
   const [turtleList, onTurtleListChange] = useState([])
@@ -71,12 +72,8 @@ export default function TurtleList(props) {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     }>
       {
-        loading && 
-        <ActivityIndicator
-          animating = {loading}
-          size = "large"
-          color = 'green'
-          style = {styles.activityIndicator}/>
+        loading && !refreshing && 
+        <LoadingSpinner animating={loading}/>
       }
     
     { props.navigation.state.routeName == "SelectTurtle" ? 
@@ -104,11 +101,3 @@ export default function TurtleList(props) {
   )
 }
 
-const styles = StyleSheet.create ({
-  activityIndicator: {
-     flex: 1,
-     justifyContent: 'center',
-     alignItems: 'center',
-     height: 80
-  }
-})

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl, Platform } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl, Platform, ActivityIndicator } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
@@ -10,6 +10,7 @@ import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 /*
     TurtleViewScreen views the contents of one turtle
@@ -116,6 +117,8 @@ export default function TurtleViewScreen({ navigation }) {
                     imageList.push({ uri: await getPhoto(responseJson[i].name) })
                 }
                 onImagesChange(imageList);
+                setLoading(false);
+                setRefreshing(false);
             })
             .catch((error) => {
                 console.error(error);
@@ -156,10 +159,10 @@ export default function TurtleViewScreen({ navigation }) {
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         refresh();
-        setRefreshing(false);
     }, [refreshing]);
 
     useEffect(() => {
+        setLoading(true);
         getTurtleById(turtleId)
         getSightingByTurtleId(turtleId)
         getTurtleImages(turtleId)
@@ -172,38 +175,47 @@ export default function TurtleViewScreen({ navigation }) {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
         >
-            <View style={{ flexDirection: 'row' }}>
-                {/* { turtleProps.pictures.length > 0 ?
-                    <Image style={{width: 150, height: 150}} source={{uri: turtleProps.pictures[0]}}/>
-                    : null
-                } */}
-                <View style={{ justifyContent: 'space-evenly' }}>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Turtle #{turtle.turtle_number}</Text>
-                    <TurtleText titleText='Mark: ' baseText={turtle.mark} />
-                    <TurtleText titleText='Sex: ' baseText={turtle.sex} />
-                    <TurtleText titleText='Date Found: ' baseText={moment(originalDate).format('l')} />
-                    <TurtleText titleText='Date Last Seen: ' baseText={moment(recentDate).format('l')} />
-                    {/* Most Recent Carapace Length Measurement */}
-                    <TurtleText titleText='Carapace Length: ' baseText={`${recentLength} mm`} />
-                </View>
-            </View>
-            <TurtleText titleText='Sightings: ' baseText='' />
-            <TurtleMapView
-                markers={markerList}
-                pointerEvents="none"
-            />
-            <Gallery images={images} />
-            {/* Make this into a component in the future */}
             {
-                tableData.length == 0
-                    ? <Text>No Sightings</Text>
-                    : <Table borderStyle={{ borderWidth: 1 }}>
-                        <Row data={tableHead} flexArr={[1, 1, 1, 1]} style={styles.head} textStyle={styles.text} />
-                        <TableWrapper style={styles.wrapper}>
-                            <Col data={tableTitle} style={styles.title} heightArr={[28, 28]} textStyle={styles.text} />
-                            <Rows data={tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.text} />
-                        </TableWrapper>
-                    </Table>
+                loading && !refreshing && 
+                <LoadingSpinner animating={loading}/>
+            }   
+            {   
+                !loading && 
+                <View>
+                    <View style={{ flexDirection: 'row' }}>
+                        {/* { turtleProps.pictures.length > 0 ?
+                            <Image style={{width: 150, height: 150}} source={{uri: turtleProps.pictures[0]}}/>
+                            : null
+                        } */}
+                        <View style={{ justifyContent: 'space-evenly' }}>
+                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Turtle #{turtle.turtle_number}</Text>
+                            <TurtleText titleText='Mark: ' baseText={turtle.mark} />
+                            <TurtleText titleText='Sex: ' baseText={turtle.sex} />
+                            <TurtleText titleText='Date Found: ' baseText={moment(originalDate).format('l')} />
+                            <TurtleText titleText='Date Last Seen: ' baseText={moment(recentDate).format('l')} />
+                            {/* Most Recent Carapace Length Measurement */}
+                            <TurtleText titleText='Carapace Length: ' baseText={`${recentLength} mm`} />
+                        </View>
+                    </View>
+                    <TurtleText titleText='Sightings: ' baseText='' />
+                    <TurtleMapView
+                        markers={markerList}
+                        pointerEvents="none"
+                    />
+                    <Gallery images={images} />
+                    {/* Make this into a component in the future */}
+                    {
+                        tableData.length == 0
+                            ? <Text>No Sightings</Text>
+                            : <Table borderStyle={{ borderWidth: 1 }}>
+                                <Row data={tableHead} flexArr={[1, 1, 1, 1]} style={styles.head} textStyle={styles.text} />
+                                <TableWrapper style={styles.wrapper}>
+                                    <Col data={tableTitle} style={styles.title} heightArr={[28, 28]} textStyle={styles.text} />
+                                    <Rows data={tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.text} />
+                                </TableWrapper>
+                            </Table>
+                }
+                </View>
             }
         </Screen>
     );

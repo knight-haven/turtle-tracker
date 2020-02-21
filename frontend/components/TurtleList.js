@@ -3,10 +3,12 @@ import { ScrollView, View, Text, RefreshControl, ActivityIndicator, StyleSheet }
 import TurtleListItem from './TurtleListItem'
 import { ListItem } from 'react-native-elements';
 import * as firebase from 'firebase';
+import Screen from '../components/Screen';
 
 /*
   TurtleList displays a list of all of the turtles in the Eco Preserve.
   Each list element is a turtle which can be tapped on to get more info.
+  TODO: Fix this naming convetion. This has a screen but is a component.
 */
 export default function TurtleList(props) {
   function getTurtles() {
@@ -64,8 +66,7 @@ export default function TurtleList(props) {
   const [loading, setLoading] = useState(false);
   useEffect(() => {getTurtles()}, []);
   return (
-    <ScrollView 
-      style = {props.style}
+    <Screen
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     }>
@@ -92,14 +93,14 @@ export default function TurtleList(props) {
       {
         turtleList.map((item, index) => (
           <TurtleListItem
-            key={index+1}
+            key={index + 1}
             item={item}
             onPressPage={props.onPressPage}
             navigation={props.navigation}
           />
         ))
       }
-      </ScrollView>
+    </Screen>
   )
 }
 

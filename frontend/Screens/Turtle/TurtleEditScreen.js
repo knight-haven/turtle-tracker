@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, Image, Button, Platform, StyleSheet, TouchableOpacity } from 'react-native';
-import RadioForm from 'react-native-simple-radio-button';
-import TurtleText from '../../components/TurtleText';
-import TurtleTextInput from '../../components/TurtleTextInput';
-import moment from 'moment';
-import IconButton from '../../components/IconButton';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { OutlinedTextField } from 'react-native-material-textfield';
+import RadioForm from 'react-native-simple-radio-button';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import IconButton from '../../components/IconButton';
+import Screen from '../../components/Screen';
 
 /*
 Define a couple useful styles
@@ -105,10 +103,9 @@ export default function TurtleEditScreen({ navigation }) {
         // const [length, setLength] = useState(recentLength.toString());
     }
 
-
     return (
-        <ScrollView style={{ padding: 5 }}>
-            <View style={{ flexDirection: 'column', padding: 5 }}>
+        <Screen>
+            <View style={{ flexDirection: 'column'}}>
                 {/* { turtleProps.pictures.length > 0 ?
                         <Image style={{width: 150, height: 150}} source={{uri: turtleProps.pictures[0]}}/>
                         : null
@@ -155,7 +152,7 @@ export default function TurtleEditScreen({ navigation }) {
                         </TouchableOpacity>}
                 </View>
             </View>
-        </ScrollView>
+        </Screen>
 
     );
 }

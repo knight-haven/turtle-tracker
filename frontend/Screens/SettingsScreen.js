@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Platform, ScrollView } from 'react-native';
-import IconButton from '../components/IconButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import IconButton from '../components/IconButton';
+import Screen from '../components/Screen';
 
 /*
     SettingsScreen will be used to toggle the specific user settings.
@@ -32,7 +33,7 @@ export default class SettingsScreen extends React.Component {
  
     render() {
         return (
-            <ScrollView >
+            <Screen >
                 <Text style={{fontWeight: 'bold'}}>Section 1: View list of turtles</Text>
                 <Text></Text>
                 <Text>You can use the Turtle List on the Turtle Tracker App to view the list of seen turtles in the Calvin Ecosystem Preserve.</Text>
@@ -106,7 +107,7 @@ export default class SettingsScreen extends React.Component {
                 <Text>Step Three: Tap on the turtle to find sighting information about the turtle</Text>
                 <Text>Step Four: To find additional information about a specific turtle turtle sighting, tap the ‘i’ button on the left hand side of the sighting row.</Text>
                 <Text></Text>
-            </ScrollView>
+            </Screen>
         );
     }
 }

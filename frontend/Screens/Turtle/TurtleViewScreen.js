@@ -11,6 +11,7 @@ import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import SightingCard from '../../components/SightingCard';
 
 /*
     TurtleViewScreen views the contents of one turtle
@@ -18,42 +19,11 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 export default function TurtleViewScreen({ navigation }) {
     const [loading, setLoading] = useState(true)
 
-    function elementButton(value, navParams) {
-        return (
-            <TouchableOpacity
-                style={{ zIndex: 5 }}
-                onPress={() => _navigate_sighting(navParams)}
-                onPressIn={() => Haptics.impactAsync('medium')}
-            >
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ marginLeft: 10 }}>{value}</Text>
-                    {/* <IconButton
-                        disabled={true}
-                        size={10}
-                        onPress={() => {} }
-                        name={'info'} /> */}
-                    <View style={styles.iconContainer} >
-                        <Icon name={'info'} size={10} style={{ color: 'white' }} />
-                    </View>
-
-                </View>
-            </TouchableOpacity>
-
-
-        )
-    }
-
-    function _navigate_sighting(navParams) {
-        navigation.navigate('SightingView', navParams)
-    }
-
     // Update the sighting table.
     function getDerivedTurtleInfo(sightings) {
-        var tableRows = [], tableTitles = [], oDate = new Date(99999999999999), rDate = new Date(0), rLength = 0;
+        oDate = new Date(99999999999999), rDate = new Date(0), rLength = 0;
         for (var i = 0; i < sightings.length; i++) {
             var sightingDate = new Date(Date.parse(sightings[i].time_seen));
-            tableRows.push([moment(sightingDate).format('l'), sightings[i].turtle_location, `${sightings[i].carapace_length} mm`]);
-            tableTitles.push(elementButton(i + 1, { turtleId: sightings[i].turtle_id, sightingId: sightings[i].id }));
             if (sightingDate.getTime() < oDate.getTime()) {
                 oDate = sightingDate;
                 navigation.setParams({ originalDate: sightingDate });
@@ -64,8 +34,6 @@ export default function TurtleViewScreen({ navigation }) {
                 navigation.setParams({ recentDate: sightingDate, recentLength: sightings[i].carapace_length });
             }
         }
-        onTableDataChange(tableRows);
-        onTableTitleChange(tableTitles);
         onOriginalDateChange(oDate);
         onRecentDateChange(rDate);
         onRecentLengthChange(rLength);
@@ -88,6 +56,7 @@ export default function TurtleViewScreen({ navigation }) {
             .then((response) => response.json())
             .then((responseJson) => {
                 getDerivedTurtleInfo(responseJson);
+                onSightingsChange(responseJson);
                 var markers = []
                 for (var i = 0; i < responseJson.length; i++) {
                     turtleId = responseJson[i].turtle_id
@@ -137,10 +106,8 @@ export default function TurtleViewScreen({ navigation }) {
     }
 
     turtleId = navigation.getParam('turtleId');
-    const tableHead = ['Sighting #', 'Date', 'Location', 'Length']
-    const [tableTitle, onTableTitleChange] = useState(['']);
-    const [tableData, onTableDataChange] = useState([['', 'Loading', '']]);
     const [turtle, onTurtleChange] = useState({});
+    const [sightings, onSightingsChange] = useState([]);
     const [markerList, onMarkerListChange] = useState([]);
     const [originalDate, onOriginalDateChange] = useState(new Date(99999999999999));
     const [recentDate, onRecentDateChange] = useState(new Date(0));
@@ -203,18 +170,14 @@ export default function TurtleViewScreen({ navigation }) {
                         pointerEvents="none"
                     />
                     <Gallery images={images} />
-                    {/* Make this into a component in the future */}
                     {
-                        tableData.length == 0
-                            ? <Text>No Sightings</Text>
-                            : <Table borderStyle={{ borderWidth: 1 }}>
-                                <Row data={tableHead} flexArr={[1, 1, 1, 1]} style={styles.head} textStyle={styles.text} />
-                                <TableWrapper style={styles.wrapper}>
-                                    <Col data={tableTitle} style={styles.title} heightArr={[28, 28]} textStyle={styles.text} />
-                                    <Rows data={tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.text} />
-                                </TableWrapper>
-                            </Table>
-                }
+                        sightings.map((item, index) => (
+                        <SightingCard
+                            key={index + 1}
+                            sighting={item}
+                        />
+                        ))
+                    }
                 </View>
             }
         </Screen>

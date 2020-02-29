@@ -10,13 +10,14 @@ import IconButton from './IconButton';
 
 export default function HeaderButton(props) {
     const {
-        navigation,
+        onPress,
+        name,
     } = props;
     return (
         <IconButton
             size={20}
-            onPress={() => navigation.goBack()}
-            name={'navigate-before'}
+            onPress={onPress}
+            name={name}
             containerStyle={{ paddingLeft: 7 }}
         />
     )

@@ -267,23 +267,11 @@ TurtleViewScreen.navigationOptions = ({ navigation }) => ({
         })
     ),
     headerLeft: () => (
-
-        //react-native-platform chooses which button to load based off of device's OS
-        Component = Platform.select({
-            ios: <IconButton
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                styles={{ paddingTop: 2, paddingLeft: 15 }}
-            />,
-            android: <Icon.Button
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                iconStyle={{ paddingLeft: 7 }}
-                backgroundColor="green"
-                color="white"
-            />,
-        })
+        <IconButton
+            size={20}
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+            styles={{ paddingTop: 2, paddingLeft: 15 }}
+        />
     ),
 });

@@ -16,6 +16,9 @@ export default function SelectTurtleScreen({ navigation }) {
 
 SelectTurtleScreen.navigationOptions = ({ navigation }) => ({
     headerLeft: () => (
-        <HeaderButton navigation={navigation} />
+        <HeaderButton
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+        />
     )
 })

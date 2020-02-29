@@ -7,19 +7,22 @@ import HeaderButton from '../components/HeaderButton';
     SettingsScreen will be used to toggle the specific user settings.
 */
 export default class SettingsScreen extends React.Component {
-    static navigationOptions = ({navigation}) => ({
+    static navigationOptions = ({ navigation }) => ({
         headerLeft: () => (
-            <HeaderButton navigation={navigation} />
+            <HeaderButton
+                onPress={() => navigation.goBack()}
+                name={'navigate-before'}
+            />
         )
     })
- 
+
     render() {
         return (
             <Screen >
-                <Text style={{fontWeight: 'bold'}}>Section 1: View list of turtles</Text>
+                <Text style={{ fontWeight: 'bold' }}>Section 1: View list of turtles</Text>
                 <Text></Text>
                 <Text>You can use the Turtle List on the Turtle Tracker App to view the list of seen turtles in the Calvin Ecosystem Preserve.</Text>
- 
+
                 <Text>Imagine you want to view a list of seen turtles quickly. This section will walk you through:</Text>
                 <Text></Text>
                 <Text>How to view the list of turtles.</Text>
@@ -30,7 +33,7 @@ export default class SettingsScreen extends React.Component {
                 <Text>Step Two: Scroll through the turtles to find the markings of the turtles and view their sex.</Text>
                 <Text>Step Three: Tap on the turtle to find out more information on the turtle.</Text>
                 <Text></Text>
-                <Text style={{fontWeight: 'bold'}}>Section 2: Add a Turtle Sighting</Text>
+                <Text style={{ fontWeight: 'bold' }}>Section 2: Add a Turtle Sighting</Text>
                 <Text></Text>
                 <Text>You can add turtle sightings directly from the map screen.</Text>
                 <Text></Text>
@@ -48,7 +51,7 @@ export default class SettingsScreen extends React.Component {
                 <Text>Step 6: Tap “Submit” at the bottom of the screen.</Text>
                 <Text>Step 7: Your sighting has been submitted! Navigate back to the Turtle List and select your turtle to check for your sighting.</Text>
                 <Text></Text>
-                <Text style={{fontWeight: 'bold'}}>Section 3: View Turtle Profiles</Text>
+                <Text style={{ fontWeight: 'bold' }}>Section 3: View Turtle Profiles</Text>
                 <Text></Text>
                 <Text>You can view turtle profiles directly from the Turtle List screen.</Text>
                 <Text></Text>
@@ -60,7 +63,7 @@ export default class SettingsScreen extends React.Component {
                 <Text>Step 2: Scroll through the list to find the turtle entry</Text>
                 <Text>Step 3: Click on the turtle to view its profile</Text>
                 <Text></Text>
-                <Text style={{fontWeight: 'bold'}}>Section 4: Spot turtles on a map</Text>
+                <Text style={{ fontWeight: 'bold' }}>Section 4: Spot turtles on a map</Text>
                 <Text></Text>
                 <Text>You can use the Tracker page on the Turtle Tracker App to view the previous sighting location of the box turtles at Calvin Ecosystem Preserve.</Text>
                 <Text></Text>
@@ -68,7 +71,7 @@ export default class SettingsScreen extends React.Component {
                 <Text></Text>
                 <Text>Clicking on a turtle icon on the map will show more information about the turtle.</Text>
                 <Text></Text>
-                <Text style={{fontWeight: 'bold'}}>Section 5: Navigate App Using Navigation Bar</Text>
+                <Text style={{ fontWeight: 'bold' }}>Section 5: Navigate App Using Navigation Bar</Text>
                 <Text></Text>
                 <Text>This section will help you switch from the Tracker tab to the Turtle tab.</Text>
                 <Text></Text>
@@ -78,7 +81,7 @@ export default class SettingsScreen extends React.Component {
                 <Text></Text>
                 <Text>Tapping on the Turtles tab will show the list of seen turtles.</Text>
                 <Text></Text>
-                <Text style={{fontWeight: 'bold'}}>Section 6: View Sightings for Turtle</Text>
+                <Text style={{ fontWeight: 'bold' }}>Section 6: View Sightings for Turtle</Text>
                 <Text></Text>
                 <Text>Imagine you want to view a sighting for the turtle.</Text>
                 <Text></Text>

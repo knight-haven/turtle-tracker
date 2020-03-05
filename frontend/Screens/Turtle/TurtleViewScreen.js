@@ -10,6 +10,7 @@ import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
+import HeaderButton from '../../components/HeaderButton';
 
 /*
     TurtleViewScreen views the contents of one turtle
@@ -237,41 +238,22 @@ const styles = StyleSheet.create({
 TurtleViewScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('turtle') == null ? '' : navigation.getParam('turtle').mark,
     headerRight: () => (
-
-        //react-native-platform chooses which button to load based off of device's OS
-        Component = Platform.select({
-            ios: <IconButton
-                size={20}
-                onPress={() => navigation.navigate('TurtleEdit', {
-                    edit: "true",
-                    turtle: navigation.getParam('turtle'), originalDate: navigation.getParam('originalDate'),
-                    recentDate: navigation.getParam('recentDate'), recentLength: navigation.getParam('recentLength'),
-                    refreshTurtleView: navigation.getParam('refreshTurtleView'),
-                })}
-                name={'edit'}
-                styles={{ right: '10%', paddingRight: 15, paddingTop: 2 }}
-            />,
-            android: <Icon.Button
-                size={20}
-                onPress={() => navigation.navigate('TurtleEdit', {
-                    edit: "true",
-                    turtle: navigation.getParam('turtle'), originalDate: navigation.getParam('originalDate'),
-                    recentDate: navigation.getParam('recentDate'), recentLength: navigation.getParam('recentLength'),
-                    refresh: navigation.getParam('refresh'),
-                })}
-                name={'edit'}
-                iconStyle={{ right: '10%', paddingTop: 2, paddingLeft: 10 }}
-                backgroundColor="green"
-                color="white"
-            />,
-        })
-    ),
-    headerLeft: () => (
         <IconButton
             size={20}
+            onPress={() => navigation.navigate('TurtleEdit', {
+                edit: "true",
+                turtle: navigation.getParam('turtle'), originalDate: navigation.getParam('originalDate'),
+                recentDate: navigation.getParam('recentDate'), recentLength: navigation.getParam('recentLength'),
+                refreshTurtleView: navigation.getParam('refreshTurtleView'),
+            })}
+            name={'edit'}
+            styles={{ right: '10%', paddingRight: 15, paddingTop: 2 }}
+        />
+    ),
+    headerLeft: () => (
+        <HeaderButton
             onPress={() => navigation.goBack()}
             name={'navigate-before'}
-            styles={{ paddingTop: 2, paddingLeft: 15 }}
         />
     ),
 });

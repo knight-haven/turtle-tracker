@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { OutlinedTextField } from 'react-native-material-textfield';
 import RadioForm from 'react-native-simple-radio-button';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import IconButton from '../../components/IconButton';
 import Screen from '../../components/Screen';
+import HeaderButton from '../../components/HeaderButton';
 
 /*
 Define a couple useful styles
@@ -75,7 +74,7 @@ export default function TurtleEditScreen({ navigation }) {
     const [number, setNumber] = useState('');
     const [carapaceMark, setCarapaceMark] = useState('');
     const [sex, setSex] = useState('male');
-    
+
     isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
 
     useEffect(() => {
@@ -100,10 +99,6 @@ export default function TurtleEditScreen({ navigation }) {
                     buttonRef.current.state.is_active_index = turtleProps.sex == 'male' ? 0 : 1 // 1 = female
                 }
             }
-            // TODO: Removed this functionality now because we aren't able to edit the original date currently.
-            // const [originalDateEdit, setOriginalDate] = useState(originalDate.toLocaleDateString());
-            // const [recentDateEdit, setRecentDate] = useState(recentDate.toLocaleDateString());
-            // const [length, setLength] = useState(recentLength.toString());
         }
     }, [])
 
@@ -187,23 +182,9 @@ export default function TurtleEditScreen({ navigation }) {
 TurtleEditScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('edit') != undefined && navigation.getParam('edit') ? 'Edit Turtle' : 'Add Turtle',
     headerLeft: () => (
-
-        //react-native-platform chooses which button to load based off of device's OS
-        Component = Platform.select({
-            ios: <IconButton
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                styles={{ paddingTop: 2, paddingLeft: 15 }}
-            />,
-            android: <Icon.Button
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                iconStyle={{ paddingLeft: 7 }}
-                backgroundColor="green"
-                color="white"
-            />,
-        })
+        <HeaderButton
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+        />
     ),
 });

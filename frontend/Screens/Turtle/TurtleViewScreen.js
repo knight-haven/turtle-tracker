@@ -26,11 +26,6 @@ export default function TurtleViewScreen({ navigation }) {
             >
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ marginLeft: 10 }}>{value}</Text>
-                    {/* <IconButton
-                        disabled={true}
-                        size={10}
-                        onPress={() => {} }
-                        name={'info'} /> */}
                     <View style={styles.iconContainer} >
                         <Icon name={'info'} size={10} style={{ color: 'white' }} />
                     </View>

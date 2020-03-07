@@ -75,8 +75,7 @@ export default function TurtleEditScreen({ navigation }) {
     const [number, setNumber] = useState('');
     const [carapaceMark, setCarapaceMark] = useState('');
     const [sex, setSex] = useState('male');
-
-    const [initialSexIsFemale, setInitialSex] = useState();
+    
     isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
 
     useEffect(() => {
@@ -85,8 +84,6 @@ export default function TurtleEditScreen({ navigation }) {
             originalDate = navigation.getParam('originalDate');
             recentDate = navigation.getParam('recentDate');
             recentLength = navigation.getParam('recentLength');
-            // initialSexIsFemale = turtleProps.sex == 'male' ? 0 : 1 // 1 = female
-            setInitialSex(turtleProps.sex == 'male' ? 0 : 1)
             if (turtleProps != null) {
                 if (turtleProps.turtle_number != null) {
                     setNumber(turtleProps.turtle_number.toString())
@@ -100,9 +97,7 @@ export default function TurtleEditScreen({ navigation }) {
                 }
                 if (turtleProps.sex != null) {
                     setSex(turtleProps.sex)
-                    // console.log(buttonRef.current.state.is_active_index)
-                    // buttonRef.current.state.is_active_index = 1 // TODO: Issue when using initialSexIsFemale. Probably the order of operations.
-                    buttonRef.current.state.is_active_index = turtleProps.sex == 'male' ? 0 : 1
+                    buttonRef.current.state.is_active_index = turtleProps.sex == 'male' ? 0 : 1 // 1 = female
                 }
             }
             // TODO: Removed this functionality now because we aren't able to edit the original date currently.
@@ -160,8 +155,6 @@ export default function TurtleEditScreen({ navigation }) {
                             buttonColor={'green'}
                             selectedButtonColor={'green'}
                         />
-                    <Text>{initialSexIsFemale}</Text>
-                    <Text>{sex}</Text>
                     </View>
                     {/* <TurtleTextInput titleText='Carapace Length: ' onChangeText={length => setLength(length)} value={length} placeholder="Most Recent Carapace Measurement"/> */}
                 </View>

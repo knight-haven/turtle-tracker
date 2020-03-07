@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
 import * as firebase from 'firebase';
 import moment from 'moment';
-import IconButton from '../../components/IconButton';
 import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
@@ -35,11 +34,8 @@ export default function TurtleViewScreen({ navigation }) {
                     <View style={styles.iconContainer} >
                         <Icon name={'info'} size={10} style={{ color: 'white' }} />
                     </View>
-
                 </View>
             </TouchableOpacity>
-
-
         )
     }
 
@@ -238,8 +234,7 @@ const styles = StyleSheet.create({
 TurtleViewScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('turtle') == null ? '' : navigation.getParam('turtle').mark,
     headerRight: () => (
-        <IconButton
-            size={20}
+        <HeaderButton
             onPress={() => navigation.navigate('TurtleEdit', {
                 edit: "true",
                 turtle: navigation.getParam('turtle'), originalDate: navigation.getParam('originalDate'),
@@ -247,7 +242,6 @@ TurtleViewScreen.navigationOptions = ({ navigation }) => ({
                 refreshTurtleView: navigation.getParam('refreshTurtleView'),
             })}
             name={'edit'}
-            styles={{ right: '10%', paddingRight: 15, paddingTop: 2 }}
         />
     ),
     headerLeft: () => (

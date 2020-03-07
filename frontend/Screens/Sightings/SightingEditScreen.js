@@ -1,17 +1,16 @@
 import * as Permissions from 'expo-permissions';
-import moment from 'moment';
 import * as firebase from 'firebase';
+import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { View, Text, Platform, StyleSheet, TouchableOpacity } from 'react-native';
-import { OutlinedTextField } from 'react-native-material-textfield';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import uuidv1 from 'uuid/v1';
 import TurtleText from '../../components/TurtleText';
 import TurtleTextInput from '../../components/TurtleTextInput';
 import CameraGallery from '../../components/CameraGallery';
 import TurtleMapView from '../../components/TurtleMapView';
-import IconButton from '../../components/IconButton';
 import Screen from '../../components/Screen';
+import HeaderButton from '../../components/HeaderButton';
+import TextField, { setFieldValue } from '../../components/TextField';
 
 /*
 Define a couple useful styles
@@ -61,17 +60,26 @@ export default function SightingEditScreen({ navigation }) {
     isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
     useEffect(() => {
         if (isEdit && sighting != null) {
-            if (sighting.carapace_length != null) {
-                setLength(sighting.carapace_length.toString());
+            const {
+                carapace_length,
+                time_seen,
+                turtle_location,
+                notes,
+            } = sighting;
+            if (carapace_length != null) {
+                setLength(carapace_length.toString());
+                setFieldValue(lengthRef, carapace_length)
             }
-            if (sighting.time_seen != null) {
-                setDate(new Date(Date.parse(sighting.time_seen)));
+            if (time_seen != null) {
+                setDate(new Date(Date.parse(time_seen)));
             }
-            if (sighting.turtle_location != null) {
-                setLocation(sighting.turtle_location);
+            if (turtle_location != null) {
+                setLocation(turtle_location);
+                setFieldValue(locRef, turtle_location)
             }
-            if (sighting.notes != null) {
-                setNotes(sighting.notes);
+            if (notes != null) {
+                setNotes(notes);
+                setFieldValue(notesRef, notes)
             }
             if (navigation.getParam('markerList') != null) {
                 setMarkerList(navigation.getParam('markerList'));
@@ -193,6 +201,11 @@ export default function SightingEditScreen({ navigation }) {
     getCameraPermission()
     getCameraRollPermission()
 
+    dateRef = React.createRef()
+    locRef = React.createRef()
+    lengthRef = React.createRef()
+    notesRef = React.createRef()
+
     return (
         <Screen>
             <View>
@@ -205,10 +218,33 @@ export default function SightingEditScreen({ navigation }) {
                 <Text>   </Text>
 
                 {/* text fields to be filled in by user */}
-                <OutlinedTextField label='Date:' onChangeText={date => setDate(date)} value={moment(date).format('l')} fontSize={20} labelFontSize={16} tintColor="rgb(34,139,34)" contentInset={{ input: 10 }} />
-                <OutlinedTextField label='Location: ' onChangeText={location => setLocation(location)} value={location} fontSize={20} labelFontSize={16} tintColor="rgb(34,139,34)" />
-                <OutlinedTextField label='Length: ' onChangeText={length => setLength(length)} value={`${length}`} fontSize={20} labelFontSize={16} tintColor="rgb(34,139,34)" />
-                <OutlinedTextField label='Notes: ' onChangeText={notes => setNotes(notes)} value={notes} multiline={true} characterRestriction={140} fontSize={20} labelFontSize={16} tintColor="rgb(34,139,34)" />
+                {/* TODO: Add a date picker */}
+                {/* <TextField
+                    label='Date:'
+                    onChangeText={date => setDate(date)}
+                    value={moment(date).format('l')}
+                    reference={dateRef}
+                /> */}
+                <TextField
+                    label='Location: '
+                    onChangeText={location => setLocation(location)}
+                    value={location}
+                    reference={locRef}
+                />
+                <TextField
+                    label='Length: '
+                    onChangeText={length => setLength(length)}
+                    value={length}
+                    reference={lengthRef}
+                />
+                <TextField
+                    label='Notes: '
+                    onChangeText={notes => setNotes(notes)}
+                    value={notes}
+                    multiline={true}
+                    characterRestriction={140}
+                    reference={notesRef}
+                />
             </View>
             {/* for the image:
                 https://facebook.github.io/react-native/docs/cameraroll.html  */}
@@ -250,23 +286,9 @@ export default function SightingEditScreen({ navigation }) {
 SightingEditScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('edit') != undefined && navigation.getParam('edit') ? 'Edit Sighting' : 'Add Sighting',
     headerLeft: () => (
-
-        //react-native-platform chooses which button to load based off of device's OS
-        Component = Platform.select({
-            ios: <IconButton
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                styles={{ paddingLeft: 7 }}
-            />,
-            android: <Icon.Button
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                iconStyle={{ paddingLeft: 7 }}
-                backgroundColor="green"
-                color="white"
-            />,
-        })
+        <HeaderButton
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+        />
     )
 });

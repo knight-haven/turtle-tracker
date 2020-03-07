@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
 import * as firebase from 'firebase';
 import moment from 'moment';
-import IconButton from '../../components/IconButton';
 import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
+import HeaderButton from '../../components/HeaderButton';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 /*
@@ -27,19 +27,11 @@ export default function TurtleViewScreen({ navigation }) {
             >
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ marginLeft: 10 }}>{value}</Text>
-                    {/* <IconButton
-                        disabled={true}
-                        size={10}
-                        onPress={() => {} }
-                        name={'info'} /> */}
                     <View style={styles.iconContainer} >
                         <Icon name={'info'} size={10} style={{ color: 'white' }} />
                     </View>
-
                 </View>
             </TouchableOpacity>
-
-
         )
     }
 
@@ -249,53 +241,20 @@ const styles = StyleSheet.create({
 TurtleViewScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('turtle') == null ? '' : navigation.getParam('turtle').mark,
     headerRight: () => (
-
-        //react-native-platform chooses which button to load based off of device's OS
-        Component = Platform.select({
-            ios: <IconButton
-                size={20}
-                onPress={() => navigation.navigate('TurtleEdit', {
-                    edit: "true",
-                    turtle: navigation.getParam('turtle'), originalDate: navigation.getParam('originalDate'),
-                    recentDate: navigation.getParam('recentDate'), recentLength: navigation.getParam('recentLength'),
-                    refreshTurtleView: navigation.getParam('refreshTurtleView'),
-                })}
-                name={'edit'}
-                styles={{ right: '10%', paddingRight: 15, paddingTop: 2 }}
-            />,
-            android: <Icon.Button
-                size={20}
-                onPress={() => navigation.navigate('TurtleEdit', {
-                    edit: "true",
-                    turtle: navigation.getParam('turtle'), originalDate: navigation.getParam('originalDate'),
-                    recentDate: navigation.getParam('recentDate'), recentLength: navigation.getParam('recentLength'),
-                    refresh: navigation.getParam('refresh'),
-                })}
-                name={'edit'}
-                iconStyle={{ right: '10%', paddingTop: 2, paddingLeft: 10 }}
-                backgroundColor="green"
-                color="white"
-            />,
-        })
+        <HeaderButton
+            onPress={() => navigation.navigate('TurtleEdit', {
+                edit: "true",
+                turtle: navigation.getParam('turtle'), originalDate: navigation.getParam('originalDate'),
+                recentDate: navigation.getParam('recentDate'), recentLength: navigation.getParam('recentLength'),
+                refreshTurtleView: navigation.getParam('refreshTurtleView'),
+            })}
+            name={'edit'}
+        />
     ),
     headerLeft: () => (
-
-        //react-native-platform chooses which button to load based off of device's OS
-        Component = Platform.select({
-            ios: <IconButton
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                styles={{ paddingTop: 2, paddingLeft: 15 }}
-            />,
-            android: <Icon.Button
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                iconStyle={{ paddingLeft: 7 }}
-                backgroundColor="green"
-                color="white"
-            />,
-        })
+        <HeaderButton
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+        />
     ),
 });

@@ -1,6 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import moment from 'moment';
+import TurtleText from './TurtleText';
+import Divider from './Divider';
+import TurtleMapView from './TurtleMapView';
 
 export default function SightingCard({sighting}) {
 
@@ -35,10 +38,30 @@ export default function SightingCard({sighting}) {
 
     return (
         <View style={styles.container}>
+            <TurtleMapView 
+                markers={[{
+                    "coordinate": {
+                        "latitude": sighting.latitude,
+                        "longitude": sighting.longitude
+                    },
+                    "cost": "a",
+                }]}
+                pointerEvents="none"
+                latitude={sighting.latitude}
+                longitude={sighting.longitude}
+            />
             <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                <Text style={styles.text}>{moment(new Date(Date.parse(sighting.time_seen))).format('l')}</Text>
-                <Text style={styles.text}>{sighting.turtle_location}</Text>
-                <Text style={styles.text}>{sighting.carapace_length} mm</Text>
+                <View style={{maxWidth: '37%'}}>
+                    <TurtleText titleText={"Date"} baseText={moment(new Date(Date.parse(sighting.time_seen))).format('l')}/>
+                </View>
+                <Divider/>
+                <View style={{maxWidth: '35%'}}>
+                    <TurtleText titleText={"Location"} baseText={sighting.turtle_location}/>
+                </View>
+                <Divider/>
+                <View style={{maxWidth: '28%'}}>
+                    <TurtleText titleText={"Length"} baseText={`${sighting.carapace_length} mm`}/>
+                </View>
             </View>
             <Text style={styles.notes}>{sighting.notes}</Text>
         </View>
@@ -48,7 +71,6 @@ export default function SightingCard({sighting}) {
 const styles = StyleSheet.create({
     container: { 
         flex: 1, 
-        height: 100,
         backgroundColor: 'white',
         borderRadius: 10,
         padding: 7,
@@ -74,5 +96,6 @@ const styles = StyleSheet.create({
     notes: {
         fontSize: 14,
         textAlign: 'center',
+        flexWrap: 'wrap',
     }
 })

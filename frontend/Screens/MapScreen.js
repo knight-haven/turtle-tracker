@@ -82,6 +82,7 @@ export default function MapScreen({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <TurtleMapView
+        mapType="hybrid"
         markers={markerList}
         region={{
           latitude: latitude,

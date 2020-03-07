@@ -23,7 +23,7 @@ export default class TurtleText extends Component {
         return (
             <View style={[styles.container, viewStyle]}>
                 <Text style={[styles.titleText, titleStyle]}>{titleText}</Text>
-                <Text style={[styles.baseText, baseStyle]}>{baseText}</Text>
+                <Text style={[styles.baseText, baseStyle]} numberOfLines={2}>{baseText}</Text>
             </View>
         );
     }
@@ -32,7 +32,6 @@ export default class TurtleText extends Component {
 const styles = StyleSheet.create({
     container: {
         marginTop:4,
-        flexDirection: 'row', 
         display: 'flex', 
         flexWrap: 'wrap',
         // borderBottomWidth:0.5,
@@ -40,9 +39,10 @@ const styles = StyleSheet.create({
     },
     baseText: {
         fontSize: 20,
+        fontWeight: '500',
     },
     titleText: {
-        fontSize: 20,
-        fontWeight: 'bold',
+        fontSize: 12,
+        fontWeight: '300',
     },
 });

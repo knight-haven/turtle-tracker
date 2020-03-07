@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { OutlinedTextField } from 'react-native-material-textfield';
 import RadioForm from 'react-native-simple-radio-button';
 import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
+import TextField from '../../components/TextField';
 
 /*
 Define a couple useful styles
@@ -115,25 +115,19 @@ export default function TurtleEditScreen({ navigation }) {
                     } */}
                 {/* TODO: This is a little danergous being able to update the mark number? Is it updating the db index? */}
                 <View style={{ justifyContent: 'center', flex: 1 }}>
-                    <OutlinedTextField
-                        label='Turtle Number:'
+                    <TextField
+                        label={'Turtle Number:'}
                         onChangeText={number => setNumber(number)}
                         value={number}
-                        fontSize={20}
-                        labelFontSize={16}
-                        tintColor="rgb(34,139,34)"
-                        ref={numRef}
+                        reference={numRef}
                     />
                     {/* <TurtleTextInput titleText='Date Found: ' onChangeText={originalDateEdit => setOriginalDate(originalDateEdit)} value={originalDateEdit} placeholder="Original Sighting Date"/> */}
                     {/* <TurtleTextInput titleText='Date Last Seen: ' onChangeText={recentDateEdit => setRecentDate(recentDateEdit)} value={recentDateEdit} placeholder="Most Recent Sighting Date"/> */}
-                    <OutlinedTextField
-                        label="Mark:"
+                    <TextField
+                        label={"Mark:"}
                         onChangeText={newMark => setCarapaceMark(newMark)}
                         value={carapaceMark}
-                        fontSize={20}
-                        labelFontSize={16}
-                        tintColor="rgb(34,139,34)"
-                        ref={markRef}
+                        reference={markRef}
                     />
                     <Text style={{
                         fontSize: 20,

@@ -3,14 +3,13 @@ import * as firebase from 'firebase';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { View, Text, Platform, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import uuidv1 from 'uuid/v1';
 import TurtleText from '../../components/TurtleText';
 import TurtleTextInput from '../../components/TurtleTextInput';
 import CameraGallery from '../../components/CameraGallery';
 import TurtleMapView from '../../components/TurtleMapView';
-import IconButton from '../../components/IconButton';
 import Screen from '../../components/Screen';
+import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
 
 /*
@@ -287,23 +286,9 @@ export default function SightingEditScreen({ navigation }) {
 SightingEditScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('edit') != undefined && navigation.getParam('edit') ? 'Edit Sighting' : 'Add Sighting',
     headerLeft: () => (
-
-        //react-native-platform chooses which button to load based off of device's OS
-        Component = Platform.select({
-            ios: <IconButton
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                styles={{ paddingLeft: 7 }}
-            />,
-            android: <Icon.Button
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                iconStyle={{ paddingLeft: 7 }}
-                backgroundColor="green"
-                color="white"
-            />,
-        })
+        <HeaderButton
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+        />
     )
 });

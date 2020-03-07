@@ -6,20 +6,23 @@ import { OutlinedTextField } from 'react-native-material-textfield';
 */
 export default function TextField(props) {
     const {
-        label,
-        onChangeText,
-        value,
         reference,
     } = props;
     return (
         <OutlinedTextField
+            {...props}
             ref={reference}
-            label={label}
-            onChangeText={onChangeText}
-            value={value}
             fontSize={20}
             labelFontSize={16}
             tintColor="rgb(34,139,34)"
         />
     )
+}
+
+/*
+    Util function to set the value of an OutlinedTextField via Ref
+*/
+export function setFieldValue(ref, value) {
+    let { current: field } = ref
+    field.setValue(value)
 }

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
-import TextField from '../../components/TextField';
+import TextField, { setFieldValue } from '../../components/TextField';
 
 /*
 Define a couple useful styles
@@ -84,19 +84,22 @@ export default function TurtleEditScreen({ navigation }) {
             recentDate = navigation.getParam('recentDate');
             recentLength = navigation.getParam('recentLength');
             if (turtleProps != null) {
-                if (turtleProps.turtle_number != null) {
-                    setNumber(turtleProps.turtle_number.toString())
-                    let { current: field } = numRef
-                    field.setValue(turtleProps.turtle_number.toString())
+                const {
+                    turtle_number,
+                    mark,
+                    sex,
+                } = turtleProps;
+                if (turtle_number != null) {
+                    setNumber(turtle_number.toString())
+                    setFieldValue(numRef, turtle_number.toString())
                 }
-                if (turtleProps.mark != null) {
-                    setCarapaceMark(turtleProps.mark)
-                    let { current: field } = markRef
-                    field.setValue(turtleProps.mark)
+                if (mark != null) {
+                    setCarapaceMark(mark)
+                    setFieldValue(markRef, mark)
                 }
-                if (turtleProps.sex != null) {
-                    setSex(turtleProps.sex)
-                    buttonRef.current.state.is_active_index = turtleProps.sex == 'male' ? 0 : 1 // 1 = female
+                if (sex != null) {
+                    setSex(sex)
+                    buttonRef.current.state.is_active_index = sex == 'male' ? 0 : 1 // 1 = female
                 }
             }
         }

@@ -100,10 +100,9 @@ export default function TurtleEditScreen({ navigation }) {
                 }
                 if (turtleProps.sex != null) {
                     setSex(turtleProps.sex)
-                    const thing = buttonRef.current;
-                    // console.log(buttonRef)
-                    console.log(thing)
-                    thing.updateIsActiveIndex(1)
+                    // console.log(buttonRef.current.state.is_active_index)
+                    // buttonRef.current.state.is_active_index = 1 // TODO: Issue when using initialSexIsFemale. Probably the order of operations.
+                    buttonRef.current.state.is_active_index = turtleProps.sex == 'male' ? 0 : 1
                 }
             }
             // TODO: Removed this functionality now because we aren't able to edit the original date currently.
@@ -154,12 +153,15 @@ export default function TurtleEditScreen({ navigation }) {
                     </Text>
                     <View style={{ width: '100%' }}>
                         <RadioForm
+                            ref={buttonRef}
                             radio_props={radio_props}
-                            initial={initialSexIsFemale}
+                            initial={-1}
                             onPress={(value) => { setSex(value) }}
                             buttonColor={'green'}
                             selectedButtonColor={'green'}
                         />
+                    <Text>{initialSexIsFemale}</Text>
+                    <Text>{sex}</Text>
                     </View>
                     {/* <TurtleTextInput titleText='Carapace Length: ' onChangeText={length => setLength(length)} value={length} placeholder="Most Recent Carapace Measurement"/> */}
                 </View>

@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import { View, Text, RefreshControl } from 'react-native';
+import TurtleListItem from './TurtleListItem'
 import { ListItem } from 'react-native-elements';
 import * as firebase from 'firebase';
-import TurtleListItem from './TurtleListItem';
 import Screen from '../components/Screen';
+import LoadingSpinner from './LoadingSpinner';
 
 /*
   TurtleList displays a list of all of the turtles in the Eco Preserve.
@@ -12,6 +13,7 @@ import Screen from '../components/Screen';
 */
 export default function TurtleList(props) {
   function getTurtles() {
+    setLoading(true);
     return fetch(`https://turtletrackerbackend.herokuapp.com/turtle`)
       .then((response) => response.json())
       .then(async (responseJson) => {
@@ -28,6 +30,8 @@ export default function TurtleList(props) {
           }
         }
         onTurtleListChange(responseJson);
+        setLoading(false);
+        setRefreshing(false);
       })
       .catch((error) => {
         console.error(error);
@@ -56,28 +60,33 @@ export default function TurtleList(props) {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     getTurtles();
-    setRefreshing(false);
   }, [refreshing]);
 
   const [turtleList, onTurtleListChange] = useState([])
   const [refreshing, setRefreshing] = useState(false)
-  useEffect(() => { getTurtles() }, []);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {getTurtles()}, []);
   return (
     <Screen
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
-      {props.navigation.state.routeName == "SelectTurtle" ?
-        <View>
-          <ListItem
-            leftAvatar
-            title="New Turtle"
-            chevron
-            bottomDivider
-            onPress={() => { props.navigation.navigate('TurtleEdit') }}
-          />
-          <Text style={{ fontSize: 18, fontWeight: 'bold', paddingTop: 8, textAlign: 'center' }}>Existing Turtles</Text>
-        </View> : null}
+    }>
+      {
+        loading && !refreshing && 
+        <LoadingSpinner animating={loading}/>
+      }
+    
+    { props.navigation.state.routeName == "SelectTurtle" ? 
+    <View>
+      <ListItem
+        leftAvatar
+        title="New Turtle"
+        chevron
+        bottomDivider
+        onPress={() => {props.navigation.navigate('TurtleEdit')}}
+      />
+      <Text style={{fontSize: 18, fontWeight: 'bold', paddingTop: 8, textAlign: 'center'}}>Existing Turtles</Text> 
+    </View>: null }
       {
         turtleList.map((item, index) => (
           <TurtleListItem
@@ -91,3 +100,4 @@ export default function TurtleList(props) {
     </Screen>
   )
 }
+

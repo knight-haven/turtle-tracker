@@ -4,53 +4,17 @@ import moment from 'moment';
 import TurtleText from './TurtleText';
 import Divider from './Divider';
 import TurtleMapView from './TurtleMapView';
+import IconButton from './IconButton'
 
-export default function SightingCard({sighting}) {
-
-    function elementButton(value, navParams) {
-        return (
-            <TouchableOpacity
-                style={{ zIndex: 5 }}
-                onPress={() => _navigate_sighting(navParams)}
-                onPressIn={() => Haptics.impactAsync('medium')}
-            >
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ marginLeft: 10 }}>{value}</Text>
-                    {/* <IconButton
-                        disabled={true}
-                        size={10}
-                        onPress={() => {} }
-                        name={'info'} /> */}
-                    <View style={styles.iconContainer} >
-                        <Icon name={'info'} size={10} style={{ color: 'white' }} />
-                    </View>
-
-                </View>
-            </TouchableOpacity>
-
-
-        )
-    }
-
-    function _navigate_sighting(navParams) {
-        navigation.navigate('SightingView', navParams)
-    }
+export default function SightingCard({navigation, sighting}) {
 
     return (
         <View style={styles.container}>
-            <TurtleMapView 
-                markers={[{
-                    "coordinate": {
-                        "latitude": sighting.latitude,
-                        "longitude": sighting.longitude
-                    },
-                    "cost": "a",
-                }]}
-                pointerEvents="none"
-                latitude={sighting.latitude}
-                longitude={sighting.longitude}
-            />
-            <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-evenly', marginBottom: 5}}>
+                <IconButton 
+                    styles={styles.infoButton}
+                    onPress={() => navigation.navigate('SightingView', {turtleId: sighting.turtle_id, sightingId: sighting.id })}
+                    name="info"/>
                 <View style={{maxWidth: '37%'}}>
                     <TurtleText titleText={"Date"} baseText={moment(new Date(Date.parse(sighting.time_seen))).format('l')}/>
                 </View>
@@ -63,6 +27,19 @@ export default function SightingCard({sighting}) {
                     <TurtleText titleText={"Length"} baseText={`${sighting.carapace_length} mm`}/>
                 </View>
             </View>
+            {/* <TurtleMapView 
+                markers={[{
+                    "coordinate": {
+                        "latitude": sighting.latitude,
+                        "longitude": sighting.longitude
+                    },
+                    "cost": "a",
+                }]}
+                pointerEvents="none"
+                latitude={sighting.latitude}
+                longitude={sighting.longitude}
+                height={150}
+            /> */}
             <Text style={styles.notes}>{sighting.notes}</Text>
         </View>
     )
@@ -97,5 +74,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'center',
         flexWrap: 'wrap',
+        marginTop: 5,
+    },
+    infoButton: {
+        position: 'relative',
+        height: '50%',
+        marginTop: 20,
     }
 })

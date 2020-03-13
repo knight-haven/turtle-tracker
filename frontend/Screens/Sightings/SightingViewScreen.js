@@ -129,7 +129,10 @@ export default function SightingViewScreen({ navigation }) {
                     </View>
                     {/* map */}
                     <View style={{ width: '100%', height: 200 }}>
-                        <TurtleMapView markers={markerList} />
+                        <TurtleMapView 
+                            markers={markerList} 
+                            latitude={markerList.length > 0 ? markerList[0].coordinate.latitude : null}
+                            longitude={markerList.length > 0 ? markerList[0].coordinate.longitude : null}/>
                     </View>
                     <Gallery images={images} />
                     <TurtleText titleText="Notes: " baseText={notes} />

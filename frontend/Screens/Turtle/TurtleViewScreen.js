@@ -175,6 +175,7 @@ export default function TurtleViewScreen({ navigation }) {
                         <SightingCard
                             key={index + 1}
                             sighting={item}
+                            navigation={navigation}
                         />
                         ))
                     }
@@ -194,18 +195,7 @@ const styles = StyleSheet.create({
     row: { height: 28 },
     text: { textAlign: 'center' },
     btn: { width: 58, height: 18, marginLeft: 15, backgroundColor: '#c8e1ff', borderRadius: 2 },
-    btnText: { textAlign: 'center' },
-    iconContainer: {
-        marginLeft: 'auto',
-        marginRight: 10,
-        backgroundColor: "green",
-        borderRadius: 100,
-        padding: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-    }
+    btnText: { textAlign: 'center' }
 });
 
 // Sets the navigation options.

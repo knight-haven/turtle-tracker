@@ -8,7 +8,7 @@ import MapView, { Marker } from 'react-native-maps';
 export default function TurtleMapView(props) {
 
     return (
-        <View style={[{ flex: 1 }, {height: 200, width: '100%'}]}>
+        <View style={[{ flex: 1 }, {height: props.height == null ? 200 : props.height, width: props.width == null ? '100%' : props.width}]}>
             <MapView
                 mapType="hybrid"
                 style={{ flex: 1 }}

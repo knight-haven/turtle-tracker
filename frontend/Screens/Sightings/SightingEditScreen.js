@@ -236,6 +236,7 @@ export default function SightingEditScreen({ navigation }) {
                     onChangeText={length => setLength(length)}
                     value={length}
                     reference={lengthRef}
+                    suffix={"mm"}
                 />
                 <TextField
                     label='Notes: '

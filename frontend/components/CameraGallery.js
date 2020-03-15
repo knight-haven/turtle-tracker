@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import IconButton from '../components/IconButton';
 import Gallery from '../components/Gallery';
+import Button from '../components/Button';
 
 export default function CameraGallery({ parentCallback }) {
   const [images, setImages] = useState([{ uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg' }]);
@@ -48,20 +48,16 @@ export default function CameraGallery({ parentCallback }) {
       <Gallery images={images} />
 
       <View style={styles.takePicButtons}>
-        <IconButton
-          size={35}
+        <Button
+          title={'Take Photo'}
           onPress={takeImage}
-          name={'add-a-photo'}
-          styles={{ alignSelf: 'center', position: 'relative', paddingTop: 5, paddingBottom: 5 }}
+          iconName={'camera'}
         />
-
-        <IconButton
-          size={35}
+        <Button
+          title={'Upload Photo'}
           onPress={pickImage}
-          name={'perm-media'}
-          styles={{ alignSelf: 'center', position: 'relative', paddingTop: 5, paddingBottom: 5 }}
+          iconName={'folder-multiple-image'}
         />
-
       </View>
     </View>
   );
@@ -83,7 +79,7 @@ const styles = StyleSheet.create({
 
   takePicButtons: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     paddingBottom: 5,
   },

@@ -27,7 +27,8 @@ export default function IconButton(props) {
         name,
         containerStyle,
         type,
-        disabled
+        disabled,
+        size,
     } = props
 
     iconType = type == undefined ? 'materal' : type
@@ -39,7 +40,7 @@ export default function IconButton(props) {
                 style={[s.shadow, styles.opacity]}
                 borderRadius={'100%'}
                 onPressIn={() => Haptics.impactAsync('medium')}>
-                <Icon name={name} style={styles.icon} size={props.size} />
+                <Icon name={name} style={styles.icon} size={size} />
             </TouchableOpacity>
         </View>
     )

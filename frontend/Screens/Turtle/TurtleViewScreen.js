@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl, Platform, ActivityIndicator } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import { View, StyleSheet, RefreshControl, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import * as Haptics from 'expo-haptics';
 import * as firebase from 'firebase';
-import moment from 'moment';
 import IconButton from '../../components/IconButton';
-import TurtleText from '../../components/TurtleText';
-import TurtleMapView from '../../components/TurtleMapView';
-import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SightingCard from '../../components/SightingCard';
+import TurtleCard from '../../components/TurtleCard';
+import TurtleMapView from '../../components/TurtleMapView';
+import Gallery from '../../components/Gallery';
 
 /*
     TurtleViewScreen views the contents of one turtle
@@ -138,6 +135,7 @@ export default function TurtleViewScreen({ navigation }) {
 
     return (
         <Screen
+            contentStyle={styles.container}
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
@@ -149,27 +147,25 @@ export default function TurtleViewScreen({ navigation }) {
             {   
                 !loading && 
                 <View>
-                    <View style={{ flexDirection: 'row' }}>
-                        {/* { turtleProps.pictures.length > 0 ?
-                            <Image style={{width: 150, height: 150}} source={{uri: turtleProps.pictures[0]}}/>
-                            : null
-                        } */}
-                        <View style={{ justifyContent: 'space-evenly' }}>
-                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Turtle #{turtle.turtle_number}</Text>
-                            <TurtleText titleText='Mark: ' baseText={turtle.mark} />
-                            <TurtleText titleText='Sex: ' baseText={turtle.sex} />
-                            <TurtleText titleText='Date Found: ' baseText={moment(originalDate).format('l')} />
-                            <TurtleText titleText='Date Last Seen: ' baseText={moment(recentDate).format('l')} />
-                            {/* Most Recent Carapace Length Measurement */}
-                            <TurtleText titleText='Carapace Length: ' baseText={`${recentLength} mm`} />
-                        </View>
-                    </View>
-                    <TurtleText titleText='Sightings: ' baseText='' />
-                    <TurtleMapView
-                        markers={markerList}
-                        pointerEvents="none"
+                    <TurtleCard
+                        turtle={turtle}
+                        originalDate={originalDate}
+                        recentDate={recentDate}
+                        recentLength={recentLength}
+                        markerList={markerList}
+                        images={images}
                     />
-                    <Gallery images={images} />
+                    <View style={styles.card}>
+                        <TurtleMapView
+                            markers={markerList}
+                            pointerEvents="none"
+                            latitude={markerList[0].coordinate.latitude}
+                            longitude={markerList[0].coordinate.longitude}
+                        />
+                    </View>
+                    <View style={styles.card}>
+                        <Gallery images={images} />  
+                    </View>
                     {
                         sightings.map((item, index) => (
                         <SightingCard
@@ -188,14 +184,34 @@ export default function TurtleViewScreen({ navigation }) {
 
 // Styles
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+    container: {backgroundColor: 'transparent', shadowColor: 'transparent'},
     head: { height: 40, backgroundColor: '#edffed' },
     wrapper: { flexDirection: 'row' },
     title: { flex: 1, backgroundColor: '#f6f8fa' },
     row: { height: 28 },
     text: { textAlign: 'center' },
     btn: { width: 58, height: 18, marginLeft: 15, backgroundColor: '#c8e1ff', borderRadius: 2 },
-    btnText: { textAlign: 'center' }
+    btnText: { textAlign: 'center' },
+    card: { 
+        flex: 1, 
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 7,
+        marginTop: 4,
+        marginBottom: 4,
+        justifyContent: 'space-evenly',
+
+        // TODO? Maybe remove this UI feature.
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4,
+    },
 });
 
 // Sets the navigation options.

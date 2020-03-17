@@ -17,7 +17,6 @@ export default function Gallery({ images }) {
 const styles= StyleSheet.create({
 
     contentContainer: {
-      paddingLeft: 65,
       alignItems: 'center',
       justifyContent: 'space-around',
       alignSelf: 'center',

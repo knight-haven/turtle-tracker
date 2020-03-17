@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import { View, StyleSheet, RefreshControl, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import * as Haptics from 'expo-haptics';
 import * as firebase from 'firebase';
-import moment from 'moment';
+import IconButton from '../../components/IconButton';
 import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import SightingCard from '../../components/SightingCard';
+import TurtleCard from '../../components/TurtleCard';
 
 /*
     TurtleViewScreen views the contents of one turtle
@@ -18,34 +18,11 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 export default function TurtleViewScreen({ navigation }) {
     const [loading, setLoading] = useState(true)
 
-    function elementButton(value, navParams) {
-        return (
-            <TouchableOpacity
-                style={{ zIndex: 5 }}
-                onPress={() => _navigate_sighting(navParams)}
-                onPressIn={() => Haptics.impactAsync('medium')}
-            >
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ marginLeft: 10 }}>{value}</Text>
-                    <View style={styles.iconContainer} >
-                        <Icon name={'info'} size={10} style={{ color: 'white' }} />
-                    </View>
-                </View>
-            </TouchableOpacity>
-        )
-    }
-
-    function _navigate_sighting(navParams) {
-        navigation.navigate('SightingView', navParams)
-    }
-
     // Update the sighting table.
     function getDerivedTurtleInfo(sightings) {
-        var tableRows = [], tableTitles = [], oDate = new Date(99999999999999), rDate = new Date(0), rLength = 0;
+        oDate = new Date(99999999999999), rDate = new Date(0), rLength = 0;
         for (var i = 0; i < sightings.length; i++) {
             var sightingDate = new Date(Date.parse(sightings[i].time_seen));
-            tableRows.push([moment(sightingDate).format('l'), sightings[i].turtle_location, `${sightings[i].carapace_length} mm`]);
-            tableTitles.push(elementButton(i + 1, { turtleId: sightings[i].turtle_id, sightingId: sightings[i].id }));
             if (sightingDate.getTime() < oDate.getTime()) {
                 oDate = sightingDate;
                 navigation.setParams({ originalDate: sightingDate });
@@ -56,8 +33,6 @@ export default function TurtleViewScreen({ navigation }) {
                 navigation.setParams({ recentDate: sightingDate, recentLength: sightings[i].carapace_length });
             }
         }
-        onTableDataChange(tableRows);
-        onTableTitleChange(tableTitles);
         onOriginalDateChange(oDate);
         onRecentDateChange(rDate);
         onRecentLengthChange(rLength);
@@ -80,6 +55,7 @@ export default function TurtleViewScreen({ navigation }) {
             .then((response) => response.json())
             .then((responseJson) => {
                 getDerivedTurtleInfo(responseJson);
+                onSightingsChange(responseJson);
                 var markers = []
                 for (var i = 0; i < responseJson.length; i++) {
                     turtleId = responseJson[i].turtle_id
@@ -129,10 +105,8 @@ export default function TurtleViewScreen({ navigation }) {
     }
 
     turtleId = navigation.getParam('turtleId');
-    const tableHead = ['Sighting #', 'Date', 'Location', 'Length']
-    const [tableTitle, onTableTitleChange] = useState(['']);
-    const [tableData, onTableDataChange] = useState([['', 'Loading', '']]);
     const [turtle, onTurtleChange] = useState({});
+    const [sightings, onSightingsChange] = useState([]);
     const [markerList, onMarkerListChange] = useState([]);
     const [originalDate, onOriginalDateChange] = useState(new Date(99999999999999));
     const [recentDate, onRecentDateChange] = useState(new Date(0));
@@ -163,6 +137,7 @@ export default function TurtleViewScreen({ navigation }) {
 
     return (
         <Screen
+            contentStyle={styles.container}
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
@@ -174,39 +149,34 @@ export default function TurtleViewScreen({ navigation }) {
             {   
                 !loading && 
                 <View>
-                    <View style={{ flexDirection: 'row' }}>
-                        {/* { turtleProps.pictures.length > 0 ?
-                            <Image style={{width: 150, height: 150}} source={{uri: turtleProps.pictures[0]}}/>
-                            : null
-                        } */}
-                        <View style={{ justifyContent: 'space-evenly' }}>
-                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Turtle #{turtle.turtle_number}</Text>
-                            <TurtleText titleText='Mark: ' baseText={turtle.mark} />
-                            <TurtleText titleText='Sex: ' baseText={turtle.sex} />
-                            <TurtleText titleText='Date Found: ' baseText={moment(originalDate).format('l')} />
-                            <TurtleText titleText='Date Last Seen: ' baseText={moment(recentDate).format('l')} />
-                            {/* Most Recent Carapace Length Measurement */}
-                            <TurtleText titleText='Carapace Length: ' baseText={`${recentLength} mm`} />
-                        </View>
-                    </View>
-                    <TurtleText titleText='Sightings: ' baseText='' />
-                    <TurtleMapView
-                        markers={markerList}
-                        pointerEvents="none"
+                    <TurtleCard
+                        turtle={turtle}
+                        originalDate={originalDate}
+                        recentDate={recentDate}
+                        recentLength={recentLength}
+                        markerList={markerList}
+                        images={images}
                     />
-                    <Gallery images={images} />
-                    {/* Make this into a component in the future */}
+                    <View style={styles.card}>
+                        <TurtleMapView
+                            markers={markerList}
+                            pointerEvents="none"
+                            latitude={markerList[0].coordinate.latitude}
+                            longitude={markerList[0].coordinate.longitude}
+                        />
+                    </View>
+                    <View style={styles.card}>
+                        <Gallery images={images} />  
+                    </View>
                     {
-                        tableData.length == 0
-                            ? <Text>No Sightings</Text>
-                            : <Table borderStyle={{ borderWidth: 1 }}>
-                                <Row data={tableHead} flexArr={[1, 1, 1, 1]} style={styles.head} textStyle={styles.text} />
-                                <TableWrapper style={styles.wrapper}>
-                                    <Col data={tableTitle} style={styles.title} heightArr={[28, 28]} textStyle={styles.text} />
-                                    <Rows data={tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.text} />
-                                </TableWrapper>
-                            </Table>
-                }
+                        sightings.map((item, index) => (
+                        <SightingCard
+                            key={index + 1}
+                            sighting={item}
+                            navigation={navigation}
+                        />
+                        ))
+                    }
                 </View>
             }
         </Screen>
@@ -216,7 +186,7 @@ export default function TurtleViewScreen({ navigation }) {
 
 // Styles
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+    container: {backgroundColor: 'transparent', shadowColor: 'transparent'},
     head: { height: 40, backgroundColor: '#edffed' },
     wrapper: { flexDirection: 'row' },
     title: { flex: 1, backgroundColor: '#f6f8fa' },
@@ -224,17 +194,26 @@ const styles = StyleSheet.create({
     text: { textAlign: 'center' },
     btn: { width: 58, height: 18, marginLeft: 15, backgroundColor: '#c8e1ff', borderRadius: 2 },
     btnText: { textAlign: 'center' },
-    iconContainer: {
-        marginLeft: 'auto',
-        marginRight: 10,
-        backgroundColor: "green",
-        borderRadius: 100,
-        padding: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-    }
+    card: { 
+        flex: 1, 
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 7,
+        marginTop: 4,
+        marginBottom: 4,
+        justifyContent: 'space-evenly',
+
+        // TODO? Maybe remove this UI feature.
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4,
+    },
 });
 
 // Sets the navigation options.

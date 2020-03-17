@@ -260,7 +260,8 @@ export default function SightingEditScreen({ navigation }) {
                             if (navigation.state.params.refreshTurtleView != undefined) {
                                 navigation.state.params.refreshTurtleView();
                             }
-                        }}
+                        }
+                    }
                 />
             </View>
         </Screen>

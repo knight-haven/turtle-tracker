@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
+import s from './Styles';
 
 /*
     Basic Screen wrapper for all screens.
@@ -11,7 +12,7 @@ export default function Screen(props) {
             refreshControl={props.refreshControl}
         >
             <View
-                style={[styles.content, props.contentStyle]}
+                style={[styles.content, s.shadow, props.contentStyle]}
             >
                 {props.children}
             </View>
@@ -30,16 +31,5 @@ const styles = StyleSheet.create({
         padding: 7,
         marginTop: 7,
         marginBottom: 7,
-
-        // TODO? Maybe remove this UI feature.
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-
-        elevation: 4,
     }
 });

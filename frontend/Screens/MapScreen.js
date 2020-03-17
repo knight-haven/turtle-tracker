@@ -101,13 +101,13 @@ export default function MapScreen({ navigation }) {
         onPress={() => navigation.navigate('Settings')}
         name={'settings'}
         size={45}
-        styles={{ left: 7, top: 7 }} />
+        containerStyle={{ left: 7, top: 7, position: 'absolute', flexDirection: 'row', }} />
 
       <IconButton
         onPress={() => navigation.navigate('SelectTurtle')}
         name={'add-location'}
         size={45}
-        styles={{ right: 7, top: 7 }} />
+        containerStyle={{ right: 7, top: 7, position: 'absolute', flexDirection: 'row', }} />
 
       {/* TODO: In the future, this will be a button the
         sets to map to the eco preserve. */}

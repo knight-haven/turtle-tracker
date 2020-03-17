@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text, Image, Button, Platform, StyleSheet, TouchableOpacity } from 'react-native';
-import { OutlinedTextField } from 'react-native-material-textfield';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import IconButton from '../../components/IconButton';
 import Screen from '../../components/Screen';
+import HeaderButton from '../../components/HeaderButton';
+import TextField, { setFieldValue } from '../../components/TextField';
 
 /*
 Define a couple useful styles
@@ -76,45 +75,63 @@ export default function TurtleEditScreen({ navigation }) {
     const [carapaceMark, setCarapaceMark] = useState('');
     const [sex, setSex] = useState('male');
 
-    initialSexIsFemale = 0;
     isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
-    if (isEdit) {
-        turtleProps = navigation.getParam('turtle');
-        originalDate = navigation.getParam('originalDate');
-        recentDate = navigation.getParam('recentDate');
-        recentLength = navigation.getParam('recentLength');
-        initialSexIsFemale = turtleProps.sex == 'male' ? 0 : 1 // 1 = female
-        useEffect(() => {
+
+    useEffect(() => {
+        if (isEdit) {
+            turtleProps = navigation.getParam('turtle');
+            originalDate = navigation.getParam('originalDate');
+            recentDate = navigation.getParam('recentDate');
+            recentLength = navigation.getParam('recentLength');
             if (turtleProps != null) {
-                if (turtleProps.turtle_number != null) {
-                    setNumber(turtleProps.turtle_number.toString())
+                const {
+                    turtle_number,
+                    mark,
+                    sex,
+                } = turtleProps;
+                if (turtle_number != null) {
+                    setNumber(turtle_number.toString())
+                    setFieldValue(numRef, turtle_number.toString())
                 }
-                if (turtleProps.mark != null) {
-                    setCarapaceMark(turtleProps.mark)
+                if (mark != null) {
+                    setCarapaceMark(mark)
+                    setFieldValue(markRef, mark)
                 }
-                if (turtleProps.sex != null) {
-                    setSex(turtleProps.sex)
+                if (sex != null) {
+                    setSex(sex)
+                    buttonRef.current.state.is_active_index = sex == 'male' ? 0 : 1 // 1 = female
                 }
             }
-        }, [])
-        // TODO: Removed this functionality now because we aren't able to edit the original date currently.
-        // const [originalDateEdit, setOriginalDate] = useState(originalDate.toLocaleDateString());
-        // const [recentDateEdit, setRecentDate] = useState(recentDate.toLocaleDateString());
-        // const [length, setLength] = useState(recentLength.toString());
-    }
+        }
+    }, [])
+
+    numRef = React.createRef()
+    markRef = React.createRef()
+    buttonRef = React.createRef()
 
     return (
         <Screen>
-            <View style={{ flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
                 {/* { turtleProps.pictures.length > 0 ?
                         <Image style={{width: 150, height: 150}} source={{uri: turtleProps.pictures[0]}}/>
                         : null
                     } */}
+                {/* TODO: This is a little danergous being able to update the mark number? Is it updating the db index? */}
                 <View style={{ justifyContent: 'center', flex: 1 }}>
-                    <OutlinedTextField label='Turtle Number:' onChangeText={number => setNumber(number)} value={number} fontSize={20} labelFontSize={16} tintColor="rgb(34,139,34)" />
+                    <TextField
+                        label={'Turtle Number:'}
+                        onChangeText={number => setNumber(number)}
+                        value={number}
+                        reference={numRef}
+                    />
                     {/* <TurtleTextInput titleText='Date Found: ' onChangeText={originalDateEdit => setOriginalDate(originalDateEdit)} value={originalDateEdit} placeholder="Original Sighting Date"/> */}
                     {/* <TurtleTextInput titleText='Date Last Seen: ' onChangeText={recentDateEdit => setRecentDate(recentDateEdit)} value={recentDateEdit} placeholder="Most Recent Sighting Date"/> */}
-                    <OutlinedTextField label="Mark: " onChangeText={newMark => setCarapaceMark(newMark)} value={carapaceMark} fontSize={20} labelFontSize={16} tintColor="rgb(34,139,34)" />
+                    <TextField
+                        label={"Mark:"}
+                        onChangeText={newMark => setCarapaceMark(newMark)}
+                        value={carapaceMark}
+                        reference={markRef}
+                    />
                     <Text style={{
                         fontSize: 20,
                         fontWeight: 'bold',
@@ -123,8 +140,9 @@ export default function TurtleEditScreen({ navigation }) {
                     </Text>
                     <View style={{ width: '100%' }}>
                         <RadioForm
+                            ref={buttonRef}
                             radio_props={radio_props}
-                            initial={initialSexIsFemale}
+                            initial={-1}
                             onPress={(value) => { setSex(value) }}
                             buttonColor={'green'}
                             selectedButtonColor={'green'}
@@ -161,23 +179,9 @@ export default function TurtleEditScreen({ navigation }) {
 TurtleEditScreen.navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('edit') != undefined && navigation.getParam('edit') ? 'Edit Turtle' : 'Add Turtle',
     headerLeft: () => (
-
-        //react-native-platform chooses which button to load based off of device's OS
-        Component = Platform.select({
-            ios: <IconButton
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                styles={{ paddingTop: 2, paddingLeft: 15 }}
-            />,
-            android: <Icon.Button
-                size={20}
-                onPress={() => navigation.goBack()}
-                name={'navigate-before'}
-                iconStyle={{ paddingLeft: 7 }}
-                backgroundColor="green"
-                color="white"
-            />,
-        })
+        <HeaderButton
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+        />
     ),
 });

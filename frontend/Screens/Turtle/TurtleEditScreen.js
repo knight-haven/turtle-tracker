@@ -4,32 +4,16 @@ import RadioForm from 'react-native-simple-radio-button';
 import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
+import Button from '../../components/Button';
 
 /*
 Define a couple useful styles
 */
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'center',
+        alignItems: 'flex-end',
         paddingBottom: 7,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        borderRadius: 4,
-    },
-    button: {
-        backgroundColor: 'green',
-        borderRadius: 4,
-        height: 40,
-        width: 150,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 20,
-        fontWeight: 'bold'
+        paddingTop: 21,
     },
 });
 
@@ -151,23 +135,21 @@ export default function TurtleEditScreen({ navigation }) {
                     {/* <TurtleTextInput titleText='Carapace Length: ' onChangeText={length => setLength(length)} value={length} placeholder="Most Recent Carapace Measurement"/> */}
                 </View>
                 <View style={styles.container}>
-                    {isEdit != undefined && isEdit == "true" ?
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {
+                    <Button
+                        bold={true}
+                        type={"solid"}
+                        title={"submit turtle"}
+                        onPress={isEdit != undefined && isEdit == "true" ?
+                            () => {
                                 editTurtleById(turtleProps.id),
                                     navigation.goBack(),
                                     navigation.state.params.refreshTurtleView()
-                            }}
-                        >
-                            <Text style={styles.buttonText}>{"SUBMIT"}</Text>
-                        </TouchableOpacity>
-                        : <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => createTurtle(number, carapaceMark, sex)}
-                        >
-                            <Text style={styles.buttonText}>{"SUBMIT"}</Text>
-                        </TouchableOpacity>}
+                            } :
+                            () => {
+                                createTurtle(number, carapaceMark, sex)
+                            }
+                        }
+                    />
                 </View>
             </View>
         </Screen>

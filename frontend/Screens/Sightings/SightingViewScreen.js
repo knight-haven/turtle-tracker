@@ -5,10 +5,10 @@ import { View, RefreshControl, Platform, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
-import IconButton from '../../components/IconButton';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import HeaderButton from '../../components/HeaderButton';
 
 /*
 Turtle Sighting Screen for information on one particular sighting
@@ -81,7 +81,7 @@ export default function SightingViewScreen({ navigation }) {
     const [markerList, setMarkerList] = useState([]);
     const [images, onImagesChange] = useState([{ uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg' }]);
     const [loading, setLoading] = useState(false);
-    
+
     useEffect(() => {
         setLoading(true);
         getSightingById(sightingId)
@@ -113,7 +113,7 @@ export default function SightingViewScreen({ navigation }) {
         >
             {
                 loading && !refreshing &&
-                <LoadingSpinner animating={loading}/>
+                <LoadingSpinner animating={loading} />
             }
             {
                 !loading &&
@@ -147,66 +147,27 @@ export default function SightingViewScreen({ navigation }) {
 SightingViewScreen.navigationOptions = ({ navigation }) => ({
     title: 'Sighting',
     headerRight: () => (
-
-        //react-native-platform chooses which button to load based off of device's OS
-        Component = Platform.select({
-            ios: <IconButton
-                size={20}
-                onPress={() => navigation.navigate('SightingEdit',
-                    {
-                        sighting: navigation.getParam('sighting'),
-                        markerList: navigation.getParam('markerList'),
-                        turtleId: navigation.getParam('turtleId'),
-                        refreshSightingView: navigation.getParam('refreshSightingView'),
-                        edit: true,
-                    })}
-                name={'edit'}
-                styles={{ right: '10%', paddingRight: 15, paddingTop: 2 }}
-            />,
-            android: <Icon.Button
-                size={20}
-                onPress={() => navigation.navigate('SightingEdit',
-                    {
-                        sighting: navigation.getParam('sighting'),
-                        markerList: navigation.getParam('markerList'),
-                        edit: true,
-                        refresh: navigation.getParam('refresh'),
-                    })}
-                name={'edit'}
-                iconStyle={{ right: '10%', paddingRight: 15, paddingTop: 2 }}
-                backgroundColor="green"
-                color="white"
-            />,
-        })
+        <HeaderButton
+            onPress={() => navigation.navigate('SightingEdit',
+                {
+                    sighting: navigation.getParam('sighting'),
+                    markerList: navigation.getParam('markerList'),
+                    turtleId: navigation.getParam('turtleId'),
+                    refreshSightingView: navigation.getParam('refreshSightingView'),
+                    edit: true,
+                })}
+            name={'edit'}
+        />
     ),
     headerLeft: () => (
-
-        //react-native-platform chooses which button to load based off of device's OS
-        Component = Platform.select({
-            ios: <IconButton
-                size={20}
-                onPress={() => {
-                    navigation.goBack();
-                    if (navigation.state.params.refreshTurtleView != undefined) {
-                        navigation.state.params.refreshTurtleView();
-                    }
-                }}
-                name={'navigate-before'}
-                styles={{ paddingTop: 2, paddingLeft: 15 }}
-            />,
-            android: <Icon.Button
-                size={20}
-                onPress={() => {
-                    navigation.goBack();
-                    if (navigation.state.params.refreshTurtleView != undefined) {
-                        navigation.state.params.refreshTurtleView();
-                    }
-                }}
-                name={'navigate-before'}
-                iconStyle={{ paddingLeft: 7 }}
-                backgroundColor="green"
-                color="white"
-            />,
-        })
+        <HeaderButton
+            onPress={() => {
+                navigation.goBack();
+                if (navigation.state.params.refreshTurtleView != undefined) {
+                    navigation.state.params.refreshTurtleView();
+                }
+            }}
+            name={'navigate-before'}
+        />
     ),
 });

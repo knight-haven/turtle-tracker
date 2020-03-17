@@ -11,6 +11,7 @@ import TurtleMapView from '../../components/TurtleMapView';
 import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
+import Button from '../../components/Button';
 
 /*
 Define a couple useful styles
@@ -19,24 +20,6 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         paddingBottom: 7,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        borderRadius: 4,
-    },
-    button: {
-        backgroundColor: 'green',
-        borderRadius: 4,
-        height: 40,
-        width: 150,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 20,
-        fontWeight: 'bold'
     },
 });
 
@@ -259,25 +242,25 @@ export default function SightingEditScreen({ navigation }) {
             />
             <CameraGallery parentCallback={callback} />
             <View style={styles.container}>
-                {isEdit
-                    ?
-                    <TouchableOpacity style={styles.button} onPress={() => {
-                        editSightingById(sighting.id, turtle.id),
-                            navigation.goBack(),
-                            navigation.state.params.refreshSightingView()
-                    }} >
-                        <Text style={styles.buttonText}>{"SUBMIT"}</Text>
-                    </TouchableOpacity>
-                    :
-                    <TouchableOpacity style={styles.button} onPress={() => {
-                        getLocationAndCreateSighting(turtle.id);
-                        navigation.navigate("TurtleView", { turtleId: turtle.id });
-                        if (navigation.state.params.refreshTurtleView != undefined) {
-                            navigation.state.params.refreshTurtleView();
-                        }
-                    }}>
-                        <Text style={styles.buttonText}>{"SUBMIT"}</Text>
-                    </TouchableOpacity>}
+                {/* // TODO: This gets rendered 4 times!!! Check into that. */}
+                <Button
+                    bold={true}
+                    type={"solid"}
+                    title={"submit"}
+                    onPress={isEdit ?
+                        () => {
+                            editSightingById(sighting.id, turtle.id),
+                                navigation.goBack(),
+                                navigation.state.params.refreshSightingView()
+                        } :
+                        () => {
+                            getLocationAndCreateSighting(turtle.id);
+                            navigation.navigate("TurtleView", { turtleId: turtle.id });
+                            if (navigation.state.params.refreshTurtleView != undefined) {
+                                navigation.state.params.refreshTurtleView();
+                            }
+                        }}
+                />
             </View>
         </Screen>
     );

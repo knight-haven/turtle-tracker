@@ -2,7 +2,7 @@ import * as Permissions from 'expo-permissions';
 import * as firebase from 'firebase';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
-import { View, Text, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import uuidv1 from 'uuid/v1';
 import TurtleText from '../../components/TurtleText';
 import TurtleTextInput from '../../components/TurtleTextInput';
@@ -18,8 +18,9 @@ Define a couple useful styles
 */
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'center',
+        alignItems: 'flex-end',
         paddingBottom: 7,
+        paddingTop: 21,
     },
 });
 
@@ -246,7 +247,7 @@ export default function SightingEditScreen({ navigation }) {
                 <Button
                     bold={true}
                     type={"solid"}
-                    title={"submit"}
+                    title={"submit sighting"}
                     onPress={isEdit ?
                         () => {
                             editSightingById(sighting.id, turtle.id),

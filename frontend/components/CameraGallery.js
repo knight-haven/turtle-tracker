@@ -79,9 +79,9 @@ const styles = StyleSheet.create({
 
   takePicButtons: {
     flex: 1,
+    flexDirection: 'row',
     alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    paddingBottom: 5,
+    justifyContent: 'space-around',
   },
 });
 

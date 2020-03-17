@@ -13,17 +13,17 @@ export default function Button(props) {
         title,
         bold,
         type,
+        style,
     } = props;
     title = title.toUpperCase()
     type = type ? type.toLowerCase() : "outline"
-    console.log(iconName)
     return (
         <B
             type={type}
             {...props}
             title={title}
             titleStyle={[type == 'solid' ? styles.raisedTitle : styles.title, bold ? styles.bold : {}]}
-            buttonStyle={[type == 'solid' ? [styles.raised, s.shadow] : {}, styles.button]}
+            buttonStyle={[type == 'solid' ? [styles.raised, s.shadow] : {}, styles.button, style]}
             icon={iconName ? 
                 <Icon
                     name={iconName}

@@ -17,11 +17,15 @@ import SettingsScreen from './Screens/SettingsScreen';
 import MapScreen from './Screens/MapScreen';
 import SightingEditScreen from './Screens/Sightings/SightingEditScreen';
 import SightingViewScreen from './Screens/Sightings/SightingViewScreen';
+import LoginScreen from './Screens/LoginScreen';
 
 // Stack of screens for the Map Tab.
 // TODO: Remove the repeated code for the screens.
 const MapStack = createStackNavigator(
     {
+      Login: {
+        screen: LoginScreen,
+      },
       Map: {
         screen: MapScreen,
         navigationOptions: {

@@ -4,6 +4,9 @@ import { Text, View } from 'react-native';
 
 const CLIENT_ID = '1cc5ab7b-ae5c-40d7-b267-4f1302adcd86'
 
+/*
+ taken from https://github.com/wkh237/react-native-azure-ad.
+*/
 export default class LandingView extends React.Component {
 
     constructor(props) {
@@ -41,11 +44,13 @@ export default class LandingView extends React.Component {
         })
 
         return (
-            <View>
+            <View style={{height: "100%"}}>
                 <Text>Hello</Text>
                 <ADLoginView
                     context={ReactNativeAD.getContext(CLIENT_ID)}
-                    onSuccess={this.onLoginSuccess.bind(this)} />
+                    onSuccess={this.onLoginSuccess.bind(this)}
+                    needLogout={true}    
+                />
             </View>
         )
     }

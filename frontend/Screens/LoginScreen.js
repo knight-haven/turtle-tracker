@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ReactNativeAD, ADLoginView } from 'react-native-azure-ad'
 import { Text, View } from 'react-native';
+import { ADContext } from '../services/ActiveDirectory';
 
 const CLIENT_ID = '1cc5ab7b-ae5c-40d7-b267-4f1302adcd86'
 
 /*
  taken from https://github.com/wkh237/react-native-azure-ad.
 */
-export default class LandingView extends React.Component {
+class LandingView extends React.Component {
+
+    /* doesn't like const */
+    // HOOKS can only be called with a fn component.
+    // AD = useContext(ADContext);
 
     constructor(props) {
         super(props)
@@ -36,29 +41,39 @@ export default class LandingView extends React.Component {
 
     render() {
 
-        new ReactNativeAD({
-            client_id: CLIENT_ID,
-            resources: [
-                'https://outlook.office365.com'
-            ]
-        })
+        // new ReactNativeAD({
+        //     client_id: CLIENT_ID,
+        //     resources: [
+        //         'https://outlook.office365.com'
+        //     ]
+        // })
+
+        let AD = this.context;
+        // TODO: Currently, AD is undefined. Could be the order things are called?
+        // Like App doesn't provide the context in the right order?
+        console.log('hi')
+        console.log(AD)
 
         return (
-            <View style={{height: "100%"}}>
+
+            <View style={{ height: "100%", backgroundColor: 'grey' }}>
                 <Text>Hello</Text>
-                <ADLoginView
-                    context={ReactNativeAD.getContext(CLIENT_ID)}
-                    onSuccess={this.onLoginSuccess.bind(this)}
-                    needLogout={true}    
-                />
+                {/* <ADLoginView
+                            context={AD.getContext(CLIENT_ID)}
+                            onSuccess={this.onLoginSuccess.bind(this)}
+                            needLogout={true}
+                        /> */}
             </View>
         )
     }
 
     onLoginSuccess(credentials) {
-        // console.log(credentials[https://outlook.office365.com].access_token)
-        console.log("success")
+        console.log(credentials)
+        this.props.navigation.navigate({ routeName: 'Map' })
         // use the access token ..
     }
-
 }
+LandingView.contextType = ADContext;
+console.log(ADContext) // TODO: THIS WORKS HERE!
+// https://reactjs.org/docs/context.html
+export default LandingView;

@@ -1,7 +1,9 @@
 import React from 'react';
-import MainNavigator from './AppNavigator';
+// import { ReactNativeAD } from 'react-native-azure-ad'
 import { createAppContainer } from 'react-navigation';
 import * as firebase from 'firebase';
+import MainNavigator from './AppNavigator';
+import { ADContext } from './services/ActiveDirectory';
 
 const AppContainer = createAppContainer(MainNavigator);
 
@@ -19,5 +21,9 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 export default function App() {
-    return <AppContainer />
+  return (
+    <ADContext.Provider>
+      <AppContainer />
+    </ADContext.Provider>
+  )
 }

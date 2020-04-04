@@ -3,6 +3,7 @@ import { View, } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import IconButton from '../components/IconButton';
 import TurtleMapView from '../components/TurtleMapView';
+import Button from '../components/Button';
 
 /*
 MapScreen.js contains the basic map screen with turtle sightings.
@@ -108,6 +109,12 @@ export default function MapScreen({ navigation }) {
         name={'add-location'}
         size={45}
         containerStyle={{ right: 7, top: 7, position: 'absolute', flexDirection: 'row', }} />
+
+      <Button 
+        title={"Logout"}
+        style={{ right: 7, bottom: 7, position: 'absolute', flexDirection: 'row', borderRadius: "100%"}}
+        type={"solid"}
+      />
 
       {/* TODO: In the future, this will be a button the
         sets to map to the eco preserve. */}

@@ -18,8 +18,6 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-export default class App extends React.Component {
-  render() {
-    return <AppContainer />;
-  }
+export default function App() {
+    return <AppContainer />
 }

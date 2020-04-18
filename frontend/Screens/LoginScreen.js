@@ -41,7 +41,7 @@ class LandingView extends React.Component {
 
     render() {
 
-        // new ReactNativeAD({
+        // let AD = new ReactNativeAD({
         //     client_id: CLIENT_ID,
         //     resources: [
         //         'https://outlook.office365.com'
@@ -49,20 +49,26 @@ class LandingView extends React.Component {
         // })
 
         let AD = this.context;
-        // TODO: Currently, AD is undefined. Could be the order things are called?
-        // Like App doesn't provide the context in the right order?
-        console.log('hi')
+        // // TODO: Currently, AD is undefined. Could be the order things are called?
+        // // Like App doesn't provide the context in the right order?
+        // console.log('hi')
         console.log(AD)
+        // console.log(new ReactNativeAD({
+        //     client_id: CLIENT_ID,
+        //     resources: [
+        //         'https://outlook.office365.com'
+        //     ]
+        // }))
 
         return (
 
             <View style={{ height: "100%", backgroundColor: 'grey' }}>
                 <Text>Hello</Text>
                 {/* <ADLoginView
-                            context={AD.getContext(CLIENT_ID)}
-                            onSuccess={this.onLoginSuccess.bind(this)}
-                            needLogout={true}
-                        /> */}
+                    context={ReactNativeAD.getContext(CLIENT_ID)}
+                    onSuccess={this.onLoginSuccess.bind(this)}
+                    needLogout={true}
+                /> */}
             </View>
         )
     }
@@ -74,6 +80,6 @@ class LandingView extends React.Component {
     }
 }
 LandingView.contextType = ADContext;
-console.log(ADContext) // TODO: THIS WORKS HERE!
+// console.log(ADContext) // TODO: THIS WORKS HERE!
 // https://reactjs.org/docs/context.html
 export default LandingView;

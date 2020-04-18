@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, } from 'react-native';
+import { ReactNativeAD } from 'react-native-azure-ad';
 import * as Haptics from 'expo-haptics';
 import IconButton from '../components/IconButton';
 import TurtleMapView from '../components/TurtleMapView';
@@ -79,6 +80,11 @@ export default function MapScreen({ navigation }) {
       ])
   }
 
+  // TODO: Map gets re-rendered many times. 3+ need to fix this.
+  console.log("MAP")
+  // Gets the context of the client. Can see that there is a refresh-token.
+  console.log(ReactNativeAD.getContext('1cc5ab7b-ae5c-40d7-b267-4f1302adcd86'))
+
   // builds the map to the user's location
   return (
     <View style={{ flex: 1 }}>
@@ -112,7 +118,7 @@ export default function MapScreen({ navigation }) {
 
       <Button 
         title={"Logout"}
-        style={{ right: 7, bottom: 7, position: 'absolute', flexDirection: 'row', borderRadius: "100%"}}
+        style={{ right: 7, bottom: 7, position: 'absolute', flexDirection: 'row', borderRadius: 100}}
         type={"solid"}
       />
 

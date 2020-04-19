@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, RefreshControl, Platform } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, StyleSheet, RefreshControl } from 'react-native';
 import * as firebase from 'firebase';
-import IconButton from '../../components/IconButton';
-import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';

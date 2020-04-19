@@ -18,6 +18,7 @@ import MapScreen from './Screens/MapScreen';
 import SightingEditScreen from './Screens/Sightings/SightingEditScreen';
 import SightingViewScreen from './Screens/Sightings/SightingViewScreen';
 import LoginScreen from './Screens/LoginScreen';
+import LandingScreen from './Screens/LandingScreen';
 
 // Screens shared across stacks.
 const CommonScreens = {
@@ -135,8 +136,11 @@ const TabNav = createBottomTabNavigator(
   }
 );
 
-const LoginNav = createStackNavigator({
-  Login: {
+const LandingNav = createStackNavigator({
+  Landing: {
+    screen: LandingScreen
+  },
+  ADLogin: {
     screen: LoginScreen
   }
 })
@@ -144,7 +148,7 @@ const LoginNav = createStackNavigator({
 const MainNavigator = createSwitchNavigator(
   {
     App: TabNav,
-    Login: LoginNav,
+    Login: LandingNav,
   },
   {
     initialRouteName: 'Login',

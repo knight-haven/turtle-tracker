@@ -19,8 +19,38 @@ import SightingEditScreen from './Screens/Sightings/SightingEditScreen';
 import SightingViewScreen from './Screens/Sightings/SightingViewScreen';
 import LoginScreen from './Screens/LoginScreen';
 
+// Screens shared across stacks.
+const CommonScreens = {
+  TurtleList: {
+    screen: TurtleListScreen,
+    navigationOptions: { title: 'Turtles' }
+  },
+  TurtleView: {
+    screen: TurtleViewScreen,
+  },
+  TurtleEdit: {
+    screen: TurtleEditScreen,
+    navigationOptions: { title: 'Edit Turtle' }
+  },
+  SelectTurtle: {
+    screen: SelectTurtleScreen,
+    navigationOptions: { title: 'Select Turtle' }
+  },
+  Settings: {
+    screen: SettingsScreen,
+    navigationOptions: { title: 'Settings' }
+  },
+  SightingView:
+  {
+    screen: SightingViewScreen
+  },
+  SightingEdit:
+  {
+    screen: SightingEditScreen
+  },
+}
+
 // Stack of screens for the Map Tab.
-// TODO: Remove the repeated code for the screens.
 const MapStack = createStackNavigator(
     {
       Map: {
@@ -31,65 +61,14 @@ const MapStack = createStackNavigator(
             backgroundColor: 'white',
           }}
       },
-      TurtleList: {
-        screen: TurtleListScreen,
-        navigationOptions: { title: 'Turtles' }
-      },
-      TurtleView: {
-        screen: TurtleViewScreen,
-      },
-      TurtleEdit: {
-        screen: TurtleEditScreen,
-      },
-      SelectTurtle: {
-        screen: SelectTurtleScreen,
-        navigationOptions: { title: 'Select Turtle' }
-      },
-      Settings: {
-        screen: SettingsScreen,
-        navigationOptions: { title: 'Settings' }
-      },
-      SightingView:
-      {
-        screen: SightingViewScreen
-      },
-      SightingEdit:
-      {
-        screen: SightingEditScreen
-      },
+      ...CommonScreens,
     },
   );
 
 // Stacks of Screens for the Turtles Lab
 const TurtleListStack = createStackNavigator(
     {
-        TurtleList: {
-          screen: TurtleListScreen,
-          navigationOptions: { title: 'Turtles' }
-        },
-        TurtleView: {
-          screen: TurtleViewScreen,
-        },
-        TurtleEdit: {
-          screen: TurtleEditScreen,
-          navigationOptions: { title: 'Edit Turtle' }
-        },
-        SelectTurtle: {
-          screen: SelectTurtleScreen,
-          navigationOptions: { title: 'Select Turtle' }
-        },
-        Settings: {
-          screen: SettingsScreen,
-          navigationOptions: { title: 'Settings' }
-        },
-        SightingView:
-        {
-          screen: SightingViewScreen
-        },
-        SightingEdit:
-        {
-          screen: SightingEditScreen
-        },
+      ...CommonScreens
       },
 
 );
@@ -136,7 +115,7 @@ const TabNav = createBottomTabNavigator(
       },
 
       // Icon for tab bar.
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      tabBarIcon: ({ tintColor }) => {
         const { routeName } = navigation.state;
         let IconComponent = Ionicons;
         let iconName;

@@ -1,9 +1,12 @@
 import React from 'react';
 import { ReactNativeAD, ADLoginView } from 'react-native-azure-ad'
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, YellowBox } from 'react-native';
 
 // TODO: make this an envar
 const CLIENT_ID = '1cc5ab7b-ae5c-40d7-b267-4f1302adcd86'
+
+// Disable warning after getting login.
+YellowBox.ignoreWarnings([`Encountered an error loading page {"target":3,"description":"Could not connect to the server.","url":"https://adfs.calvin.edu`])
 
 /*
  taken from https://github.com/wkh237/react-native-azure-ad.
@@ -13,16 +16,7 @@ export default class LandingView extends React.Component {
         super(props)
         this.AzureADContext = {
             client_id: CLIENT_ID,
-            // Optional
-            redirect_url: 'http://localhost:8080',
-            // Optional
             authority_host: 'https://login.microsoftonline.com/common/oauth2/authorize',
-            // Optional
-            tenant: 'common',
-            // Optional
-            prompt: 'none',
-            // Optional
-            login_hint: 'user@domain.com',
             // This is required if client_id is a web application id
             // but not recommended doing this way.
             client_secret: '4Xko]:wIu5@sGE_28IUxbR-Xr4Xyd2Np',

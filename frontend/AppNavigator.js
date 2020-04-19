@@ -52,24 +52,25 @@ const CommonScreens = {
 
 // Stack of screens for the Map Tab.
 const MapStack = createStackNavigator(
-    {
-      Map: {
-        screen: MapScreen,
-        navigationOptions: {
-          title: 'Tracker',
-          headerStyle: {
-            backgroundColor: 'white',
-          }}
-      },
-      ...CommonScreens,
+  {
+    Map: {
+      screen: MapScreen,
+      navigationOptions: {
+        title: 'Tracker',
+        headerStyle: {
+          backgroundColor: 'white',
+        }
+      }
     },
-  );
+    ...CommonScreens,
+  },
+);
 
 // Stacks of Screens for the Turtles Lab
 const TurtleListStack = createStackNavigator(
-    {
-      ...CommonScreens
-      },
+  {
+    ...CommonScreens
+  },
 
 );
 
@@ -83,15 +84,15 @@ const TabNav = createBottomTabNavigator(
       screen: MapStack,
     },
     TurtleTab: {
-        navigationOptions: {
-            tabBarLabel: 'Turtles',
-        },
-        screen: TurtleListStack,
+      navigationOptions: {
+        tabBarLabel: 'Turtles',
+      },
+      screen: TurtleListStack,
     }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
-      tabBarOnPress: ({defaultHandler}) => {
+      tabBarOnPress: ({ defaultHandler }) => {
         const { routeName } = navigation.state;
 
         // Move screens
@@ -100,16 +101,16 @@ const TabNav = createBottomTabNavigator(
         // Then load the screen
         if (routeName === 'MapTab') {
           navigation.dispatch(StackActions.reset({
-              index: 0,
-              key: null,
-              actions: [NavigationActions.navigate({ routeName: 'Map' })]
+            index: 0,
+            key: null,
+            actions: [NavigationActions.navigate({ routeName: 'Map' })]
           }))
         }
         else if (routeName === 'TurtleTab') {
           navigation.dispatch(StackActions.reset({
-              index: 0,
-              key: null,
-              actions: [NavigationActions.navigate({ routeName: 'TurtleList' })]
+            index: 0,
+            key: null,
+            actions: [NavigationActions.navigate({ routeName: 'TurtleList' })]
           }))
         }
       },

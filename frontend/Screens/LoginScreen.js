@@ -1,19 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { ReactNativeAD, ADLoginView } from 'react-native-azure-ad'
 import { Text, View } from 'react-native';
-// import { ADContext } from '../services/ActiveDirectory';
 
+// TODO: make this an envar
 const CLIENT_ID = '1cc5ab7b-ae5c-40d7-b267-4f1302adcd86'
 
 /*
  taken from https://github.com/wkh237/react-native-azure-ad.
 */
-class LandingView extends React.Component {
-
-    /* doesn't like const */
-    // HOOKS can only be called with a fn component.
-    // AD = useContext(ADContext);
-
+export default class LandingView extends React.Component {
     constructor(props) {
         super(props)
         this.AzureADContext = {
@@ -41,25 +36,13 @@ class LandingView extends React.Component {
 
     render() {
 
-        // Create instance, accessed with ReactNativeAD.getContent(CLIENT-ID) 
+        // Create instance, accessed with ReactNativeAD.getContent(CLIENT_ID) 
         new ReactNativeAD({
             client_id: CLIENT_ID,
             resources: [
                 'https://outlook.office365.com'
             ]
         })
-
-        // let AD = this.context;
-        // // TODO: Currently, AD is undefined. Could be the order things are called?
-        // // Like App doesn't provide the context in the right order?
-        // console.log('hi')
-        // console.log(AD)
-        // console.log(new ReactNativeAD({
-        //     client_id: CLIENT_ID,
-        //     resources: [
-        //         'https://outlook.office365.com'
-        //     ]
-        // }))
 
         return (
 
@@ -80,7 +63,3 @@ class LandingView extends React.Component {
         // use the access token ..
     }
 }
-// LandingView.contextType = ADContext;
-// console.log(ADContext) // TODO: THIS WORKS HERE!
-// https://reactjs.org/docs/context.html
-export default LandingView;

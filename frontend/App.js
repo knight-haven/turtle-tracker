@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-// import { ReactNativeAD } from 'react-native-azure-ad'
+import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import * as firebase from 'firebase';
 import MainNavigator from './AppNavigator';
-// import { ADContext, AD } from './services/ActiveDirectory';
 
 const AppContainer = createAppContainer(MainNavigator);
 
@@ -21,11 +19,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 export default function App() {
-  // const [ActiveDirectory, setAD] = useState(AD)
-
   return (
-    // <ADContext.Provider value={ActiveDirectory}>
-      <AppContainer />
-    // </ADContext.Provider>
+    <AppContainer />
   )
 }

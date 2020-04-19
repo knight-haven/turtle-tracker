@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { ScrollView, SafeAreaView, StyleSheet } from 'react-native';
 import s from './Styles';
 
 /*
@@ -11,11 +11,11 @@ export default function Screen(props) {
         <ScrollView style={styles.background}
             refreshControl={props.refreshControl}
         >
-            <View
+            <SafeAreaView
                 style={[styles.content, s.shadow, props.contentStyle]}
             >
                 {props.children}
-            </View>
+            </SafeAreaView>
         </ScrollView>
     )
 }

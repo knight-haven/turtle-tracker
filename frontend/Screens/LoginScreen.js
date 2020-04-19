@@ -1,6 +1,6 @@
 import React from 'react';
 import { ReactNativeAD, ADLoginView } from 'react-native-azure-ad'
-import { Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 // TODO: make this an envar
 const CLIENT_ID = '1cc5ab7b-ae5c-40d7-b267-4f1302adcd86'
@@ -45,15 +45,16 @@ export default class LandingView extends React.Component {
         })
 
         return (
-
-            <View style={{ height: "100%", backgroundColor: 'grey' }}>
-                <Text>Hello</Text>
+            // TODO: Make needLogout a global var to trigger when app is closed? https://stackoverflow.com/questions/38677137/react-native-is-there-a-callback-function-for-when-your-app-is-closed
+            <SafeAreaView style={{ height: "100%", backgroundColor: 'white' }}>
                 <ADLoginView
                     context={ReactNativeAD.getContext(CLIENT_ID)}
                     onSuccess={this.onLoginSuccess.bind(this)}
                     needLogout={true}
+                    scalesPageToFit={true}
+                    bounces={false}
                 />
-            </View>
+            </SafeAreaView>
         )
     }
 

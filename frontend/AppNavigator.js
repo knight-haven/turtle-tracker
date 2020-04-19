@@ -3,7 +3,7 @@
 */
 
 import React from 'react';
-import { createAppContainer, NavigationActions, StackActions } from 'react-navigation';
+import { createAppContainer, NavigationActions, StackActions, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,9 +23,6 @@ import LoginScreen from './Screens/LoginScreen';
 // TODO: Remove the repeated code for the screens.
 const MapStack = createStackNavigator(
     {
-      Login: {
-        screen: LoginScreen,
-      },
       Map: {
         screen: MapScreen,
         navigationOptions: {
@@ -98,7 +95,7 @@ const TurtleListStack = createStackNavigator(
 );
 
 // Combine the two stakcs together under their own tabs.
-const MainNavigator = createBottomTabNavigator(
+const TabNav = createBottomTabNavigator(
   {
     MapTab: {
       navigationOptions: {
@@ -157,5 +154,21 @@ const MainNavigator = createBottomTabNavigator(
     },
   }
 );
+
+const LoginNav = createStackNavigator({
+  Login: {
+    screen: LoginScreen
+  }
+})
+
+const MainNavigator = createSwitchNavigator(
+  {
+    App: TabNav,
+    Login: LoginNav,
+  },
+  {
+    initialRouteName: 'Login',
+  }
+)
 
 export default createAppContainer(MainNavigator);

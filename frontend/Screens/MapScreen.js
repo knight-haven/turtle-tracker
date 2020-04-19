@@ -37,7 +37,7 @@ export default function MapScreen({ navigation }) {
       .then((response) => response.json())
       .then((responseJson) => {
         var markers = []
-        // TODO: This is temporary.
+        // TODO: This shortening on markers is temporary.
         for (var i = 0; i < responseJson.length - responseJson.length + 4; i++) {
           markers.push({
             "turtleId": responseJson[i].turtle_id,
@@ -111,6 +111,7 @@ export default function MapScreen({ navigation }) {
         containerStyle={{ right: 7, top: 7, position: 'absolute', flexDirection: 'row', }} />
 
       <Button 
+        onPress={() => navigation.navigate('Login')}
         title={"Logout"}
         style={{ right: 7, bottom: 7, position: 'absolute', flexDirection: 'row', borderRadius: 100}}
         type={"solid"}

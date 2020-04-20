@@ -75,7 +75,7 @@ const TurtleListStack = createStackNavigator(
 
 );
 
-// Combine the two stakcs together under their own tabs.
+// Combine the two stacks together under their own tabs.
 const TabNav = createBottomTabNavigator(
   {
     MapTab: {
@@ -136,6 +136,7 @@ const TabNav = createBottomTabNavigator(
   }
 );
 
+// Stack for the landing page and login.
 const LandingNav = createStackNavigator({
   Landing: {
     screen: LandingScreen
@@ -145,6 +146,7 @@ const LandingNav = createStackNavigator({
   }
 })
 
+// Combine all of the screens into one navigation
 const MainNavigator = createSwitchNavigator(
   {
     App: TabNav,

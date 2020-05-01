@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, RefreshControl, Platform } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, StyleSheet, RefreshControl } from 'react-native';
 import * as firebase from 'firebase';
-import IconButton from '../../components/IconButton';
-import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
@@ -11,6 +8,7 @@ import HeaderButton from '../../components/HeaderButton';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SightingCard from '../../components/SightingCard';
 import TurtleCard from '../../components/TurtleCard';
+import s from '../../components/Styles';
 
 /*
     TurtleViewScreen views the contents of one turtle
@@ -143,11 +141,11 @@ export default function TurtleViewScreen({ navigation }) {
             }
         >
             {
-                loading && !refreshing && 
-                <LoadingSpinner animating={loading}/>
-            }   
-            {   
-                !loading && 
+                loading && !refreshing &&
+                <LoadingSpinner animating={loading} />
+            }
+            {
+                !loading &&
                 <View>
                     <TurtleCard
                         turtle={turtle}
@@ -157,24 +155,24 @@ export default function TurtleViewScreen({ navigation }) {
                         markerList={markerList}
                         images={images}
                     />
-                    <View style={styles.card}>
+                    <View style={[s.card, s.shadow]}>
                         <TurtleMapView
                             markers={markerList}
                             pointerEvents="none"
-                            latitude={markerList[0].coordinate.latitude}
-                            longitude={markerList[0].coordinate.longitude}
+                            latitude={markerList.length > 0 ? markerList[0].coordinate.latitude : null}
+                            longitude={markerList.length > 0 ? markerList[0].coordinate.longitude : null}
                         />
                     </View>
-                    <View style={styles.card}>
-                        <Gallery images={images} />  
+                    <View style={[s.card, s.shadow]}>
+                        <Gallery images={images} />
                     </View>
                     {
                         sightings.map((item, index) => (
-                        <SightingCard
-                            key={index + 1}
-                            sighting={item}
-                            navigation={navigation}
-                        />
+                            <SightingCard
+                                key={index + 1}
+                                sighting={item}
+                                navigation={navigation}
+                            />
                         ))
                     }
                 </View>
@@ -186,7 +184,7 @@ export default function TurtleViewScreen({ navigation }) {
 
 // Styles
 const styles = StyleSheet.create({
-    container: {backgroundColor: 'transparent', shadowColor: 'transparent'},
+    container: { backgroundColor: 'transparent', shadowColor: 'transparent' },
     head: { height: 40, backgroundColor: '#edffed' },
     wrapper: { flexDirection: 'row' },
     title: { flex: 1, backgroundColor: '#f6f8fa' },
@@ -194,26 +192,6 @@ const styles = StyleSheet.create({
     text: { textAlign: 'center' },
     btn: { width: 58, height: 18, marginLeft: 15, backgroundColor: '#c8e1ff', borderRadius: 2 },
     btnText: { textAlign: 'center' },
-    card: { 
-        flex: 1, 
-        backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 7,
-        marginTop: 4,
-        marginBottom: 4,
-        justifyContent: 'space-evenly',
-
-        // TODO? Maybe remove this UI feature.
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-
-        elevation: 4,
-    },
 });
 
 // Sets the navigation options.

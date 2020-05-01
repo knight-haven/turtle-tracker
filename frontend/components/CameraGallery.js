@@ -49,11 +49,13 @@ export default function CameraGallery({ parentCallback }) {
 
       <View style={styles.takePicButtons}>
         <Button
+          style={styles.button}
           title={'Take Photo'}
           onPress={takeImage}
           iconName={'camera'}
         />
         <Button
+          style={styles.button}
           title={'Upload Photo'}
           onPress={pickImage}
           iconName={'folder-multiple-image'}
@@ -71,18 +73,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignSelf: 'center',
   },
-
   imageStyle: {
     flex: 1,
     margin: 15,
   },
-
   takePicButtons: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-around',
+    flexWrap: "wrap",
   },
+  button: {
+    marginTop: 3,
+  }
 });
 
 // reference/source: https://docs.expo.io/versions/latest/sdk/imagepicker/

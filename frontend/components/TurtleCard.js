@@ -3,13 +3,14 @@ import { View, StyleSheet, Text } from 'react-native';
 import moment from 'moment';
 import TurtleText from './TurtleText';
 import Divider from './Divider';
+import s from './Styles';
 
 
 export default function TurtleCard({turtle, originalDate, recentDate, recentLength, markerList, images}) {
 
     return (
         <View>
-            <View style={styles.container}>
+            <View style={[s.card, s.shadow]}>
                 <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>Turtle #{turtle.turtle_number}</Text>
                 <View style={styles.rowContainer}>
                     <TurtleText titleText='Mark' baseText={turtle.mark} />
@@ -30,26 +31,6 @@ export default function TurtleCard({turtle, originalDate, recentDate, recentLeng
 }
 
 const styles = StyleSheet.create({
-    container: { 
-        flex: 1, 
-        backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 7,
-        marginTop: 2,
-        marginBottom: 7,
-        justifyContent: 'space-evenly',
-
-        // TODO? Maybe remove this UI feature.
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-
-        elevation: 4,
-    },
     rowContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',

@@ -8,7 +8,7 @@ import Button from '../components/Button';
 // TODO: use this api for user photos: https://docs.microsoft.com/en-us/previous-versions/office/office-365-api/api/version-2.0/photo-rest-operations
 export default function LandingScreen({ navigation }) {
     return (
-        <SafeAreaView style={{ display: 'felx', backgroundColor: 'green' }}>
+        <SafeAreaView>
             <Button
                 title={"Login"}
                 onPress={() => navigation.navigate("ADLogin")}

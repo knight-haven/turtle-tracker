@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Image, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
+import LoadingImage from './LoadingImage';
 
 export default function Gallery({ images }) {
 
@@ -7,7 +8,11 @@ export default function Gallery({ images }) {
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
         {
           images.map((item, index) => (
-            <Image key={index} source={{uri: item != null ? item.uri : null, width: 200, height: 200}} style={styles.imageStyle}/>
+            <LoadingImage 
+              key={index} 
+              source={{uri: item != null ? item.uri : null, width: 200, height: 200}} 
+              style={styles.imageStyle}
+            />
           ))
         }
       </ScrollView>

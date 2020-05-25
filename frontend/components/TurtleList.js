@@ -77,7 +77,7 @@ export default function TurtleList(props) {
       }
     
     { props.navigation.state.routeName == "SelectTurtle" ? 
-    <View>
+    !loading && <View>
       <ListItem
         leftAvatar
         title="New Turtle"
@@ -85,7 +85,6 @@ export default function TurtleList(props) {
         bottomDivider
         onPress={() => {props.navigation.navigate('TurtleEdit')}}
       />
-      <Text style={{fontSize: 18, fontWeight: 'bold', paddingTop: 8, textAlign: 'center'}}>Existing Turtles</Text> 
     </View>: null }
       {
         turtleList.map((item, index) => (

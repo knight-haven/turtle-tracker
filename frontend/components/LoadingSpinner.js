@@ -10,7 +10,7 @@ export default function LoadingSpinner(props) {
           animating = {props.animating}
           size = "large"
           color = 'green'
-          style = {styles.activityIndicator}/>
+          style = {[props.style, styles.activityIndicator]}/>
     )
 }
 

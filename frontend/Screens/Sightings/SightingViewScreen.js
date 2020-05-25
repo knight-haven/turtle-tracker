@@ -1,14 +1,15 @@
 import * as firebase from 'firebase';
 import moment from 'moment';
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, RefreshControl, Platform, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, RefreshControl, Text } from 'react-native';
 import TurtleText from '../../components/TurtleText';
 import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import HeaderButton from '../../components/HeaderButton';
+import Divider from '../../components/Divider';
+import s from '../../components/Styles';
 
 /*
 Turtle Sighting Screen for information on one particular sighting
@@ -107,6 +108,7 @@ export default function SightingViewScreen({ navigation }) {
 
     return (
         <Screen
+            contentStyle={{ backgroundColor: 'transparent', shadowColor: 'transparent' }}
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
@@ -118,25 +120,33 @@ export default function SightingViewScreen({ navigation }) {
             {
                 !loading &&
                 <View>
-                    <View style={{ justifyContent: 'space-evenly' }}>
-                        {/* TODO: Replace sightingId with the number sighting for the specific turtle. */}
-                        {/* <TurtleText titleText={`Sighting #${sightingId}`} /> */}
+                    <View style={[s.shadow, s.card]}>
                         <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>Turtle #{turtleNumber}</Text>
-                        <TurtleText titleText="Mark: " baseText={mark} />
-                        <TurtleText titleText="Date: " baseText={moment(date).format('l')} />
-                        <TurtleText titleText="Length: " baseText={`${length} mm`} />
-                        <TurtleText titleText="Location: " baseText={location} />
+                        <View style={{ justifyContent: 'space-evenly', flexDirection: 'row' }}>
+                            {/* TODO: Replace sightingId with the number sighting for the specific turtle. */}
+                            {/* <TurtleText titleText={`Sighting #${sightingId}`} /> */}
+                            <TurtleText titleText="Mark: " baseText={mark} />
+                            <Divider />
+                            <TurtleText titleText="Date: " baseText={moment(date).format('l')} />
+                        </View>
+                        <View style={{ justifyContent: 'space-evenly', flexDirection: 'row' }}>
+                            <TurtleText titleText="Length: " baseText={`${length} mm`} />
+                            <Divider />
+                            <TurtleText titleText="Location: " baseText={location} />
+                        </View>
+                        <TurtleText titleText="Notes: " baseText={notes} />
                     </View>
                     {/* map */}
-                    <View style={{ width: '100%', height: 200 }}>
-                        <TurtleMapView 
-                            markers={markerList} 
+                    <View style={[ s.shadow, s.card, { width: '100%', height: 200 }]}>
+                        <TurtleMapView
+                            markers={markerList}
                             latitude={markerList.length > 0 ? markerList[0].coordinate.latitude : null}
                             longitude={markerList.length > 0 ? markerList[0].coordinate.longitude : null}
-                            pointerEvents="none"/>
+                            pointerEvents="none" />
                     </View>
-                    <Gallery images={images} />
-                    <TurtleText titleText="Notes: " baseText={notes} />
+                    <View style={[s.shadow, s.card]}>
+                        <Gallery images={images} />
+                    </View>
                 </View>
             }
         </Screen>

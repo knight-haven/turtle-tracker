@@ -1,6 +1,7 @@
 // Deploy with: git subtree push --prefix backend heroku master
 const express = require('express')
 const bodyParser = require('body-parser')
+const bearerToken = require('express-bearer-token')
 const app = express()
 const db = require('./queries')
 
@@ -11,8 +12,15 @@ app.use(
   })
 )
 
+// Used to get access to the bearer token sent in the request.
+app.use(bearerToken())
+app.use(function (req, res, next) {
+  console.log(`Token ${req.token}`) // TODO: remove this. It will show the secret
+  next()  // Pass on to next middleware.
+})
+
 app.get('/', (request, response) => {
-    response.json({ info: 'Node.js, Express, and Postgres API' })
+  response.json({ info: 'Node.js, Express, and Postgres API' })
 })
 
 app.get('/turtle', db.getTurtles)
@@ -39,5 +47,5 @@ if (port == null || port == "") {
   port = 3000;
 }
 app.listen(port, () => {
-    console.log(`App running on port ${port}.`)
+  console.log(`App running on port ${port}.`)
 })

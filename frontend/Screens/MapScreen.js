@@ -4,6 +4,7 @@ import * as Haptics from 'expo-haptics';
 import IconButton from '../components/IconButton';
 import TurtleMapView from '../components/TurtleMapView';
 import Button from '../components/Button';
+import { BASE_URL } from '../env';
 
 /*
 MapScreen.js contains the basic map screen with turtle sightings.
@@ -33,7 +34,7 @@ export default function MapScreen({ navigation }) {
   }, [])
 
   function getMarkers() {
-    return fetch(`https://turtletrackerbackend.herokuapp.com/sighting`)
+    return fetch(BASE_URL+`/sighting`)
       .then((response) => response.json())
       .then((responseJson) => {
         var markers = []

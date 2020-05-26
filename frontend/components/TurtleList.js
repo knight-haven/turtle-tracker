@@ -2,10 +2,9 @@ import React, {useState, useEffect, useCallback} from 'react';
 import { View, RefreshControl } from 'react-native';
 import TurtleListItem from './TurtleListItem'
 import { ListItem } from 'react-native-elements';
-import { firebase } from '../env';
+import { firebase, BASE_URL } from '../env';
 import Screen from '../components/Screen';
 import LoadingSpinner from './LoadingSpinner';
-import fetcher from '../utils/fetcher';
 
 /*
   TurtleList displays a list of all of the turtles in the Eco Preserve.
@@ -15,7 +14,7 @@ import fetcher from '../utils/fetcher';
 export default function TurtleList(props) {
   function getTurtles() {
     setLoading(true);
-    return fetcher(`turtle`)
+    return fetch(BASE_URL+`/turtle`)
       .then((response) => response.json())
       .then(async (responseJson) => {
         for (var i = 0; i < responseJson.length; i++) {
@@ -41,7 +40,7 @@ export default function TurtleList(props) {
 
   async function getTurtleAvatar(turtleId) {
     try {
-      let response = await fetch(`https://turtletrackerbackend.herokuapp.com/photo/turtle/${turtleId}`);
+      let response = await fetch(BASE_URL+`/photo/turtle/${turtleId}`);
       let responseJson = await response.json();
       if (responseJson.length > 0) {
         return responseJson[0].name;

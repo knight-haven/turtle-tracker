@@ -5,6 +5,7 @@ import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
 import Button from '../../components/Button';
+import { BASE_URL } from '../../env';
 
 /*
 Define a couple useful styles
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
 */
 export default function TurtleEditScreen({ navigation }) {
     function editTurtleById(id) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/turtle/${id}`, {
+        return fetch(BASE_URL+`/turtle/${id}`, {
             method: 'PUT', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 number,
@@ -36,7 +37,7 @@ export default function TurtleEditScreen({ navigation }) {
     }
 
     function createTurtle(number, mark, sex) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/turtle`, {
+        return fetch(BASE_URL+`/turtle`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 number,

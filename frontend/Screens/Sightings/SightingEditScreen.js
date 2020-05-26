@@ -1,5 +1,5 @@
 import * as Permissions from 'expo-permissions';
-import { firebase } from '../../env';
+import { firebase, BASE_URL } from '../../env';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
@@ -74,7 +74,7 @@ export default function SightingEditScreen({ navigation }) {
     // const [img, setImg] = useState('img');
 
     function getTurtleById(id) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/turtle/${id}`)
+        return fetch(BASE_URL+`/turtle/${id}`)
             .then((response) => response.json())
             .then((responseJson) => {
                 setTurtle(responseJson[0]);
@@ -87,7 +87,7 @@ export default function SightingEditScreen({ navigation }) {
     }
 
     function editSightingById(id, turtleId) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/sighting/${id}`, {
+        return fetch(BASE_URL+`/sighting/${id}`, {
             method: 'PUT', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 turtleId,
@@ -114,7 +114,7 @@ export default function SightingEditScreen({ navigation }) {
     }
 
     function createSighting(turtleId, latitude, longitude) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/sighting`, {
+        return fetch(BASE_URL+`/sighting`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 turtleId,
@@ -137,7 +137,7 @@ export default function SightingEditScreen({ navigation }) {
     }
 
     function createPhoto(turtleId, sightingId, name) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/photo`, {
+        return fetch(BASE_URL+`/photo`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 turtleId,

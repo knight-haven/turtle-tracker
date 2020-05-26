@@ -1,4 +1,4 @@
-import { firebase } from '../../env';
+import { firebase, BASE_URL } from '../../env';
 import moment from 'moment';
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, RefreshControl, Text } from 'react-native';
@@ -17,7 +17,7 @@ Turtle Sighting Screen for information on one particular sighting
 export default function SightingViewScreen({ navigation }) {
 
     function getTurtleById(id) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/turtle/${id}`)
+        return fetch(BASE_URL+`/turtle/${id}`)
             .then(response => response.json())
             .then(responseJson => {
                 data = responseJson[0]
@@ -27,7 +27,7 @@ export default function SightingViewScreen({ navigation }) {
     }
 
     function getSightingById(id) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/sighting/${id}`)
+        return fetch(BASE_URL+`/sighting/${id}`)
             .then((response) => response.json())
             .then((responseJson) => {
                 data = responseJson[0];
@@ -50,7 +50,7 @@ export default function SightingViewScreen({ navigation }) {
     }
 
     function getSightingImages(turtleId) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/photo/sighting/${sightingId}`)
+        return fetch(BASE_URL+`/photo/sighting/${sightingId}`)
             .then((response) => response.json())
             .then(async (responseJson) => {
                 var imageList = []

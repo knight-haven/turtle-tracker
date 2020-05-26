@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { ScrollView, SafeAreaView, View, StyleSheet } from 'react-native';
 import s from './Styles';
 
 /*

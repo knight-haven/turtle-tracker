@@ -3,7 +3,7 @@
 */
 
 import React from 'react';
-import { createAppContainer, NavigationActions, StackActions } from 'react-navigation';
+import { createAppContainer, NavigationActions, StackActions, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,84 +17,66 @@ import SettingsScreen from './Screens/SettingsScreen';
 import MapScreen from './Screens/MapScreen';
 import SightingEditScreen from './Screens/Sightings/SightingEditScreen';
 import SightingViewScreen from './Screens/Sightings/SightingViewScreen';
+import LoginScreen from './Screens/LoginScreen';
+import LandingScreen from './Screens/LandingScreen';
+
+// Screens shared across stacks.
+const CommonScreens = {
+  TurtleList: {
+    screen: TurtleListScreen,
+    navigationOptions: { title: 'Turtles' }
+  },
+  TurtleView: {
+    screen: TurtleViewScreen,
+  },
+  TurtleEdit: {
+    screen: TurtleEditScreen,
+    navigationOptions: { title: 'Edit Turtle' }
+  },
+  SelectTurtle: {
+    screen: SelectTurtleScreen,
+    navigationOptions: { title: 'Select Turtle' }
+  },
+  Settings: {
+    screen: SettingsScreen,
+    navigationOptions: { title: 'Settings' }
+  },
+  SightingView:
+  {
+    screen: SightingViewScreen
+  },
+  SightingEdit:
+  {
+    screen: SightingEditScreen
+  },
+}
 
 // Stack of screens for the Map Tab.
-// TODO: Remove the repeated code for the screens.
 const MapStack = createStackNavigator(
-    {
-      Map: {
-        screen: MapScreen,
-        navigationOptions: {
-          title: 'Tracker',
-          headerStyle: {
-            backgroundColor: 'white',
-          }}
-      },
-      TurtleList: {
-        screen: TurtleListScreen,
-        navigationOptions: { title: 'Turtles' }
-      },
-      TurtleView: {
-        screen: TurtleViewScreen,
-      },
-      TurtleEdit: {
-        screen: TurtleEditScreen,
-      },
-      SelectTurtle: {
-        screen: SelectTurtleScreen,
-        navigationOptions: { title: 'Select Turtle' }
-      },
-      Settings: {
-        screen: SettingsScreen,
-        navigationOptions: { title: 'Settings' }
-      },
-      SightingView:
-      {
-        screen: SightingViewScreen
-      },
-      SightingEdit:
-      {
-        screen: SightingEditScreen
-      },
+  {
+    Map: {
+      screen: MapScreen,
+      navigationOptions: {
+        title: 'Tracker',
+        headerStyle: {
+          backgroundColor: 'white',
+        }
+      }
     },
-  );
+    ...CommonScreens,
+  },
+);
 
 // Stacks of Screens for the Turtles Lab
 const TurtleListStack = createStackNavigator(
-    {
-        TurtleList: {
-          screen: TurtleListScreen,
-          navigationOptions: { title: 'Turtles' }
-        },
-        TurtleView: {
-          screen: TurtleViewScreen,
-        },
-        TurtleEdit: {
-          screen: TurtleEditScreen,
-          navigationOptions: { title: 'Edit Turtle' }
-        },
-        SelectTurtle: {
-          screen: SelectTurtleScreen,
-          navigationOptions: { title: 'Select Turtle' }
-        },
-        Settings: {
-          screen: SettingsScreen,
-          navigationOptions: { title: 'Settings' }
-        },
-        SightingView:
-        {
-          screen: SightingViewScreen
-        },
-        SightingEdit:
-        {
-          screen: SightingEditScreen
-        },
-      },
+  {
+    ...CommonScreens
+  },
 
 );
 
-// Combine the two stakcs together under their own tabs.
-const MainNavigator = createBottomTabNavigator(
+// Combine the two stacks together under their own tabs.
+const TabNav = createBottomTabNavigator(
   {
     MapTab: {
       navigationOptions: {
@@ -103,15 +85,15 @@ const MainNavigator = createBottomTabNavigator(
       screen: MapStack,
     },
     TurtleTab: {
-        navigationOptions: {
-            tabBarLabel: 'Turtles',
-        },
-        screen: TurtleListStack,
+      navigationOptions: {
+        tabBarLabel: 'Turtles',
+      },
+      screen: TurtleListStack,
     }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
-      tabBarOnPress: ({defaultHandler}) => {
+      tabBarOnPress: ({ defaultHandler }) => {
         const { routeName } = navigation.state;
 
         // Move screens
@@ -120,22 +102,22 @@ const MainNavigator = createBottomTabNavigator(
         // Then load the screen
         if (routeName === 'MapTab') {
           navigation.dispatch(StackActions.reset({
-              index: 0,
-              key: null,
-              actions: [NavigationActions.navigate({ routeName: 'Map' })]
+            index: 0,
+            key: null,
+            actions: [NavigationActions.navigate({ routeName: 'Map' })]
           }))
         }
         else if (routeName === 'TurtleTab') {
           navigation.dispatch(StackActions.reset({
-              index: 0,
-              key: null,
-              actions: [NavigationActions.navigate({ routeName: 'TurtleList' })]
+            index: 0,
+            key: null,
+            actions: [NavigationActions.navigate({ routeName: 'TurtleList' })]
           }))
         }
       },
 
       // Icon for tab bar.
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      tabBarIcon: ({ tintColor }) => {
         const { routeName } = navigation.state;
         let IconComponent = Ionicons;
         let iconName;
@@ -153,5 +135,26 @@ const MainNavigator = createBottomTabNavigator(
     },
   }
 );
+
+// Stack for the landing page and login.
+const LandingNav = createStackNavigator({
+  Landing: {
+    screen: LandingScreen
+  },
+  ADLogin: {
+    screen: LoginScreen
+  }
+})
+
+// Combine all of the screens into one navigation
+const MainNavigator = createSwitchNavigator(
+  {
+    App: TabNav,
+    Login: LandingNav,
+  },
+  {
+    initialRouteName: 'Login',
+  }
+)
 
 export default createAppContainer(MainNavigator);

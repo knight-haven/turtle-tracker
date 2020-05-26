@@ -1,7 +1,7 @@
 import React from 'react';
-import MainNavigator from './AppNavigator';
 import { createAppContainer } from 'react-navigation';
 import * as firebase from 'firebase';
+import MainNavigator from './AppNavigator';
 
 const AppContainer = createAppContainer(MainNavigator);
 
@@ -18,8 +18,8 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-export default class App extends React.Component {
-  render() {
-    return <AppContainer />;
-  }
+export default function App() {
+  return (
+    <AppContainer />
+  )
 }

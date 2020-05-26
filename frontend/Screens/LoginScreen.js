@@ -1,9 +1,9 @@
 import React from 'react';
 import { ReactNativeAD, ADLoginView } from 'react-native-azure-ad'
 import { SafeAreaView, YellowBox } from 'react-native';
+import { AD_LOGIN } from '../env';
 
-// TODO: make this an envar
-const CLIENT_ID = '1cc5ab7b-ae5c-40d7-b267-4f1302adcd86'
+const CLIENT_ID = AD_LOGIN.client_id
 
 // Disable warning after getting login.
 YellowBox.ignoreWarnings([`Encountered an error loading page {"target":3,"description":"Could not connect to the server.","url":"https://adfs.calvin.edu`])
@@ -19,7 +19,7 @@ export default class LandingView extends React.Component {
             authority_host: 'https://login.microsoftonline.com/common/oauth2/authorize',
             // This is required if client_id is a web application id
             // but not recommended doing this way.
-            client_secret: '4Xko]:wIu5@sGE_28IUxbR-Xr4Xyd2Np',
+            client_secret: AD_LOGIN.client_secret,
             resources: [
                 'https://graph.microsoft.com',
                 'https://outlook.office365.com',

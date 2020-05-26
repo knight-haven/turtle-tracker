@@ -15,3 +15,9 @@ fb.initializeApp(firebaseConfig);
 // https://stackoverflow.com/questions/48492047/where-do-i-initialize-firebase-app-in-react-application
 // Prevent multiple firebase instances.
 export let firebase = !fb.apps.length ? fb.initializeApp(config) : fb.app();
+
+// Outlook Login
+export const AD_LOGIN = {
+  client_id: '1cc5ab7b-ae5c-40d7-b267-4f1302adcd86',
+  client_secret: '4Xko]:wIu5@sGE_28IUxbR-Xr4Xyd2Np',
+}

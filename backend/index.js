@@ -3,6 +3,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const db = require('./queries')
+require('dotenv').config()
+const SECRET = process.env.BACKEND_SECRET
 
 app.use(bodyParser.json())
 app.use(
@@ -18,7 +20,7 @@ app.get('/', (request, response) => {
 // For every response..
 app.all('*', function (req, res, next) {
   let token = getBearerToken(req)
-  if (token == 'a-secret') {
+  if (token == SECRET) {
     next() // Go onto the queries.
     app.get('/turtle', db.getTurtles)
     app.get('/turtle/:id', db.getTurtleById)

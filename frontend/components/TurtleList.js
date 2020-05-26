@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import { View, Text, RefreshControl } from 'react-native';
+import { View, RefreshControl } from 'react-native';
 import TurtleListItem from './TurtleListItem'
 import { ListItem } from 'react-native-elements';
-import * as firebase from 'firebase';
+import { firebase } from '../env';
 import Screen from '../components/Screen';
 import LoadingSpinner from './LoadingSpinner';
 

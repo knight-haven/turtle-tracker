@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import { firebase } from '../../env';
 import moment from 'moment';
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, RefreshControl, Text } from 'react-native';

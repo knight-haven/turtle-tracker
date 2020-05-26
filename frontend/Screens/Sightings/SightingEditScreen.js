@@ -1,5 +1,5 @@
 import * as Permissions from 'expo-permissions';
-import * as firebase from 'firebase';
+import { firebase } from '../../env';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';

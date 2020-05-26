@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 /*

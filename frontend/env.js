@@ -21,3 +21,7 @@ export const AD_LOGIN = {
   client_id: '1cc5ab7b-ae5c-40d7-b267-4f1302adcd86',
   client_secret: '4Xko]:wIu5@sGE_28IUxbR-Xr4Xyd2Np',
 }
+
+// Fetch Backend
+export const BASE_URL = 'https://turtletrackerbackend.herokuapp.com'
+export const BACKEND_SECRET = ''

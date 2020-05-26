@@ -5,6 +5,7 @@ import { ListItem } from 'react-native-elements';
 import { firebase } from '../env';
 import Screen from '../components/Screen';
 import LoadingSpinner from './LoadingSpinner';
+import fetcher from '../utils/fetcher';
 
 /*
   TurtleList displays a list of all of the turtles in the Eco Preserve.
@@ -14,7 +15,7 @@ import LoadingSpinner from './LoadingSpinner';
 export default function TurtleList(props) {
   function getTurtles() {
     setLoading(true);
-    return fetch(`https://turtletrackerbackend.herokuapp.com/turtle`)
+    return fetcher(`turtle`)
       .then((response) => response.json())
       .then(async (responseJson) => {
         for (var i = 0; i < responseJson.length; i++) {

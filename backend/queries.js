@@ -1,13 +1,14 @@
+require('dotenv').config()
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'pgithsli',
-  host: 'salt.db.elephantsql.com',
-  database: 'pgithsli',
-  password: 'IyT1o_L7Uiz2Mfyt0a7vXwdkWVGNyYqH',
-  port: 5432,
-  max: 3,
-  min: 0,
-  idle: 10000
+  user: process.env.PG_USER,
+  host: process.env.PG_HOST,
+  database: process.env.PG_DB,
+  password: process.env.PG_PW,
+  port: process.env.PG_PORT,
+  max: process.env.PG_MAX,
+  min: process.env.PG_MIN,
+  idle: process.env.PG_IDLE
 })
 
 const getTurtles = (request, response) => {
@@ -105,7 +106,7 @@ const updateSighting = (request, response) => {
 
   pool.query(
     'UPDATE sighting SET turtle_id = $1, time_seen = $2, turtle_location = $3, latitude = $4, longitude = $5, carapace_length = $6, notes = $7 WHERE id = $8',
-    [turtleId, time, location, latitude, longitude, length, notes, id ],
+    [turtleId, time, location, latitude, longitude, length, notes, id],
     (error, results) => {
       if (error) {
         throw error
@@ -174,7 +175,7 @@ const updatePhoto = (request, response) => {
 
   pool.query(
     'UPDATE photo SET turtle_id = $1, sighting_id = $2, name = $3 WHERE id = $4',
-    [turtleId, sightingId, name, id ],
+    [turtleId, sightingId, name, id],
     (error, results) => {
       if (error) {
         throw error
@@ -236,4 +237,4 @@ module.exports = {
   deletePhoto,
   getPhotoByTurtleId,
   getPhotoBySightingId,
-  }
+}

@@ -54,5 +54,11 @@ app.listen(port, () => {
 })
 
 const getBearerToken = (request) => {
-  return request.headers.authorization.split(" ")[1]
+  let token = " "
+  try {
+    token = request.headers.authorization.split(" ")[1]
+  } catch (error) {
+    console.log("No bearer token given")
+  }
+  return token
 }

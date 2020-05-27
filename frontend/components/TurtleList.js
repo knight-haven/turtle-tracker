@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, RefreshControl } from 'react-native';
 import TurtleListItem from './TurtleListItem'
 import { ListItem } from 'react-native-elements';
-import { firebase, BASE_URL } from '../env';
+import { firebase, BASE_URL, BACKEND_SECRET } from '../env';
 import Screen from '../components/Screen';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -14,7 +14,7 @@ import LoadingSpinner from './LoadingSpinner';
 export default function TurtleList(props) {
   function getTurtles() {
     setLoading(true);
-    return fetch(BASE_URL+`/turtle`)
+    return fetch(BASE_URL + `/turtle`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
       .then((response) => response.json())
       .then(async (responseJson) => {
         for (var i = 0; i < responseJson.length; i++) {
@@ -22,6 +22,8 @@ export default function TurtleList(props) {
             let turtleId = responseJson[i].id
             let photoName = await getTurtleAvatar(turtleId)
             if (photoName != null) {
+              // TODO: This should be changed, because the await causes it to block if firebase is down.
+              // Not sure the best way to fix it though. Usually is fine.
               let url = await getPhoto(photoName)
               responseJson[i].avatar = url
             }
@@ -40,7 +42,7 @@ export default function TurtleList(props) {
 
   async function getTurtleAvatar(turtleId) {
     try {
-      let response = await fetch(BASE_URL+`/photo/turtle/${turtleId}`);
+      let response = await fetch(BASE_URL + `/photo/turtle/${turtleId}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) });
       let responseJson = await response.json();
       if (responseJson.length > 0) {
         return responseJson[0].name;
@@ -65,27 +67,27 @@ export default function TurtleList(props) {
   const [turtleList, onTurtleListChange] = useState([])
   const [refreshing, setRefreshing] = useState(false)
   const [loading, setLoading] = useState(false);
-  useEffect(() => {getTurtles()}, []);
+  useEffect(() => { getTurtles() }, []);
   return (
     <Screen
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }>
+      }>
       {
-        loading && !refreshing && 
-        <LoadingSpinner animating={loading}/>
+        loading && !refreshing &&
+        <LoadingSpinner animating={loading} />
       }
-    
-    { props.navigation.state.routeName == "SelectTurtle" ? 
-    !loading && <View>
-      <ListItem
-        leftAvatar
-        title="New Turtle"
-        chevron
-        bottomDivider
-        onPress={() => {props.navigation.navigate('TurtleEdit')}}
-      />
-    </View>: null }
+
+      {props.navigation.state.routeName == "SelectTurtle" ?
+        !loading && <View>
+          <ListItem
+            leftAvatar
+            title="New Turtle"
+            chevron
+            bottomDivider
+            onPress={() => { props.navigation.navigate('TurtleEdit') }}
+          />
+        </View> : null}
       {
         turtleList.map((item, index) => (
           <TurtleListItem

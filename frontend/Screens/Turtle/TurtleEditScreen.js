@@ -5,7 +5,7 @@ import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
 import Button from '../../components/Button';
-import { BASE_URL } from '../../env';
+import { BASE_URL, BACKEND_SECRET } from '../../env';
 
 /*
 Define a couple useful styles
@@ -23,8 +23,9 @@ const styles = StyleSheet.create({
 */
 export default function TurtleEditScreen({ navigation }) {
     function editTurtleById(id) {
-        return fetch(BASE_URL+`/turtle/${id}`, {
-            method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        return fetch(BASE_URL + `/turtle/${id}`, {
+            method: 'PUT',
+            headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': `Bearer ` + BACKEND_SECRET }),
             body: JSON.stringify({
                 number,
                 mark: carapaceMark,
@@ -37,8 +38,9 @@ export default function TurtleEditScreen({ navigation }) {
     }
 
     function createTurtle(number, mark, sex) {
-        return fetch(BASE_URL+`/turtle`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
+        return fetch(BASE_URL + `/turtle`, {
+            method: 'POST',
+            headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': `Bearer ` + BACKEND_SECRET }),
             body: JSON.stringify({
                 number,
                 mark,

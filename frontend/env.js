@@ -24,4 +24,5 @@ export const AD_LOGIN = {
 
 // Fetch Backend
 export const BASE_URL = 'https://turtletrackerbackend.herokuapp.com'
+//export const BASE_URL = 'http://192.168.7.21:3000'
 export const BACKEND_SECRET = 'change-this'

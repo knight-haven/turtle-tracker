@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactNativeAD, ADLoginView } from 'react-native-azure-ad'
-import { SafeAreaView, YellowBox } from 'react-native';
-import { AD_LOGIN } from '../env';
+import { SafeAreaView, YellowBox, Alert } from 'react-native';
+import { AD_LOGIN, USERS } from '../env';
 
 const CLIENT_ID = AD_LOGIN.client_id
 
@@ -52,9 +52,29 @@ export default class LandingView extends React.Component {
         )
     }
 
-    onLoginSuccess(credentials) {
-        console.log(credentials)
-        this.props.navigation.navigate({ routeName: 'Map' })
-        // use the access token ..
+    async onLoginSuccess(credentials) {
+        let access_token = credentials['https://outlook.office365.com'].access_token
+        let username = " "
+        await fetch('https://outlook.office.com/api/v2.0/me', { headers: new Headers({ 'Authorization': `Bearer ` + access_token }) })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson)
+                username = responseJson['Alias']
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        if (USERS.includes(username)) {
+            this.props.navigation.navigate({ routeName: 'Map' })
+        }
+        else {
+            Alert.alert(
+                `${username} does not have permission`,
+                "Ask Jen to add your account if this is a mistake",
+                [{ text: "Close", onPress: () => { } }],
+                { cancelable: false }
+            );
+            this.props.navigation.goBack()
+        }
     }
 }

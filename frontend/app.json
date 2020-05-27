@@ -2,15 +2,17 @@
   "expo": {
     "name": "Turtle Tracker",
     "slug": "TurtleTracker",
-    "privacy": "public",
+    "privacy": "unlisted",
     "sdkVersion": "35.0.0",
     "ios": {
       "bundleIdentifier": "com.knighthaven.turtletracker",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "1.0.0"
     },
     "android": {
       "permissions": ["ACCESS_FINE_LOCATION"],
-      "package": "com.knighthaven.turtletracker"
+      "package": "com.knighthaven.turtletracker",
+      "versionCode": 1
     },
     "platforms": [
       "ios",

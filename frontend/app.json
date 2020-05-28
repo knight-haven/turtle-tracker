@@ -6,21 +6,21 @@
     "ios": {
       "bundleIdentifier": "com.knighthaven.turtletracker",
       "supportsTablet": true,
-      "buildNumber": "1.0.3"
+      "buildNumber": "1.0.4"
     },
     "android": {
       "permissions": [
         "ACCESS_FINE_LOCATION"
       ],
       "package": "com.knighthaven.turtletracker",
-      "versionCode": 3
+      "versionCode": 4
     },
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {

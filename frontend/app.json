@@ -13,7 +13,12 @@
         "ACCESS_FINE_LOCATION"
       ],
       "package": "com.knighthaven.turtletracker",
-      "versionCode": 4
+      "versionCode": 4,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBuNdkbh_N6-iBzEm_n_Z4lbcb9ClPAKn4"
+        }
+      }
     },
     "platforms": [
       "ios",
@@ -33,6 +38,7 @@
     },
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "description": ""
   }
 }

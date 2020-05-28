@@ -58,7 +58,6 @@ export default class LandingView extends React.Component {
         await fetch('https://outlook.office.com/api/v2.0/me', { headers: new Headers({ 'Authorization': `Bearer ` + access_token }) })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
                 username = responseJson['Alias']
             })
             .catch((error) => {

@@ -17,6 +17,7 @@ export default class LandingView extends React.Component {
         this.AzureADContext = {
             client_id: CLIENT_ID,
             authority_host: 'https://login.microsoftonline.com/common/oauth2/authorize',
+            redirect_url: 'apple.com',
             // This is required if client_id is a web application id
             // but not recommended doing this way.
             client_secret: AD_LOGIN.client_secret,
@@ -46,13 +47,22 @@ export default class LandingView extends React.Component {
                     onSuccess={this.onLoginSuccess.bind(this)}
                     needLogout={true}
                     scalesPageToFit={true}
-                    bounces={false}
+                    onURLChange={x => {
+                        
+                        if (x.url.startsWith("turt")) {
+                            console.log(x)
+                        }
+                        // What happens if an email is rejected?
+                    }}
+                    hideAfterLogin={true}
                 />
             </SafeAreaView>
         )
     }
 
     async onLoginSuccess(credentials) {
+        console.log("here")
+        console.log(credentials)
         let access_token = credentials['https://outlook.office365.com'].access_token
         let username = " "
         await fetch('https://outlook.office.com/api/v2.0/me', { headers: new Headers({ 'Authorization': `Bearer ` + access_token }) })

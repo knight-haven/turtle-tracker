@@ -4,6 +4,7 @@ import * as Haptics from 'expo-haptics';
 import IconButton from '../components/IconButton';
 import TurtleMapView from '../components/TurtleMapView';
 import Button from '../components/Button';
+import { BASE_URL, BACKEND_SECRET } from '../env';
 
 /*
 MapScreen.js contains the basic map screen with turtle sightings.
@@ -33,7 +34,7 @@ export default function MapScreen({ navigation }) {
   }, [])
 
   function getMarkers() {
-    return fetch(`https://turtletrackerbackend.herokuapp.com/sighting`)
+    return fetch(BASE_URL + `/sighting`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
       .then((response) => response.json())
       .then((responseJson) => {
         var markers = []
@@ -58,10 +59,10 @@ export default function MapScreen({ navigation }) {
 
   function handleMarkerPress(event) {
     for (var i = 0; i < markerListRef.current.length; i++) {
-      if (markerListRef.current[i].coordinate.latitude == event.nativeEvent.coordinate.latitude && 
-          markerListRef.current[i].coordinate.longitude == event.nativeEvent.coordinate.longitude) {
-            navigation.navigate('TurtleView', {turtleId: markerListRef.current[i].turtleId})
-          }
+      if (markerListRef.current[i].coordinate.latitude == event.nativeEvent.coordinate.latitude &&
+        markerListRef.current[i].coordinate.longitude == event.nativeEvent.coordinate.longitude) {
+        navigation.navigate('TurtleView', { turtleId: markerListRef.current[i].turtleId })
+      }
     }
   }
 
@@ -95,7 +96,7 @@ export default function MapScreen({ navigation }) {
         followsUserLocation={true}
         scrollEnabled={true}
         showsMyLocationButton={false}
-        
+
       //onLongPress={handlePress}
       />
       <IconButton
@@ -110,10 +111,10 @@ export default function MapScreen({ navigation }) {
         size={45}
         containerStyle={{ right: 7, top: 7, position: 'absolute', flexDirection: 'row', }} />
 
-      <Button 
+      <Button
         onPress={() => navigation.navigate('Login')}
         title={"Logout"}
-        style={{ right: 7, bottom: 7, position: 'absolute', flexDirection: 'row', borderRadius: 100}}
+        style={{ right: 7, bottom: 7, position: 'absolute', flexDirection: 'row', borderRadius: 100 }}
         type={"solid"}
       />
 

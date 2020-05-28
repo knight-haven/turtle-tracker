@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, RefreshControl } from 'react-native';
-import * as firebase from 'firebase';
+import { firebase, BASE_URL, BACKEND_SECRET } from '../../env';
 import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
@@ -37,7 +37,7 @@ export default function TurtleViewScreen({ navigation }) {
     }
 
     async function getTurtleById(id) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/turtle/${id}`)
+        return fetch(BASE_URL + `/turtle/${id}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
             .then((response) => response.json())
             .then((responseJson) => {
                 onTurtleChange(responseJson[0]);
@@ -49,7 +49,7 @@ export default function TurtleViewScreen({ navigation }) {
     }
 
     async function getSightingByTurtleId(id) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/sighting/turtle/${id}`)
+        return fetch(BASE_URL + `/sighting/turtle/${id}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
             .then((response) => response.json())
             .then((responseJson) => {
                 getDerivedTurtleInfo(responseJson);
@@ -75,7 +75,7 @@ export default function TurtleViewScreen({ navigation }) {
     }
 
     function getTurtleImages(turtleId) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/photo/turtle/${turtleId}`)
+        return fetch(BASE_URL + `/photo/turtle/${turtleId}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
             .then((response) => response.json())
             .then(async (responseJson) => {
                 var imageList = []

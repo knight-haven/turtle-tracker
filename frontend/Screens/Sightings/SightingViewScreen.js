@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import { firebase, BASE_URL, BACKEND_SECRET } from '../../env';
 import moment from 'moment';
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, RefreshControl, Text } from 'react-native';
@@ -17,7 +17,7 @@ Turtle Sighting Screen for information on one particular sighting
 export default function SightingViewScreen({ navigation }) {
 
     function getTurtleById(id) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/turtle/${id}`)
+        return fetch(BASE_URL + `/turtle/${id}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
             .then(response => response.json())
             .then(responseJson => {
                 data = responseJson[0]
@@ -27,7 +27,7 @@ export default function SightingViewScreen({ navigation }) {
     }
 
     function getSightingById(id) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/sighting/${id}`)
+        return fetch(BASE_URL + `/sighting/${id}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
             .then((response) => response.json())
             .then((responseJson) => {
                 data = responseJson[0];
@@ -50,7 +50,7 @@ export default function SightingViewScreen({ navigation }) {
     }
 
     function getSightingImages(turtleId) {
-        return fetch(`https://turtletrackerbackend.herokuapp.com/photo/sighting/${sightingId}`)
+        return fetch(BASE_URL + `/photo/sighting/${sightingId}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
             .then((response) => response.json())
             .then(async (responseJson) => {
                 var imageList = []
@@ -137,7 +137,7 @@ export default function SightingViewScreen({ navigation }) {
                         <TurtleText titleText="Notes: " baseText={notes} />
                     </View>
                     {/* map */}
-                    <View style={[ s.shadow, s.card, { width: '100%', height: 200 }]}>
+                    <View style={[s.shadow, s.card, { width: '100%', height: 200 }]}>
                         <TurtleMapView
                             markers={markerList}
                             latitude={markerList.length > 0 ? markerList[0].coordinate.latitude : null}

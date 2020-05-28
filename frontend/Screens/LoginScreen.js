@@ -1,9 +1,9 @@
 import React from 'react';
 import { ReactNativeAD, ADLoginView } from 'react-native-azure-ad'
-import { SafeAreaView, YellowBox } from 'react-native';
+import { SafeAreaView, YellowBox, Alert } from 'react-native';
+import { AD_LOGIN, USERS } from '../env';
 
-// TODO: make this an envar
-const CLIENT_ID = '1cc5ab7b-ae5c-40d7-b267-4f1302adcd86'
+const CLIENT_ID = AD_LOGIN.client_id
 
 // Disable warning after getting login.
 YellowBox.ignoreWarnings([`Encountered an error loading page {"target":3,"description":"Could not connect to the server.","url":"https://adfs.calvin.edu`])
@@ -19,7 +19,7 @@ export default class LandingView extends React.Component {
             authority_host: 'https://login.microsoftonline.com/common/oauth2/authorize',
             // This is required if client_id is a web application id
             // but not recommended doing this way.
-            client_secret: '4Xko]:wIu5@sGE_28IUxbR-Xr4Xyd2Np',
+            client_secret: AD_LOGIN.client_secret,
             resources: [
                 'https://graph.microsoft.com',
                 'https://outlook.office365.com',
@@ -52,9 +52,29 @@ export default class LandingView extends React.Component {
         )
     }
 
-    onLoginSuccess(credentials) {
-        console.log(credentials)
-        this.props.navigation.navigate({ routeName: 'Map' })
-        // use the access token ..
+    async onLoginSuccess(credentials) {
+        let access_token = credentials['https://outlook.office365.com'].access_token
+        let username = " "
+        await fetch('https://outlook.office.com/api/v2.0/me', { headers: new Headers({ 'Authorization': `Bearer ` + access_token }) })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson)
+                username = responseJson['Alias']
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        if (USERS.includes(username)) {
+            this.props.navigation.navigate({ routeName: 'Map' })
+        }
+        else {
+            Alert.alert(
+                `${username} does not have permission`,
+                "Ask Jen to add your account if this is a mistake",
+                [{ text: "Close", onPress: () => { } }],
+                { cancelable: false }
+            );
+            this.props.navigation.goBack()
+        }
     }
 }

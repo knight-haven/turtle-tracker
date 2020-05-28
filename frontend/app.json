@@ -3,14 +3,15 @@
     "name": "Turtle Tracker",
     "slug": "TurtleTracker",
     "privacy": "unlisted",
-    "sdkVersion": "35.0.0",
     "ios": {
       "bundleIdentifier": "com.knighthaven.turtletracker",
       "supportsTablet": true,
       "buildNumber": "1.0.1"
     },
     "android": {
-      "permissions": ["ACCESS_FINE_LOCATION"],
+      "permissions": [
+        "ACCESS_FINE_LOCATION"
+      ],
       "package": "com.knighthaven.turtletracker",
       "versionCode": 1
     },

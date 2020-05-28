@@ -47,13 +47,6 @@ export default class LandingView extends React.Component {
                     onSuccess={this.onLoginSuccess.bind(this)}
                     needLogout={true}
                     scalesPageToFit={true}
-                    onURLChange={x => {
-                        
-                        if (x.url.startsWith("turt")) {
-                            console.log(x)
-                        }
-                        // What happens if an email is rejected?
-                    }}
                     hideAfterLogin={true}
                 />
             </SafeAreaView>
@@ -61,8 +54,6 @@ export default class LandingView extends React.Component {
     }
 
     async onLoginSuccess(credentials) {
-        console.log("here")
-        console.log(credentials)
         let access_token = credentials['https://outlook.office365.com'].access_token
         let username = " "
         await fetch('https://outlook.office.com/api/v2.0/me', { headers: new Headers({ 'Authorization': `Bearer ` + access_token }) })

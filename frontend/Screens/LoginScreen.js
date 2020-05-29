@@ -1,12 +1,9 @@
 import React from 'react';
 import { ReactNativeAD, ADLoginView } from 'react-native-azure-ad'
-import { SafeAreaView, YellowBox, Alert } from 'react-native';
+import { SafeAreaView, Alert } from 'react-native';
 import { AD_LOGIN, USERS } from '../env';
 
 const CLIENT_ID = AD_LOGIN.client_id
-
-// Disable warning after getting login.
-YellowBox.ignoreWarnings([`Encountered an error loading page {"target":3,"description":"Could not connect to the server.","url":"https://adfs.calvin.edu`])
 
 /*
  taken from https://github.com/wkh237/react-native-azure-ad.

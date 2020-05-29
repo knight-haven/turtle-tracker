@@ -257,7 +257,7 @@ const sendEmail = (request, response) => {
       to: emailAddress,
       from: 'turtletrackerbackend@gmail.com',
       subject: 'Calvin EcoPreserve Turtle Data',
-      text: 'Attached is a csv file with the turtle data.',
+      text: 'Dear Turtle Tracker User,\n\nAttached is a csv file with the all the box turtle data at the Calvin EcoPreserve.\n\nSincerely,\nThe Turtle Tracker Team',
       attachments: [
         {
           content: attachment,

@@ -6,7 +6,10 @@
     "ios": {
       "bundleIdentifier": "com.knighthaven.turtletracker",
       "supportsTablet": true,
-      "buildNumber": "1.0.4"
+      "buildNumber": "1.0.4",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCH-5qAL5WwDtLKWENncC5511JpXm5VuZw"
+      }
     },
     "android": {
       "permissions": [

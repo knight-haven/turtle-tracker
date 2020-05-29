@@ -8,15 +8,18 @@ import s from './Styles';
 */
 export default function Screen(props) {
     return (
-        <ScrollView style={styles.background}
-            refreshControl={props.refreshControl}
-        >
-            <View
-                style={[styles.content, s.shadow, props.contentStyle]}
+        <SafeAreaView style={styles.background}>
+            <ScrollView style={styles.background}
+                refreshControl={props.refreshControl}
+                contentContainerStyle={{ flexGrow: 1 }}
             >
-                {props.children}
-            </View>
-        </ScrollView>
+                <View
+                    style={[styles.content, s.shadow, props.contentStyle]}
+                >
+                    {props.children}
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
@@ -31,5 +34,6 @@ const styles = StyleSheet.create({
         padding: 7,
         marginTop: 7,
         marginBottom: 7,
+        flex: 1,
     }
 });

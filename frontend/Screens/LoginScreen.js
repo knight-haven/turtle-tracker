@@ -17,7 +17,6 @@ export default class LandingView extends React.Component {
         this.AzureADContext = {
             client_id: CLIENT_ID,
             authority_host: 'https://login.microsoftonline.com/common/oauth2/authorize',
-            redirect_url: 'apple.com',
             // This is required if client_id is a web application id
             // but not recommended doing this way.
             client_secret: AD_LOGIN.client_secret,

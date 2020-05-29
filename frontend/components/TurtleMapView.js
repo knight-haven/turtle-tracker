@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 /*
     TurtleMapView is a custom MapView
@@ -12,7 +12,7 @@ export default function TurtleMapView(props) {
             <MapView
                 mapType="hybrid"
                 style={{ flex: 1 }}
-                provider="google"
+                provider={PROVIDER_GOOGLE}
                 region={props.latitude != undefined && props.longitude != undefined ? {
                     latitude: props.latitude,
                     longitude: props.longitude,

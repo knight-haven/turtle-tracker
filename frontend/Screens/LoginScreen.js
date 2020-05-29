@@ -52,16 +52,18 @@ export default class LandingView extends React.Component {
     async onLoginSuccess(credentials) {
         let access_token = credentials['https://outlook.office365.com'].access_token
         let username = " "
+        let emailAddress = ""
         await fetch('https://outlook.office.com/api/v2.0/me', { headers: new Headers({ 'Authorization': `Bearer ` + access_token }) })
             .then((response) => response.json())
             .then((responseJson) => {
                 username = responseJson['Alias']
+                emailAddress = responseJson['EmailAddress']
             })
             .catch((error) => {
                 console.error(error);
             });
         if (USERS.includes(username)) {
-            this.props.navigation.navigate({ routeName: 'Map' })
+            this.props.navigation.navigate('Map', {email: emailAddress})
         }
         else {
             Alert.alert(

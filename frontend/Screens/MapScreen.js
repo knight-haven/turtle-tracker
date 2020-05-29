@@ -100,7 +100,7 @@ export default function MapScreen({ navigation }) {
         //onLongPress={handlePress}
       />
       <IconButton
-        onPress={() => navigation.navigate('Settings')}
+        onPress={() => navigation.navigate('Settings', {email: navigation.getParam('email')})}
         name={'settings'}
         size={45}
         containerStyle={{ left: 7, top: 7, position: 'absolute', flexDirection: 'row', }} />

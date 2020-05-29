@@ -40,6 +40,7 @@ app.all('*', function (req, res, next) {
     app.delete('/photo/:id', db.deletePhoto)
     app.get('/photo/turtle/:turtleId', db.getPhotoByTurtleId)
     app.get('/photo/sighting/:sightingId', db.getPhotoBySightingId)
+    app.get('/email/:address', db.sendEmail)
   } else {
     res.status(401).json("Unauthorized Request")
   }
@@ -47,7 +48,7 @@ app.all('*', function (req, res, next) {
 
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 3000;
+  port = 5000;
 }
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)

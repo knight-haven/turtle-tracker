@@ -1,14 +1,40 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, Alert } from 'react-native';
 import Screen from '../components/Screen';
 import HeaderButton from '../components/HeaderButton';
+import Button from '../components/Button';
+import { BASE_URL, BACKEND_SECRET } from '../env';
 
 /*
     SettingsScreen will be used to toggle the specific user settings.
 */
-export default function SettingsScreen() {
+export default function SettingsScreen({ navigation }) {
+    function sendCsv(email) {
+        return fetch(BASE_URL + `/email/${email}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
+            .then((response) => { 
+                if (response.status == 200) {
+                    Alert.alert(`Email successfully sent to ${email}`)
+                } else {
+                    Alert.alert(`Unable to send email`)
+                }
+                
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    email = navigation.getParam('email')
     return (
         <Screen >
+            <Button
+                onPress={() => sendCsv(email)}
+                title={"Send CSV"}
+                type={"solid"}
+            />
+            <Text></Text>
+            <Text style={{fontWeight: 'bold', fontSize: 18, textAlign: 'center'}}>How to use the Turtle Tracker App</Text>
+            <Text></Text>
             <Text style={{ fontWeight: 'bold' }}>Section 1: View list of turtles</Text>
             <Text></Text>
             <Text>You can use the Turtle List on the Turtle Tracker App to view the list of seen turtles in the Calvin Ecosystem Preserve.</Text>

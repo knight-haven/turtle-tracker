@@ -3,25 +3,30 @@ import { Text, Alert } from 'react-native';
 import Screen from '../components/Screen';
 import HeaderButton from '../components/HeaderButton';
 import Button from '../components/Button';
-import { BASE_URL, BACKEND_SECRET } from '../env';
+import { BASE_URL, BACKEND_SECRET, USERS } from '../env';
 
 /*
     SettingsScreen will be used to toggle the specific user settings.
 */
 export default function SettingsScreen({ navigation }) {
     function sendCsv(email) {
-        return fetch(BASE_URL + `/email/${email}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
-            .then((response) => { 
-                if (response.status == 200) {
-                    Alert.alert(`Email successfully sent to ${email}`)
-                } else {
-                    Alert.alert(`Unable to send email`)
-                }
-                
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        if (USERS.includes(email.split('@')[0])) {
+            return fetch(BASE_URL + `/email/${email}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
+                .then((response) => {
+                    if (response.status == 200) {
+                        Alert.alert(`Email successfully sent to ${email}`)
+                    } else {
+                        Alert.alert(`Unable to send email`)
+                    }
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } else {
+            // TODO: this relaunches app on android.
+            // do nothing
+        }
     }
 
     email = navigation.getParam('email')
@@ -33,7 +38,7 @@ export default function SettingsScreen({ navigation }) {
                 type={"solid"}
             />
             <Text></Text>
-            <Text style={{fontWeight: 'bold', fontSize: 18, textAlign: 'center'}}>How to use the Turtle Tracker App</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>How to use the Turtle Tracker App</Text>
             <Text></Text>
             <Text style={{ fontWeight: 'bold' }}>Section 1: View list of turtles</Text>
             <Text></Text>

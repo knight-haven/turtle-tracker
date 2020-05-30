@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, } from 'react-native';
+import { View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import IconButton from '../components/IconButton';
 import TurtleMapView from '../components/TurtleMapView';
@@ -97,7 +97,7 @@ export default function MapScreen({ navigation }) {
         scrollEnabled={true}
         showsMyLocationButton={false}
 
-      //onLongPress={handlePress}
+        //onLongPress={handlePress}
       />
       <IconButton
         onPress={() => navigation.navigate('Settings', {email: navigation.getParam('email')})}

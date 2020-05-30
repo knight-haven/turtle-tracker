@@ -3,28 +3,37 @@
     "name": "Turtle Tracker",
     "slug": "TurtleTracker",
     "privacy": "unlisted",
-    "sdkVersion": "35.0.0",
     "ios": {
       "bundleIdentifier": "com.knighthaven.turtletracker",
       "supportsTablet": true,
-      "buildNumber": "1.0.1"
+      "buildNumber": "1.0.6",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCH-5qAL5WwDtLKWENncC5511JpXm5VuZw"
+      }
     },
     "android": {
-      "permissions": ["ACCESS_FINE_LOCATION"],
+      "permissions": [
+        "ACCESS_FINE_LOCATION"
+      ],
       "package": "com.knighthaven.turtletracker",
-      "versionCode": 1
+      "versionCode": 6,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBuNdkbh_N6-iBzEm_n_Z4lbcb9ClPAKn4"
+        }
+      }
     },
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "1.0.1",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -32,6 +41,7 @@
     },
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "description": ""
   }
 }

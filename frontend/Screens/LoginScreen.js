@@ -1,12 +1,9 @@
 import React from 'react';
 import { ReactNativeAD, ADLoginView } from 'react-native-azure-ad'
-import { SafeAreaView, YellowBox, Alert } from 'react-native';
+import { SafeAreaView, Alert } from 'react-native';
 import { AD_LOGIN, USERS } from '../env';
 
 const CLIENT_ID = AD_LOGIN.client_id
-
-// Disable warning after getting login.
-YellowBox.ignoreWarnings([`Encountered an error loading page {"target":3,"description":"Could not connect to the server.","url":"https://adfs.calvin.edu`])
 
 /*
  taken from https://github.com/wkh237/react-native-azure-ad.
@@ -46,7 +43,7 @@ export default class LandingView extends React.Component {
                     onSuccess={this.onLoginSuccess.bind(this)}
                     needLogout={true}
                     scalesPageToFit={true}
-                    bounces={false}
+                    hideAfterLogin={true}
                 />
             </SafeAreaView>
         )
@@ -59,7 +56,6 @@ export default class LandingView extends React.Component {
         await fetch('https://outlook.office.com/api/v2.0/me', { headers: new Headers({ 'Authorization': `Bearer ` + access_token }) })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
                 username = responseJson['Alias']
                 emailAddress = responseJson['EmailAddress']
             })

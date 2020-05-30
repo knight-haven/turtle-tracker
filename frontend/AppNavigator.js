@@ -19,6 +19,7 @@ import SightingEditScreen from './Screens/Sightings/SightingEditScreen';
 import SightingViewScreen from './Screens/Sightings/SightingViewScreen';
 import LoginScreen from './Screens/LoginScreen';
 import LandingScreen from './Screens/LandingScreen';
+import AlternateLoginScreen from './Screens/AlternateLoginScreen';
 
 // Screens shared across stacks.
 const CommonScreens = {
@@ -143,6 +144,9 @@ const LandingNav = createStackNavigator({
   },
   ADLogin: {
     screen: LoginScreen
+  },
+  AltLogin: {
+    screen: AlternateLoginScreen
   }
 })
 

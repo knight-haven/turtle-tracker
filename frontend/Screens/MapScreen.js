@@ -38,8 +38,7 @@ export default function MapScreen({ navigation }) {
       .then((response) => response.json())
       .then((responseJson) => {
         var markers = []
-        // TODO: This shortening on markers is temporary.
-        for (var i = 0; i < responseJson.length - responseJson.length + 4; i++) {
+        for (var i = 0; i < responseJson.length; i++) {
           markers.push({
             "turtleId": responseJson[i].turtle_id,
             "coordinate": {

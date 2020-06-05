@@ -12,6 +12,7 @@ import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
 import Button from '../../components/Button';
+import Divider from '../../components/Divider';
 
 /*
 Define a couple useful styles
@@ -43,29 +44,29 @@ export default function SightingEditScreen({ navigation }) {
     const [latitude, setLatitude] = useState(42.931870);
     const [longitude, setLongitude] = useState(-85.582130);
 
-    try {
-        setLatitude(sighting.latitude)
-        setLongitude(sighting.longitude)
-    }
-    catch (error) {
-        useEffect(() => {
-            navigator.geolocation.getCurrentPosition(
-              position => {
-                setLatitude(position.coords.latitude);
-                setLongitude(position.coords.longitude);
-                setMarkerList([{
-                    "coordinate": {
-                      "latitude": position.coords.latitude,
-                      "longitude": position.coords.longitude,
-                    },
-                  }])
-              },
-              { enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 },
-            )
-          }, [])
-    }
-
     isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
+
+    useEffect(() => {
+        if (isEdit) {
+            setLatitude(sighting.latitude)
+            setLongitude(sighting.longitude)
+        } else {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    setLatitude(position.coords.latitude);
+                    setLongitude(position.coords.longitude);
+                    setMarkerList([{
+                        "coordinate": {
+                            "latitude": position.coords.latitude,
+                            "longitude": position.coords.longitude,
+                        },
+                    }])
+                },
+                { enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 },
+            )
+        }
+    }, [])
+
     useEffect(() => {
         if (isEdit && sighting != null) {
             const {
@@ -220,11 +221,11 @@ export default function SightingEditScreen({ navigation }) {
     return (
         <Screen>
             <View>
-                <TurtleText titleText="Mark: " baseText={turtle.mark} />
-                {isEdit
-                    ? <TurtleTextInput titleText='Turtle Number: ' onChangeText={turtleNumber => setTurtleNumber(turtleNumber)} value={turtleNumber} placeholder="#" />
-                    : <TurtleText titleText='Turtle Number: ' baseText={turtleNumber} />
-                }
+                <View style={{flexDirection: 'row'}}>
+                    <TurtleText titleText="Mark" baseText={turtle.mark} />
+                    <Divider/>
+                    <TurtleText titleText='Turtle Number' baseText={turtleNumber} />
+                </View>
                 {/* used solely for spacing */}
                 <Text>   </Text>
 

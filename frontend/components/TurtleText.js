@@ -31,7 +31,8 @@ export default class TurtleText extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop:4,
+        flex: 1,
+        marginTop: 4,
         display: 'flex', 
         flexWrap: 'wrap',
         // borderBottomWidth:0.5,
@@ -40,9 +41,12 @@ const styles = StyleSheet.create({
     baseText: {
         fontSize: 20,
         fontWeight: '500',
+        width: '100%',
+        textAlign: 'center',
     },
     titleText: {
         fontSize: 12,
         fontWeight: '300',
+        textAlign: 'center',
     },
 });

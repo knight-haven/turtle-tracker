@@ -28,8 +28,9 @@ const styles = StyleSheet.create({
 SightingEditScreen is for editing the information of a specific citing.
 */
 export default function SightingEditScreen({ navigation }) {
-    tempId = navigation.getParam('turtleId') != undefined ? navigation.getParam('turtleId') : 1
-
+    tempId = navigation.getParam('turtleId') !== undefined ? navigation.getParam('turtleId') : 1
+    sighting = navigation.getParam('sighting')
+    
     const [turtle, setTurtle] = useState({});
     useEffect(() => { getTurtleById(tempId); }, []);
     const [turtleNumber, setTurtleNumber] = useState('');
@@ -39,8 +40,31 @@ export default function SightingEditScreen({ navigation }) {
     const [notes, setNotes] = useState('');
     const [markerList, setMarkerList] = useState([]);
     const [images, setImages] = useState([]);
+    const [latitude, setLatitude] = useState(42.931870);
+    const [longitude, setLongitude] = useState(-85.582130);
 
-    sighting = navigation.getParam('sighting');
+    try {
+        setLatitude(sighting.latitude)
+        setLongitude(sighting.longitude)
+    }
+    catch (error) {
+        useEffect(() => {
+            navigator.geolocation.getCurrentPosition(
+              position => {
+                setLatitude(position.coords.latitude);
+                setLongitude(position.coords.longitude);
+                setMarkerList([{
+                    "coordinate": {
+                      "latitude": position.coords.latitude,
+                      "longitude": position.coords.longitude,
+                    },
+                  }])
+              },
+              { enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 },
+            )
+          }, [])
+    }
+
     isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
     useEffect(() => {
         if (isEdit && sighting != null) {
@@ -67,7 +91,7 @@ export default function SightingEditScreen({ navigation }) {
             }
             if (navigation.getParam('markerList') != null) {
                 setMarkerList(navigation.getParam('markerList'));
-            }
+            } 
         }
     }, []);
 
@@ -243,6 +267,8 @@ export default function SightingEditScreen({ navigation }) {
             <TurtleMapView
                 markers={markerList}
                 pointerEvents="none"
+                latitude={latitude}
+                longitude={longitude}
             />
             <CameraGallery parentCallback={callback} />
             <View style={styles.container}>

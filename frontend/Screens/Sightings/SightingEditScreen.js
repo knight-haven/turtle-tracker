@@ -12,6 +12,7 @@ import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
 import Button from '../../components/Button';
+import Divider from '../../components/Divider';
 
 /*
 Define a couple useful styles
@@ -28,8 +29,9 @@ const styles = StyleSheet.create({
 SightingEditScreen is for editing the information of a specific citing.
 */
 export default function SightingEditScreen({ navigation }) {
-    tempId = navigation.getParam('turtleId') != undefined ? navigation.getParam('turtleId') : 1
-
+    tempId = navigation.getParam('turtleId') !== undefined ? navigation.getParam('turtleId') : 1
+    sighting = navigation.getParam('sighting')
+    
     const [turtle, setTurtle] = useState({});
     useEffect(() => { getTurtleById(tempId); }, []);
     const [turtleNumber, setTurtleNumber] = useState('');
@@ -39,9 +41,32 @@ export default function SightingEditScreen({ navigation }) {
     const [notes, setNotes] = useState('');
     const [markerList, setMarkerList] = useState([]);
     const [images, setImages] = useState([]);
+    const [latitude, setLatitude] = useState(42.931870);
+    const [longitude, setLongitude] = useState(-85.582130);
 
-    sighting = navigation.getParam('sighting');
     isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
+
+    useEffect(() => {
+        if (isEdit) {
+            setLatitude(sighting.latitude)
+            setLongitude(sighting.longitude)
+        } else {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    setLatitude(position.coords.latitude);
+                    setLongitude(position.coords.longitude);
+                    setMarkerList([{
+                        "coordinate": {
+                            "latitude": position.coords.latitude,
+                            "longitude": position.coords.longitude,
+                        },
+                    }])
+                },
+                { enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 },
+            )
+        }
+    }, [])
+
     useEffect(() => {
         if (isEdit && sighting != null) {
             const {
@@ -67,7 +92,7 @@ export default function SightingEditScreen({ navigation }) {
             }
             if (navigation.getParam('markerList') != null) {
                 setMarkerList(navigation.getParam('markerList'));
-            }
+            } 
         }
     }, []);
 
@@ -196,11 +221,11 @@ export default function SightingEditScreen({ navigation }) {
     return (
         <Screen>
             <View>
-                <TurtleText titleText="Mark: " baseText={turtle.mark} />
-                {isEdit
-                    ? <TurtleTextInput titleText='Turtle Number: ' onChangeText={turtleNumber => setTurtleNumber(turtleNumber)} value={turtleNumber} placeholder="#" />
-                    : <TurtleText titleText='Turtle Number: ' baseText={turtleNumber} />
-                }
+                <View style={{flexDirection: 'row'}}>
+                    <TurtleText titleText="Mark" baseText={turtle.mark} />
+                    <Divider/>
+                    <TurtleText titleText='Turtle Number' baseText={turtleNumber} />
+                </View>
                 {/* used solely for spacing */}
                 <Text>   </Text>
 
@@ -243,6 +268,8 @@ export default function SightingEditScreen({ navigation }) {
             <TurtleMapView
                 markers={markerList}
                 pointerEvents="none"
+                latitude={latitude}
+                longitude={longitude}
             />
             <CameraGallery parentCallback={callback} />
             <View style={styles.container}>

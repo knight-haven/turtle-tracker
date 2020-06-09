@@ -10,6 +10,10 @@ import { BASE_URL, BACKEND_SECRET, USERS } from '../env';
 */
 export default function SettingsScreen({ navigation }) {
     function sendCsv(email) {
+        if (email == null) {
+            Alert.alert("Could not access email")
+            return
+        }
         if (USERS.includes(email.split('@')[0])) {
             return fetch(BASE_URL + `/email/${email}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
                 .then((response) => {

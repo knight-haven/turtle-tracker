@@ -20,7 +20,7 @@ export default function SightingCard({navigation, sighting}) {
                     <TurtleText titleText={"Date"} baseText={moment(new Date(Date.parse(sighting.time_seen))).format('l')}/>
                 </View>
                 <Divider/>
-                <View style={{maxWidth: '35%'}}>
+                <View style={{maxWidth: '32%'}}>
                     <TurtleText titleText={"Location"} baseText={sighting.turtle_location}/>
                 </View>
                 <Divider/>

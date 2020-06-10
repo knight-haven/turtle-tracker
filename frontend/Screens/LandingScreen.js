@@ -10,23 +10,26 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function LandingScreen({ navigation }) {
     return (
         <Screen>
-            {/* <Button
-                title={"Sign in with Outlook"}
-                onPress={() => navigation.navigate("ADLogin")}
-            /> */}
             <Button
                 title={'submit'}
                 bold={true}
                 type={"solid"}
-                title={"Sign in"}
-                raised={true}
-                onPress={() => navigation.navigate("AltLogin")}
+                title={"Sign in with Outlook"}
+                onPress={() => navigation.navigate("ADLogin")}
+                style={{ paddingBottom: 14 }}
                 ViewComponent={LinearGradient}
                 linearGradientProps={{
                     colors: ['lime', 'green'],
                     start: { x: 0, y: 0 },
                     end: { x: .8, y: .8 },
                 }}
+            />
+            <Button
+                title={'submit'}
+                bold={true}
+                title={"Sign in"}
+                raised={true}
+                onPress={() => navigation.navigate("AltLogin")}
             />
         </Screen>
     )

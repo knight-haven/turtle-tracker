@@ -31,9 +31,11 @@ SightingEditScreen is for editing the information of a specific citing.
 export default function SightingEditScreen({ navigation }) {
     tempId = navigation.getParam('turtleId') !== undefined ? navigation.getParam('turtleId') : 1
     sighting = navigation.getParam('sighting')
+    useEffect(() => { 
+        getTurtleById(tempId); 
+    }, []);
     
     const [turtle, setTurtle] = useState({});
-    useEffect(() => { getTurtleById(tempId); }, []);
     const [turtleNumber, setTurtleNumber] = useState('');
     const [length, setLength] = useState('');
     const [date, setDate] = useState(new Date(Date.now()));

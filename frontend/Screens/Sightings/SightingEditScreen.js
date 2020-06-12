@@ -84,6 +84,7 @@ export default function SightingEditScreen({ navigation }) {
             }
             if (time_seen != null) {
                 setDate(new Date(Date.parse(time_seen)));
+                setFieldValue(dateRef, moment(time_seen).format('L'))
             }
             if (turtle_location != null) {
                 setLocation(turtle_location);

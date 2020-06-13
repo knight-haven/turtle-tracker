@@ -1,10 +1,10 @@
 require('dotenv').config()
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: process.env.PG_USER,
-  host: process.env.PG_HOST,
-  database: process.env.PG_DB,
-  password: process.env.PG_PW,
+  user: process.env.DEV_PG_USER,
+  host: process.env.DEV_PG_HOST,
+  database: process.env.DEV_PG_DB,
+  password: process.env.DEV_PG_PW,
   port: process.env.PG_PORT,
   max: process.env.PG_MAX,
   min: process.env.PG_MIN,
@@ -16,7 +16,7 @@ const fs = require("fs");
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 const getTurtles = (request, response) => {
-  pool.query('SELECT * FROM turtle ORDER BY id', (error, results) => {
+  pool.query('SELECT * FROM turtle WHERE is_deleted = false ORDER BY id', (error, results) => {
     if (error) {
       console.error(error)
     }
@@ -27,7 +27,7 @@ const getTurtles = (request, response) => {
 const getTurtleById = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('SELECT * FROM turtle WHERE id = $1', [id], (error, results) => {
+  pool.query('SELECT * FROM turtle WHERE id = $1 AND is_deleted = false', [id], (error, results) => {
     if (error) {
       console.error(error)
     }
@@ -65,16 +65,30 @@ const updateTurtle = (request, response) => {
 const deleteTurtle = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('DELETE FROM turtle WHERE id = $1', [id], (error, results) => {
+  pool.query('UPDATE turtle SET is_deleted = true WHERE id = $1', [id], (error, results) => {
     if (error) {
       console.error(error)
+    } 
+    else {
+      pool.query('UPDATE sighting SET is_deleted = true WHERE turtle_id = $1', [id], (error, results) => {
+        if (error) {
+          console.error(error)
+        }
+        else {
+          pool.query('UPDATE photo SET is_deleted = true WHERE turtle_id = $1', [id], (error, results) => {
+            if (error) {
+              console.error(error)
+            }
+            response.status(200).send(`Turtle deleted with ID: ${id}`)
+          })
+        }
+      })
     }
-    response.status(200).send(`Turtle deleted with ID: ${id}`)
   })
 }
 
 const getSightings = (request, response) => {
-  pool.query('SELECT * FROM sighting ORDER BY time_seen DESC', (error, results) => {
+  pool.query('SELECT * FROM sighting WHERE is_deleted = false ORDER BY time_seen DESC', (error, results) => {
     if (error) {
       console.error(error)
     }
@@ -85,7 +99,7 @@ const getSightings = (request, response) => {
 const getSightingById = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('SELECT * FROM sighting WHERE id = $1', [id], (error, results) => {
+  pool.query('SELECT * FROM sighting WHERE id = $1 AND is_deleted = false', [id], (error, results) => {
     if (error) {
       console.error(error)
     }
@@ -123,18 +137,25 @@ const updateSighting = (request, response) => {
 const deleteSighting = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('DELETE FROM sighting WHERE id = $1', [id], (error, results) => {
+  pool.query('UPDATE sighting SET is_deleted = true WHERE id = $1', [id], (error, results) => {
     if (error) {
       console.error(error)
     }
-    response.status(200).send(`Sighting deleted with ID: ${id}`)
+    else {
+      pool.query('UPDATE photo SET is_deleted = true WHERE sighting_id = $1', [id], (error, results) => {
+        if (error) {
+          console.error(error)
+        }
+        response.status(200).send(`Sighting deleted with ID: ${id}`)
+      })
+    }
   })
 }
 
 const getSightingByTurtleId = (request, response) => {
   const turtleId = parseInt(request.params.turtleId)
 
-  pool.query('SELECT * FROM turtle, sighting WHERE turtle.id = turtle_id AND turtle_id = $1 ORDER BY time_seen DESC', [turtleId], (error, results) => {
+  pool.query('SELECT * FROM turtle, sighting WHERE turtle.id = turtle_id AND turtle_id = $1 AND turtle.is_deleted = false AND sighting.is_deleted = false ORDER BY time_seen DESC', [turtleId], (error, results) => {
     if (error) {
       console.error(error)
     }
@@ -143,7 +164,7 @@ const getSightingByTurtleId = (request, response) => {
 }
 
 const getPhotos = (request, response) => {
-  pool.query('SELECT * FROM photo', (error, results) => {
+  pool.query('SELECT * FROM photo WHERE is_deleted = false', (error, results) => {
     if (error) {
       console.error(error)
     }
@@ -154,7 +175,7 @@ const getPhotos = (request, response) => {
 const getPhotoById = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('SELECT * FROM photo WHERE id = $1', [id], (error, results) => {
+  pool.query('SELECT * FROM photo WHERE id = $1 AND is_deleted = false', [id], (error, results) => {
     if (error) {
       console.error(error)
     }
@@ -192,7 +213,7 @@ const updatePhoto = (request, response) => {
 const deletePhoto = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('DELETE FROM photo WHERE id = $1', [id], (error, results) => {
+  pool.query('UPDATE photo SET is_deleted = true WHERE id = $1', [id], (error, results) => {
     if (error) {
       console.error(error)
     }
@@ -203,7 +224,7 @@ const deletePhoto = (request, response) => {
 const getPhotoByTurtleId = (request, response) => {
   const turtleId = parseInt(request.params.turtleId)
 
-  pool.query('SELECT photo.name FROM turtle, photo WHERE turtle.id = turtle_id AND turtle_id = $1', [turtleId], (error, results) => {
+  pool.query('SELECT photo.name FROM turtle, photo WHERE turtle.id = turtle_id AND turtle_id = $1 AND turtle.is_deleted = false AND photo.is_deleted = false', [turtleId], (error, results) => {
     if (error) {
       console.error(error)
     }
@@ -214,7 +235,7 @@ const getPhotoByTurtleId = (request, response) => {
 const getPhotoBySightingId = (request, response) => {
   const sightingId = parseInt(request.params.sightingId)
 
-  pool.query('SELECT photo.name FROM sighting, photo WHERE sighting.id = sighting_id AND sighting_id = $1', [sightingId], (error, results) => {
+  pool.query('SELECT photo.name FROM sighting, photo WHERE sighting.id = sighting_id AND sighting_id = $1 AND sighting.is_deleted = false AND photo.is_deleted = false', [sightingId], (error, results) => {
     if (error) {
       console.error(error)
     }
@@ -225,7 +246,7 @@ const getPhotoBySightingId = (request, response) => {
 const sendEmail = (request, response) => {
   const emailAddress = request.params.address;
 
-  pool.query('SELECT turtle_number, mark, sex, time_seen, turtle_location, latitude, longitude, carapace_length, notes FROM turtle, sighting WHERE turtle.id = sighting.turtle_id ORDER BY turtle_number', async (error, results) => {
+  pool.query('SELECT turtle_number, mark, sex, time_seen, turtle_location, latitude, longitude, carapace_length, notes FROM turtle, sighting WHERE turtle.id = sighting.turtle_id AND turtle.is_deleted = false AND sighting.is_deleted = false ORDER BY turtle_number', async (error, results) => {
     if (error) {
       console.log(error);
       throw error

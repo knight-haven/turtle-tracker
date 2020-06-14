@@ -21,7 +21,6 @@ app.get('/', (request, response) => {
 app.all('*', function (req, res, next) {
   let token = getBearerToken(req)
   if (token == SECRET) {
-    next() // Go onto the queries.
     app.get('/turtle', db.getTurtles)
     app.get('/turtle/:id', db.getTurtleById)
     app.post('/turtle', db.createTurtle)
@@ -41,6 +40,7 @@ app.all('*', function (req, res, next) {
     app.get('/photo/turtle/:turtleId', db.getPhotoByTurtleId)
     app.get('/photo/sighting/:sightingId', db.getPhotoBySightingId)
     app.get('/email/:address', db.sendEmail)
+    next() // Go onto the queries.
   } else {
     res.status(401).json("Unauthorized Request")
   }

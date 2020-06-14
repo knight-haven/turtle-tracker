@@ -2,10 +2,9 @@ import * as Permissions from 'expo-permissions';
 import { firebase, BASE_URL, BACKEND_SECRET } from '../../env';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, Platform } from 'react-native';
 import uuidv1 from 'uuid/v1';
 import TurtleText from '../../components/TurtleText';
-import TurtleTextInput from '../../components/TurtleTextInput';
 import CameraGallery from '../../components/CameraGallery';
 import TurtleMapView from '../../components/TurtleMapView';
 import Screen from '../../components/Screen';
@@ -13,6 +12,7 @@ import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
 import Button from '../../components/Button';
 import Divider from '../../components/Divider';
+import DatePicker from '../../components/DatePicker';
 
 /*
 Define a couple useful styles
@@ -31,18 +31,21 @@ SightingEditScreen is for editing the information of a specific citing.
 export default function SightingEditScreen({ navigation }) {
     tempId = navigation.getParam('turtleId') !== undefined ? navigation.getParam('turtleId') : 1
     sighting = navigation.getParam('sighting')
+    useEffect(() => { 
+        getTurtleById(tempId); 
+    }, []);
     
     const [turtle, setTurtle] = useState({});
-    useEffect(() => { getTurtleById(tempId); }, []);
     const [turtleNumber, setTurtleNumber] = useState('');
     const [length, setLength] = useState('');
-    const [date, setDate] = useState(Date.now());
+    const [date, setDate] = useState(new Date(Date.now()));
     const [location, setLocation] = useState('');
     const [notes, setNotes] = useState('');
     const [markerList, setMarkerList] = useState([]);
     const [images, setImages] = useState([]);
     const [latitude, setLatitude] = useState(42.931870);
     const [longitude, setLongitude] = useState(-85.582130);
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
 
@@ -81,6 +84,7 @@ export default function SightingEditScreen({ navigation }) {
             }
             if (time_seen != null) {
                 setDate(new Date(Date.parse(time_seen)));
+                setFieldValue(dateRef, moment(time_seen).format('L'))
             }
             if (turtle_location != null) {
                 setLocation(turtle_location);
@@ -209,6 +213,22 @@ export default function SightingEditScreen({ navigation }) {
         setImages(image);
     }
 
+    const onDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setDate(currentDate);
+        setFieldValue(dateRef, moment(currentDate).format('L'))
+    }
+
+    const onDateClose = (d) => {
+        if (d && Platform.OS !== 'ios') {
+            setShowDatePicker(false)
+            setDate(d)
+            setFieldValue(dateRef, moment(d).format('L'))
+        } else {
+            setShowDatePicker(false)
+        }
+      }
+
     // TODO: Move this to ask when button is pressed.
     getCameraPermission()
     getCameraRollPermission()
@@ -230,29 +250,55 @@ export default function SightingEditScreen({ navigation }) {
                 <Text>   </Text>
 
                 {/* text fields to be filled in by user */}
-                {/* TODO: Add a date picker */}
-                {/* <TextField
-                    label='Date:'
-                    onChangeText={date => setDate(date)}
-                    value={moment(date).format('l')}
-                    reference={dateRef}
-                /> */}
+                <TouchableWithoutFeedback onPress={() => {setShowDatePicker(true)}}>
+                    <View>
+                        <View pointerEvents='none'>
+                            <TextField
+                                label='Date: '
+                                value={moment(date).format('L')}
+                                reference={dateRef}
+                            />
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+                {
+                    showDatePicker && <DatePicker
+                        date={date}
+                        onChange={onDateChange}
+                        onClose={onDateClose}
+                    />
+                }
                 <TextField
                     label='Location: '
-                    onChangeText={location => setLocation(location)}
+                    onChangeText={location => {
+                        setLocation(location)
+                        if (Platform.OS !== 'ios') {
+                            setShowDatePicker(false)
+                        }
+                    }}
                     value={location}
                     reference={locRef}
                 />
                 <TextField
                     label='Length: '
-                    onChangeText={length => setLength(length)}
+                    onChangeText={length => {
+                        setLength(length)
+                        if (Platform.OS !== 'ios') {
+                            setShowDatePicker(false)
+                        }
+                    }}
                     value={length}
                     reference={lengthRef}
                     suffix={"mm"}
                 />
                 <TextField
                     label='Notes: '
-                    onChangeText={notes => setNotes(notes)}
+                    onChangeText={notes => {
+                        setNotes(notes)
+                        if (Platform.OS !== 'ios') {
+                            setShowDatePicker(false)
+                        }
+                    }}
                     value={notes}
                     multiline={true}
                     characterRestriction={140}
@@ -261,9 +307,6 @@ export default function SightingEditScreen({ navigation }) {
             </View>
             {/* for the image:
                 https://facebook.github.io/react-native/docs/cameraroll.html  */}
-            {/* date picker has android and ios versions on reacts website, but someone combined them here. 
-                will spend time later setting this up
-                https://github.com/react-native-community/react-native-datetimepicker#react-native-datetimepicker */}
             {/* TODO: Right now adding a sighting will return to the map so you can see it. */}
             <TurtleMapView
                 markers={markerList}

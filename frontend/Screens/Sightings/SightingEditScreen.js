@@ -12,6 +12,7 @@ import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
 import Button from '../../components/Button';
+import DeleteButton from '../../components/DeleteButton';
 import Divider from '../../components/Divider';
 
 /*
@@ -305,31 +306,14 @@ export default function SightingEditScreen({ navigation }) {
                 { isEdit != undefined && isEdit ?
                 <View>
                     <Text></Text>
-                    <Button
-                        bold={true}
-                        type={"solid"}
-                        title={"delete sighting"}
-                        color = "red"
-                        onPress={
-                            () => {
-                                Alert.alert(
-                                    "Delete Sighting",
-                                    "Are you sure you would like to delete this sighting?",
-                                    [
-                                      {
-                                        text: "No",
-                                        onPress: () => console.log("Cancel Pressed"),
-                                        style: "cancel"
-                                      },
-                                      { text: "Yes", onPress: async () => {
-                                            await deleteSightingById(sighting.id)
-                                            navigation.navigate('TurtleView')
-                                            navigation.state.params.refreshTurtleView() 
-                                        }
-                                    }
-                                    ],
-                                    { cancelable: false }
-                                  );
+                    <DeleteButton
+                        title="delete sighting"
+                        alertTitle="Delete Sighting"
+                        alert="Are you sure you would like to delete this sighting?"
+                        onPress= { async () => {
+                            await deleteSightingById(sighting.id)
+                            navigation.navigate('TurtleView')
+                            navigation.state.params.refreshTurtleView() 
                             }
                         }
                     />

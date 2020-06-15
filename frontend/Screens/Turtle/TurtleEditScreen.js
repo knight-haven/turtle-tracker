@@ -5,6 +5,7 @@ import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
 import Button from '../../components/Button';
+import DeleteButton from '../../components/DeleteButton';
 import { BASE_URL, BACKEND_SECRET } from '../../env';
 
 /*
@@ -166,34 +167,17 @@ export default function TurtleEditScreen({ navigation }) {
                     { isEdit != undefined && isEdit == "true" ?
                     <View>
                         <Text></Text>
-                        <Button
-                            bold={true}
-                            type={"solid"}
-                            title={"delete turtle"}
-                            color = "red"
-                            onPress={
-                                () => {
-                                    Alert.alert(
-                                        `Delete Turtle ${carapaceMark}`,
-                                        "Are you sure you would like to delete this turtle?",
-                                        [
-                                        {
-                                            text: "No",
-                                            onPress: () => console.log("Cancel Pressed"),
-                                            style: "cancel"
-                                        },
-                                        { text: "Yes", onPress: async () => {
-                                                await deleteTurtleById(turtleProps.id)
-                                                navigation.navigate('TurtleList')
-                                                navigation.state.params.refreshTurtleList() 
-                                            }
-                                        }
-                                        ],
-                                        { cancelable: false }
-                                    );
-                                }
+                        <DeleteButton
+                        title="delete turtle"
+                        alertTitle={`Delete Turtle ${carapaceMark}`}
+                        alert="Are you sure you would like to delete this turtle?"
+                        onPress= { async () => {
+                            await deleteTurtleById(turtleProps.id)
+                            navigation.navigate('TurtleList')
+                            navigation.state.params.refreshTurtleList() 
                             }
-                        />
+                        }
+                    />
                     </View> : null
                     }
                 </View>

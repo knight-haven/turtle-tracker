@@ -164,6 +164,7 @@ SightingViewScreen.navigationOptions = ({ navigation }) => ({
                     markerList: navigation.getParam('markerList'),
                     turtleId: navigation.getParam('turtleId'),
                     refreshSightingView: navigation.getParam('refreshSightingView'),
+                    refreshTurtleView: navigation.getParam('refreshTurtleView'),
                     edit: true,
                 })}
             name={'edit'}

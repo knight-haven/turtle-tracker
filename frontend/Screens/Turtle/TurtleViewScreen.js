@@ -172,6 +172,7 @@ export default function TurtleViewScreen({ navigation }) {
                                 key={index + 1}
                                 sighting={item}
                                 navigation={navigation}
+                                refresh={refresh}
                             />
                         ))
                     }

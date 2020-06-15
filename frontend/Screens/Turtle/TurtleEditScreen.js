@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
@@ -63,6 +63,8 @@ export default function TurtleEditScreen({ navigation }) {
             });
     }
 
+    isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
+
     const radio_props = [
         { label: 'Male', value: 'male' },
         { label: 'Female', value: 'female' }
@@ -71,9 +73,6 @@ export default function TurtleEditScreen({ navigation }) {
     const [number, setNumber] = useState('');
     const [carapaceMark, setCarapaceMark] = useState('');
     const [sex, setSex] = useState('male');
-
-    isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
-    console.log(navigation.getParam('refreshTurtleList'))
 
     useEffect(() => {
         if (isEdit) {
@@ -164,22 +163,39 @@ export default function TurtleEditScreen({ navigation }) {
                             }
                         }
                     />
-                    <Text></Text>
-                    <Button
-                        bold={true}
-                        type={"solid"}
-                        title={"delete turtle"}
-                        color = "red"
-                        onPress={isEdit != undefined && isEdit == "true" ?
-                            () => {
-                                deleteTurtleById(turtleProps.id),
-                                    navigation.navigate('TurtleList')
-                            } :
-                            () => {
-                                createTurtle(number, carapaceMark, sex)
+                    { isEdit != undefined && isEdit == "true" ?
+                    <View>
+                        <Text></Text>
+                        <Button
+                            bold={true}
+                            type={"solid"}
+                            title={"delete turtle"}
+                            color = "red"
+                            onPress={
+                                () => {
+                                    Alert.alert(
+                                        `Delete Turtle ${carapaceMark}`,
+                                        "Are you sure you would like to delete this turtle?",
+                                        [
+                                        {
+                                            text: "No",
+                                            onPress: () => console.log("Cancel Pressed"),
+                                            style: "cancel"
+                                        },
+                                        { text: "Yes", onPress: async () => {
+                                                await deleteTurtleById(turtleProps.id)
+                                                navigation.navigate('TurtleList')
+                                                navigation.state.params.refreshTurtleList() 
+                                            }
+                                        }
+                                        ],
+                                        { cancelable: false }
+                                    );
+                                }
                             }
-                        }
-                    />
+                        />
+                    </View> : null
+                    }
                 </View>
             </View>
         </Screen>

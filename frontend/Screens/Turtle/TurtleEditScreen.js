@@ -168,13 +168,13 @@ export default function TurtleEditScreen({ navigation }) {
                     <View>
                         <Text></Text>
                         <DeleteButton
-                        title="delete turtle"
-                        alertTitle={`Delete Turtle ${carapaceMark}`}
-                        alert="Are you sure you would like to delete this turtle?"
-                        onPress= { async () => {
-                            await deleteTurtleById(turtleProps.id)
-                            navigation.navigate('TurtleList')
-                            navigation.state.params.refreshTurtleList() 
+                            title="delete turtle"
+                            alertTitle={`Delete Turtle ${carapaceMark}`}
+                            alert="Are you sure you would like to delete this turtle?"
+                            onPress= { async () => {
+                                await deleteTurtleById(turtleProps.id)
+                                navigation.navigate('TurtleList')
+                                navigation.state.params.refreshTurtleList() 
                             }
                         }
                     />

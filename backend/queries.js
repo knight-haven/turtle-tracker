@@ -235,7 +235,7 @@ const getPhotoByTurtleId = (request, response) => {
 const getPhotoBySightingId = (request, response) => {
   const sightingId = parseInt(request.params.sightingId)
 
-  pool.query('SELECT photo.name FROM sighting, photo WHERE sighting.id = sighting_id AND sighting_id = $1 AND sighting.is_deleted = false AND photo.is_deleted = false', [sightingId], (error, results) => {
+  pool.query('SELECT photo.id, photo.name FROM sighting, photo WHERE sighting.id = sighting_id AND sighting_id = $1 AND sighting.is_deleted = false AND photo.is_deleted = false', [sightingId], (error, results) => {
     if (error) {
       console.error(error)
     }

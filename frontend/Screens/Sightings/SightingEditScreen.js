@@ -7,6 +7,7 @@ import uuidv1 from 'uuid/v1';
 import TurtleText from '../../components/TurtleText';
 import TurtleTextInput from '../../components/TurtleTextInput';
 import CameraGallery from '../../components/CameraGallery';
+import Gallery from '../../components/Gallery';
 import TurtleMapView from '../../components/TurtleMapView';
 import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
@@ -33,6 +34,7 @@ export default function SightingEditScreen({ navigation }) {
     tempId = navigation.getParam('turtleId') !== undefined ? navigation.getParam('turtleId') : 1
     sighting = navigation.getParam('sighting')
     isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
+    imageList = navigation.getParam('images')
     
     const [turtle, setTurtle] = useState({});
     const [turtleNumber, setTurtleNumber] = useState('');
@@ -41,7 +43,7 @@ export default function SightingEditScreen({ navigation }) {
     const [location, setLocation] = useState('');
     const [notes, setNotes] = useState('');
     const [markerList, setMarkerList] = useState([]);
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState(imageList);
     const [latitude, setLatitude] = useState(42.931870);
     const [longitude, setLongitude] = useState(-85.582130);
 
@@ -281,7 +283,17 @@ export default function SightingEditScreen({ navigation }) {
                 latitude={latitude}
                 longitude={longitude}
             />
-            <CameraGallery parentCallback={callback} />
+            {isEdit ?
+                <Gallery
+                    images={images}
+                    isDelete={isEdit}
+                    navigation={navigation}
+                /> :
+                <CameraGallery 
+                    parentCallback={callback} 
+                    imageList={images}
+                />
+            }
             <View style={styles.container}>
                 {/* // TODO: This gets rendered 4 times!!! Check into that. */}
                 <Button

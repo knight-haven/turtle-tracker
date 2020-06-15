@@ -130,7 +130,7 @@ export default function TurtleViewScreen({ navigation }) {
         getTurtleById(turtleId)
         getSightingByTurtleId(turtleId)
         getTurtleImages(turtleId)
-        navigation.setParams({ refreshTurtleView: refresh })
+        navigation.setParams({ refreshTurtleView: refresh, refreshTurtleList: navigation.getParam('refreshTurtleList') })
     }, []);
 
     return (
@@ -203,7 +203,7 @@ TurtleViewScreen.navigationOptions = ({ navigation }) => ({
                 edit: "true",
                 turtle: navigation.getParam('turtle'), originalDate: navigation.getParam('originalDate'),
                 recentDate: navigation.getParam('recentDate'), recentLength: navigation.getParam('recentLength'),
-                refreshTurtleView: navigation.getParam('refreshTurtleView'),
+                refreshTurtleView: navigation.getParam('refreshTurtleView'), refreshTurtleList: navigation.getParam('refreshTurtleList')
             })}
             name={'edit'}
         />

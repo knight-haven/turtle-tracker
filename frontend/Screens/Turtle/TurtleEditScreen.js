@@ -37,6 +37,16 @@ export default function TurtleEditScreen({ navigation }) {
             });
     }
 
+    function deleteTurtleById(id) {
+        return fetch(BASE_URL + `/turtle/${id}`, {
+            method: 'DELETE',
+            headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': `Bearer ` + BACKEND_SECRET }),
+        })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
     function createTurtle(number, mark, sex) {
         return fetch(BASE_URL + `/turtle`, {
             method: 'POST',
@@ -63,6 +73,7 @@ export default function TurtleEditScreen({ navigation }) {
     const [sex, setSex] = useState('male');
 
     isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
+    console.log(navigation.getParam('refreshTurtleList'))
 
     useEffect(() => {
         if (isEdit) {
@@ -147,6 +158,22 @@ export default function TurtleEditScreen({ navigation }) {
                                 editTurtleById(turtleProps.id),
                                     navigation.goBack(),
                                     navigation.state.params.refreshTurtleView()
+                            } :
+                            () => {
+                                createTurtle(number, carapaceMark, sex)
+                            }
+                        }
+                    />
+                    <Text></Text>
+                    <Button
+                        bold={true}
+                        type={"solid"}
+                        title={"delete turtle"}
+                        color = "red"
+                        onPress={isEdit != undefined && isEdit == "true" ?
+                            () => {
+                                deleteTurtleById(turtleProps.id),
+                                    navigation.navigate('TurtleList')
                             } :
                             () => {
                                 createTurtle(number, carapaceMark, sex)

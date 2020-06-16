@@ -24,5 +24,7 @@ export default function TextField(props) {
 */
 export function setFieldValue(ref, value) {
     let { current: field } = ref
-    field.setValue(value)
+    if (value != null) {
+        field.setValue(value)
+    }
 }

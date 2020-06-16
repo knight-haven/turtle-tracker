@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Alert } from 'react-native';
 import LoadingImage from './LoadingImage';
-import DeleteButton from './DeleteButton';
+import IconButton from './IconButton';
 import { BASE_URL, BACKEND_SECRET } from '../env';
 
 export default function DeleteImage({navigation, source, style, photoId}) {
@@ -22,16 +22,31 @@ export default function DeleteImage({navigation, source, style, photoId}) {
                 source={source}
                 style={style}
             />
-            <DeleteButton
-                title="delete photo"
-                alertTitle="Delete Photo"
-                alert="Are you sure you would like to delete this photo?"
-                onPress= { async () => {
-                    await deletePhotoById(photoId)
-                    navigation.navigate('SightingView')
-                    navigation.state.params.refreshSightingView()
-                }
-            }
+            <IconButton
+                name="close"
+                size={22}
+                containerStyle={{ paddingLeft: 7, paddingRight: 7, position: 'absolute' }}
+                color="red"
+                onPress= { () => 
+                    Alert.alert(
+                        "Delete Photo",
+                        "Are you sure you would like to delete this photo?",
+                        [
+                            {
+                            text: "No",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel"
+                            },
+                            { text: "Yes", onPress: async () => {
+                                await deletePhotoById(photoId)
+                                navigation.navigate('SightingView')
+                                navigation.state.params.refreshSightingView()
+                                }
+                            }
+                        ],
+                        { cancelable: false }
+                        )
+                    }
             />
         </View>
     )

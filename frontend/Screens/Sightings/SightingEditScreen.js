@@ -4,6 +4,7 @@ import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, Platform } from 'react-native';
 import uuidv1 from 'uuid/v1';
+import { StackActions } from 'react-navigation';
 import TurtleText from '../../components/TurtleText';
 import CameraGallery from '../../components/CameraGallery';
 import TurtleMapView from '../../components/TurtleMapView';
@@ -322,14 +323,15 @@ export default function SightingEditScreen({ navigation }) {
                     type={"solid"}
                     title={"submit sighting"}
                     onPress={isEdit ?
-                        () => {
-                            editSightingById(sighting.id, turtle.id),
-                                navigation.goBack(),
-                                navigation.state.params.refreshSightingView()
+                        async () => {
+                            await editSightingById(sighting.id, turtle.id)
+                            navigation.goBack()
+                            navigation.state.params.refreshSightingView()
                         } :
-                        () => {
-                            getLocationAndCreateSighting(turtle.id);
-                            navigation.navigate("TurtleView", { turtleId: turtle.id });
+                        async () => {
+                            await getLocationAndCreateSighting(turtle.id);
+                            const replaceAction = StackActions.replace({ routeName: 'TurtleView', params: { turtleId: turtle.id }})
+                            navigation.dispatch(replaceAction);
                             if (navigation.state.params.refreshTurtleView != undefined) {
                                 navigation.state.params.refreshTurtleView();
                             }

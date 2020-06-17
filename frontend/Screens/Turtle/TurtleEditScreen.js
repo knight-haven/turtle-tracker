@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
+import { StackActions, NavigationActions } from 'react-navigation';
 import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
@@ -49,7 +50,8 @@ export default function TurtleEditScreen({ navigation }) {
         })
             .then(response => response.json())
             .then(responseJson => {
-                navigation.navigate("SightingEdit", { turtleId: responseJson })
+                const replaceAction = StackActions.replace({ routeName: 'SightingEdit', params: { turtleId: responseJson }})
+                navigation.dispatch(replaceAction);
             });
     }
 
@@ -143,10 +145,10 @@ export default function TurtleEditScreen({ navigation }) {
                         type={"solid"}
                         title={"submit turtle"}
                         onPress={isEdit != undefined && isEdit == "true" ?
-                            () => {
-                                editTurtleById(turtleProps.id),
-                                    navigation.goBack(),
-                                    navigation.state.params.refreshTurtleView()
+                            async () => {
+                                await editTurtleById(turtleProps.id)
+                                navigation.goBack()
+                                navigation.state.params.refreshTurtleView()
                             } :
                             () => {
                                 createTurtle(number, carapaceMark, sex)

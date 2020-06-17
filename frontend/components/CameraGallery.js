@@ -5,7 +5,7 @@ import Gallery from '../components/Gallery';
 import Button from '../components/Button';
 
 export default function CameraGallery({ parentCallback }) {
-  const [images, setImages] = useState([{ uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg' }]);
+  const [images, setImages] = useState([]);
 
   // takes an image using the camera and appends it to the images
   async function takeImage() {
@@ -27,17 +27,9 @@ export default function CameraGallery({ parentCallback }) {
 
   function saveImage(result) {
     if (!result.cancelled) {
-      if (images[0].uri == 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg') {
-        setImages([result]);
-        if (parentCallback != undefined) {
-          parentCallback([result]);
-        }
-      }
-      else {
-        setImages([...images, result]);
-        if (parentCallback != undefined) {
-          parentCallback(galleryRef.current.state.images);
-        }
+      setImages([...images, result]);
+      if (parentCallback != undefined) {
+        parentCallback([...images, result]);
       }
     }
   }

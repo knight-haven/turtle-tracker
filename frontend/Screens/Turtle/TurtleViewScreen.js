@@ -114,6 +114,7 @@ export default function TurtleViewScreen({ navigation }) {
     const [refreshing, setRefreshing] = useState(false);
 
     function refresh() {
+        setRefreshing(true);
         turtleId = navigation.getParam('turtleId');
         getTurtleById(turtleId);
         getSightingByTurtleId(turtleId);
@@ -121,7 +122,6 @@ export default function TurtleViewScreen({ navigation }) {
     }
 
     const onRefresh = useCallback(() => {
-        setRefreshing(true);
         refresh();
     }, [refreshing]);
 

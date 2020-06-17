@@ -135,17 +135,8 @@ export default function SightingEditScreen({ navigation }) {
             });
     }
 
-    function getLocationAndCreateSighting(turtleId) {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                createSighting(turtleId, position.coords.latitude, position.coords.longitude)
-            },
-            { enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 },
-        )
-    }
-
-    function createSighting(turtleId, latitude, longitude) {
-        return fetch(BASE_URL + `/sighting`, {
+    async function createSighting(turtleId, latitude, longitude) {
+        const response = await fetch(BASE_URL + `/sighting`, {
             method: 'POST',
             headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': `Bearer ` + BACKEND_SECRET }),
             body: JSON.stringify({
@@ -158,14 +149,12 @@ export default function SightingEditScreen({ navigation }) {
                 notes
             })
         })
-            .then(response => response.json())
-            .then(responseJson => {
-                for (var i = 0; i < images.length; i++) {
-                    var UUID = uuidv1();
-                    uploadPhoto(images[i].uri, UUID);
-                    createPhoto(turtleId, responseJson, UUID);
-                }
-            });
+        const responseJson = await response.json()
+        for (var i = 0; i < images.length; i++) {
+            const UUID = uuidv1();
+            await uploadPhoto(images[i].uri, UUID);
+            await createPhoto(turtleId, responseJson, UUID);
+        }
     }
 
     function createPhoto(turtleId, sightingId, name) {
@@ -198,16 +187,11 @@ export default function SightingEditScreen({ navigation }) {
         }
     }
 
-    function uploadPhoto(uri, imageName) {
-        fetch(uri)
-            .then((response) => response.blob())
-            .then((responseBlob) => {
-                var ref = firebase.storage().ref().child("images/" + imageName);
-                ref.put(responseBlob);
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+    async function uploadPhoto(uri, imageName) {
+        const response = await fetch(uri)
+        const responseBlob = await response.blob()
+        var ref = firebase.storage().ref().child("images/" + imageName);
+        await ref.put(responseBlob);
     };
 
     function callback(image) {
@@ -329,7 +313,7 @@ export default function SightingEditScreen({ navigation }) {
                             navigation.state.params.refreshSightingView()
                         } :
                         async () => {
-                            await getLocationAndCreateSighting(turtle.id);
+                            await createSighting(turtle.id, latitude, longitude);
                             const replaceAction = StackActions.replace({ routeName: 'TurtleView', params: { turtleId: turtle.id }})
                             navigation.dispatch(replaceAction);
                             if (navigation.state.params.refreshTurtleView != undefined) {

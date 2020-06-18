@@ -11,11 +11,16 @@
       "source.fixAll.eslint": true,
       "source.organizeImports": true
     },
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
     "eslint.workingDirectories": ["../*"],
     "prettier.trailingComma": "all",
     "prettier.jsxSingleQuote": true,
+    "prettier.printWidth": 80,
     "prettier.semi": true,
     "prettier.singleQuote": true,
-    "prettier.tabWidth": 2
+    "prettier.tabWidth": 2,
+    "editor.wordWrap": "off"
   }
 }

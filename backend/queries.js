@@ -71,7 +71,7 @@ const deleteTurtle = (request, response) => {
   pool.query('UPDATE turtle SET is_deleted = true WHERE id = $1', [id], (error, results) => {
     if (error) {
       console.error(error)
-    } 
+    }
     else {
       pool.query('UPDATE sighting SET is_deleted = true WHERE turtle_id = $1', [id], (error, results) => {
         if (error) {

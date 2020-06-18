@@ -12,9 +12,7 @@
       }
     },
     "android": {
-      "permissions": [
-        "ACCESS_FINE_LOCATION"
-      ],
+      "permissions": ["ACCESS_FINE_LOCATION"],
       "package": "com.knighthaven.turtletracker",
       "versionCode": 6,
       "config": {
@@ -23,11 +21,7 @@
         }
       }
     },
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -39,9 +33,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "description": ""
   }
 }

@@ -1,6 +1,6 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import { ListItem } from 'react-native-elements'
+import React from 'react';
+import { Text, View } from 'react-native';
+import { ListItem } from 'react-native-elements';
 
 /*
   Component used for displaying one element on the turtle list.
@@ -27,10 +27,10 @@ const TurtleListItem = (props: any) => {
       onPress={() => {
         props.navigation.navigate(props.onPressPage, {
           turtleId: props.item.id,
-        })
+        });
       }}
     />
-  )
-}
+  );
+};
 
-export default TurtleListItem
+export default TurtleListItem;

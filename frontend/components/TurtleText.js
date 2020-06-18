@@ -23,7 +23,7 @@ export default class TurtleText extends Component {
         return (
             <View style={[styles.container, viewStyle]}>
                 <Text style={[styles.titleText, titleStyle]}>{titleText}</Text>
-                <Text style={[styles.baseText, baseStyle]} numberOfLines={2}>{baseText}</Text>
+                <Text style={[styles.baseText, baseStyle]}>{baseText}</Text>
             </View>
         );
     }

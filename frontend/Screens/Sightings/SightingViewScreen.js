@@ -9,6 +9,7 @@ import Screen from '../../components/Screen';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import HeaderButton from '../../components/HeaderButton';
 import Divider from '../../components/Divider';
+import BottomDivider from '../../components/BottomDivider';
 import s from '../../components/Styles';
 
 /*
@@ -23,6 +24,8 @@ export default function SightingViewScreen({ navigation }) {
                 data = responseJson[0]
                 setTurtleNumber(data.turtle_number)
                 setMark(data.mark)
+                setLoading(false);
+                setRefreshing(false);
             })
     }
 
@@ -58,11 +61,9 @@ export default function SightingViewScreen({ navigation }) {
                     imageList.push({ uri: await getPhoto(responseJson[i].name) })
                 }
                 onImagesChange(imageList);
-                setLoading(false);
-                setRefreshing(false);
             })
             .catch((error) => {
-                console.error(error);
+                console.log(error);
             });
     }
 
@@ -93,8 +94,8 @@ export default function SightingViewScreen({ navigation }) {
     const [refreshing, setRefreshing] = useState(false);
 
     function refresh() {
-        sightingId = navigation.getParam('sightingId');
-        turtleId = navigation.getParam('turtleId');
+        const sightingId = navigation.getParam('sightingId');
+        const turtleId = navigation.getParam('turtleId');
         getSightingById(sightingId);
         getTurtleById(turtleId);
         getSightingImages(sightingId);
@@ -121,20 +122,21 @@ export default function SightingViewScreen({ navigation }) {
                 !loading &&
                 <View>
                     <View style={[s.shadow, s.card]}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>Turtle #{turtleNumber}</Text>
                         <View style={{ justifyContent: 'space-evenly', flexDirection: 'row' }}>
                             {/* TODO: Replace sightingId with the number sighting for the specific turtle. */}
                             {/* <TurtleText titleText={`Sighting #${sightingId}`} /> */}
-                            <TurtleText titleText="Mark: " baseText={mark} />
+                            <TurtleText titleText="Mark" baseText={mark} />
                             <Divider />
-                            <TurtleText titleText="Date: " baseText={moment(date).format('l')} />
+                            <TurtleText titleText="Date" baseText={moment(date).format('l')} />
                         </View>
+                        <BottomDivider/>
                         <View style={{ justifyContent: 'space-evenly', flexDirection: 'row' }}>
-                            <TurtleText titleText="Length: " baseText={`${length} mm`} />
+                            <TurtleText titleText="Length" baseText={`${length} mm`} />
                             <Divider />
-                            <TurtleText titleText="Location: " baseText={location} />
+                            <TurtleText titleText="Location" baseText={location} />
                         </View>
-                        <TurtleText titleText="Notes: " baseText={notes} />
+                        <BottomDivider/>
+                        <TurtleText titleText="Notes" baseText={notes} />
                     </View>
                     {/* map */}
                     <View style={[s.shadow, s.card, { width: '100%', height: 200 }]}>

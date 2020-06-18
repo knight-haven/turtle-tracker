@@ -1,13 +1,23 @@
 import React from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import LoadingImage from './LoadingImage';
+import DeleteImage from './DeleteImage';
 
-export default function Gallery({ images }) {
-
+export default function Gallery({navigation, images, isDelete}) {
+  isDelete = isDelete != undefined && isDelete == true
   return (
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
         {
+          isDelete ? 
           images.map((item, index) => (
+            <DeleteImage 
+              key={index} 
+              source={{uri: item != null ? item.uri : null, width: 200, height: 200}} 
+              style={styles.imageStyle}
+              navigation={navigation}
+              photoId={item.id}
+            />
+            )) : images.map((item, index) => (
             <LoadingImage 
               key={index} 
               source={{uri: item != null ? item.uri : null, width: 200, height: 200}} 

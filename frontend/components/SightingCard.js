@@ -7,14 +7,14 @@ import TurtleMapView from './TurtleMapView';
 import IconButton from './IconButton';
 import s from './Styles';
 
-export default function SightingCard({navigation, sighting}) {
+export default function SightingCard({navigation, sighting, refresh}) {
 
     return (
         <View style={[styles.container, s.shadow]}>
             <View style={{flexDirection: 'row', justifyContent: 'space-evenly', marginBottom: 5}}>
                 <IconButton 
                     styles={styles.infoButton}
-                    onPress={() => navigation.navigate('SightingView', {turtleId: sighting.turtle_id, sightingId: sighting.id })}
+                    onPress={() => navigation.navigate('SightingView', {turtleId: sighting.turtle_id, sightingId: sighting.id, refreshTurtleView: refresh })}
                     name="info"/>
                 <View style={{maxWidth: '37%'}}>
                     <TurtleText titleText={"Date"} baseText={moment(new Date(Date.parse(sighting.time_seen))).format('l')}/>

@@ -2,15 +2,17 @@ import * as Permissions from 'expo-permissions';
 import { firebase, BASE_URL, BACKEND_SECRET } from '../../env';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, Platform, Alert } from 'react-native';
 import uuidv1 from 'uuid/v1';
 import TurtleText from '../../components/TurtleText';
 import CameraGallery from '../../components/CameraGallery';
+import Gallery from '../../components/Gallery';
 import TurtleMapView from '../../components/TurtleMapView';
 import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
 import Button from '../../components/Button';
+import DeleteButton from '../../components/DeleteButton';
 import Divider from '../../components/Divider';
 import DatePicker from '../../components/DatePicker';
 
@@ -31,6 +33,8 @@ SightingEditScreen is for editing the information of a specific citing.
 export default function SightingEditScreen({ navigation }) {
     tempId = navigation.getParam('turtleId') !== undefined ? navigation.getParam('turtleId') : 1
     sighting = navigation.getParam('sighting')
+    isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
+    imageList = navigation.getParam('images')
     useEffect(() => { 
         getTurtleById(tempId); 
     }, []);
@@ -42,12 +46,10 @@ export default function SightingEditScreen({ navigation }) {
     const [location, setLocation] = useState('');
     const [notes, setNotes] = useState('');
     const [markerList, setMarkerList] = useState([]);
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState(imageList);
     const [latitude, setLatitude] = useState(42.931870);
     const [longitude, setLongitude] = useState(-85.582130);
     const [showDatePicker, setShowDatePicker] = useState(false);
-
-    isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
 
     useEffect(() => {
         if (isEdit) {
@@ -209,6 +211,16 @@ export default function SightingEditScreen({ navigation }) {
             })
     };
 
+    function deleteSightingById(id) {
+        return fetch(BASE_URL + `/sighting/${id}`, {
+            method: 'DELETE',
+            headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': `Bearer ` + BACKEND_SECRET }),
+        })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
     function callback(image) {
         setImages(image);
     }
@@ -237,7 +249,6 @@ export default function SightingEditScreen({ navigation }) {
     locRef = React.createRef()
     lengthRef = React.createRef()
     notesRef = React.createRef()
-
     return (
         <Screen>
             <View>
@@ -314,7 +325,17 @@ export default function SightingEditScreen({ navigation }) {
                 latitude={latitude}
                 longitude={longitude}
             />
-            <CameraGallery parentCallback={callback} />
+            {isEdit ?
+                <Gallery
+                    images={images}
+                    isDelete={isEdit}
+                    navigation={navigation}
+                /> :
+                <CameraGallery 
+                    parentCallback={callback} 
+                    imageList={images}
+                />
+            }
             <View style={styles.container}>
                 {/* // TODO: This gets rendered 4 times!!! Check into that. */}
                 <Button
@@ -336,6 +357,22 @@ export default function SightingEditScreen({ navigation }) {
                         }
                     }
                 />
+                { isEdit != undefined && isEdit ?
+                <View>
+                    <Text></Text>
+                    <DeleteButton
+                        title="delete sighting"
+                        alertTitle="Delete Sighting"
+                        alert="Are you sure you would like to delete this sighting?"
+                        onPress= { async () => {
+                            await deleteSightingById(sighting.id)
+                            navigation.navigate('TurtleView')
+                            navigation.state.params.refreshTurtleView() 
+                            }
+                        }
+                    />
+                    </View> : null
+                    }
             </View>
         </Screen>
     );

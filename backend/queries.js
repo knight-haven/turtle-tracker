@@ -15,6 +15,9 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const fs = require("fs");
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
+// SELECT * FROM photo WHERE id = $1
+// TODO: make this send the first turtle photo.
+// TODO: update the .env
 const getTurtles = (request, response) => {
   pool.query('SELECT * FROM turtle WHERE is_deleted = false ORDER BY id', (error, results) => {
     if (error) {
@@ -256,19 +259,19 @@ const sendEmail = (request, response) => {
     const csvWriter = createCsvWriter({
       path: 'turtle_data.csv',
       header: [
-        {id: 'turtle_number', title: 'Turtle Number'},
-        {id: 'mark', title: 'Mark'},
-        {id: 'sex', title: 'Sex'},
-        {id: 'time_seen', title: 'Date'},
-        {id: 'turtle_location', title: 'Location'},
-        {id: 'latitude', title: 'Latitude'},
-        {id: 'longitude', title: 'longitude'},
-        {id: 'carapace_length', title: 'Carapace Length (mm)'},
-        {id: 'notes', title: 'Notes'},
+        { id: 'turtle_number', title: 'Turtle Number' },
+        { id: 'mark', title: 'Mark' },
+        { id: 'sex', title: 'Sex' },
+        { id: 'time_seen', title: 'Date' },
+        { id: 'turtle_location', title: 'Location' },
+        { id: 'latitude', title: 'Latitude' },
+        { id: 'longitude', title: 'longitude' },
+        { id: 'carapace_length', title: 'Carapace Length (mm)' },
+        { id: 'notes', title: 'Notes' },
       ]
     });
     await csvWriter.writeRecords(results.rows)
-      .then(()=> console.log('The CSV file was written successfully'));
+      .then(() => console.log('The CSV file was written successfully'));
 
     // https://www.twilio.com/blog/sending-email-attachments-with-sendgrid
     pathToAttachment = `${__dirname}/turtle_data.csv`;
@@ -293,7 +296,7 @@ const sendEmail = (request, response) => {
     });
     try {
       fs.unlinkSync('./turtle_data.csv')
-    } catch(error) {
+    } catch (error) {
       console.error(error)
     }
     response.status(200).json(results.rows)

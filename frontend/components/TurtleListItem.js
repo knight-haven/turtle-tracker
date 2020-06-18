@@ -17,7 +17,7 @@ export default class TurtleListItem extends Component {
           }
           subtitle={
             <View>
-              <Text style={{paddingLeft: 2, fontSize: 14}}>{this.props.item.sex}</Text>
+              <Text style={{paddingLeft: 2, fontSize: 14}}>{this.props.item.sex[0].toUpperCase() + this.props.item.sex.slice(1)}</Text>
             </View>
           }
           chevron

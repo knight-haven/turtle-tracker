@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
-import { StackActions, NavigationActions } from 'react-navigation';
+import { StackActions } from 'react-navigation';
 import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
@@ -50,6 +50,7 @@ export default function TurtleEditScreen({ navigation }) {
         })
             .then(response => response.json())
             .then(responseJson => {
+                setIsSubmitting(false)
                 const replaceAction = StackActions.replace({ routeName: 'SightingEdit', params: { turtleId: responseJson }})
                 navigation.dispatch(replaceAction);
             });
@@ -63,6 +64,7 @@ export default function TurtleEditScreen({ navigation }) {
     const [number, setNumber] = useState('');
     const [carapaceMark, setCarapaceMark] = useState('');
     const [sex, setSex] = useState('male');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
     const turtleProps = navigation.getParam('turtle');
@@ -140,14 +142,18 @@ export default function TurtleEditScreen({ navigation }) {
                     <Button
                         bold={true}
                         type={"solid"}
-                        title={"submit turtle"}
+                        title={isSubmitting ? "submitting..." : "submit turtle"}
+                        disabled={isSubmitting}
                         onPress={isEdit != undefined && isEdit == "true" ?
                             async () => {
+                                setIsSubmitting(true)
                                 await editTurtleById(turtleProps.id)
+                                setIsSubmitting(false)
                                 navigation.goBack()
                                 navigation.state.params.refreshTurtleView()
                             } :
                             () => {
+                                setIsSubmitting(true)
                                 createTurtle(number, carapaceMark, sex)
                             }
                         }

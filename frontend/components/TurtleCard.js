@@ -15,7 +15,7 @@ export default function TurtleCard({turtle, originalDate, recentDate, recentLeng
                 <View style={styles.rowContainer}>
                     <TurtleText titleText='Mark' baseText={turtle.mark} />
                     <Divider/>
-                    <TurtleText titleText='Sex' baseText={turtle.sex} />
+                    <TurtleText titleText='Sex' baseText={turtle.sex[0].toUpperCase() + turtle.sex.slice(1)} />
                 </View>
                 <View style={styles.rowContainer}>
                     <TurtleText titleText='Date Found' baseText={moment(originalDate).format('l')} />

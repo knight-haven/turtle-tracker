@@ -32,7 +32,6 @@ const CommonScreens = {
   },
   TurtleEdit: {
     screen: TurtleEditScreen,
-    navigationOptions: { title: 'Edit Turtle' }
   },
   SelectTurtle: {
     screen: SelectTurtleScreen,

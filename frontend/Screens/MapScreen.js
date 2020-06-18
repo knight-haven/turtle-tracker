@@ -34,7 +34,7 @@ export default function MapScreen({ navigation }) {
   }, [])
 
   function getMarkers() {
-    return fetch(BASE_URL + `/sighting`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
+    return fetch(BASE_URL + `/recentSighting`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
       .then((response) => response.json())
       .then((responseJson) => {
         var markers = []

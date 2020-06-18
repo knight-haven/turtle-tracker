@@ -32,6 +32,7 @@ app.all('*', function (req, res, next) {
     app.put('/sighting/:id', db.updateSighting)
     app.delete('/sighting/:id', db.deleteSighting)
     app.get('/sighting/turtle/:turtleId', db.getSightingByTurtleId)
+    app.get('/recentSighting', db.getRecentSightings)
     app.get('/photo', db.getPhotos)
     app.get('/photo/:id', db.getPhotoById)
     app.post('/photo', db.createPhoto)

@@ -142,6 +142,15 @@ const getSightingByTurtleId = (request, response) => {
   })
 }
 
+const getRecentSightings = (request, response) => {
+  pool.query('SELECT DISTINCT ON (turtle_id) turtle_id, time_seen, latitude, longitude FROM sighting ORDER BY turtle_id, time_seen DESC', (error, results) => {
+    if (error) {
+      console.error(error)
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
 const getPhotos = (request, response) => {
   pool.query('SELECT * FROM photo', (error, results) => {
     if (error) {
@@ -291,6 +300,7 @@ module.exports = {
   updateSighting,
   deleteSighting,
   getSightingByTurtleId,
+  getRecentSightings,
   getPhotos,
   getPhotoById,
   createPhoto,

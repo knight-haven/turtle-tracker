@@ -64,14 +64,11 @@ export default function TurtleEditScreen({ navigation }) {
     const [carapaceMark, setCarapaceMark] = useState('');
     const [sex, setSex] = useState('male');
 
-    isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
+    const isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
+    const turtleProps = navigation.getParam('turtle');
 
     useEffect(() => {
         if (isEdit) {
-            turtleProps = navigation.getParam('turtle');
-            originalDate = navigation.getParam('originalDate');
-            recentDate = navigation.getParam('recentDate');
-            recentLength = navigation.getParam('recentLength');
             if (turtleProps != null) {
                 const {
                     turtle_number,
@@ -94,9 +91,9 @@ export default function TurtleEditScreen({ navigation }) {
         }
     }, [])
 
-    numRef = React.createRef()
-    markRef = React.createRef()
-    buttonRef = React.createRef()
+    const numRef = React.createRef()
+    const markRef = React.createRef()
+    const buttonRef = React.createRef()
 
     return (
         <Screen>

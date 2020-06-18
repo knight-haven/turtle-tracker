@@ -56,7 +56,6 @@ export default function TurtleViewScreen({ navigation }) {
                 onSightingsChange(responseJson);
                 var markers = []
                 for (var i = 0; i < responseJson.length; i++) {
-                    turtleId = responseJson[i].turtle_id
                     sightingId = responseJson[i].id
                     markers.push({
                         "coordinate": {
@@ -64,7 +63,7 @@ export default function TurtleViewScreen({ navigation }) {
                             "longitude": responseJson[i].longitude
                         },
                         "cost": "a",
-                        "onPress": () => props.navigation.navigate('SightingView', { turtleId, sightingId })
+                        "onPress": () => props.navigation.navigate('SightingView', { id, sightingId })
                     })
                 }
                 onMarkerListChange(markers)
@@ -102,7 +101,7 @@ export default function TurtleViewScreen({ navigation }) {
         }
     }
 
-    turtleId = navigation.getParam('turtleId');
+    const turtleId = navigation.getParam('turtleId');
     const [turtle, onTurtleChange] = useState({});
     const [sightings, onSightingsChange] = useState([]);
     const [markerList, onMarkerListChange] = useState([]);
@@ -115,7 +114,7 @@ export default function TurtleViewScreen({ navigation }) {
 
     function refresh() {
         setRefreshing(true);
-        turtleId = navigation.getParam('turtleId');
+        const turtleId = navigation.getParam('turtleId');
         getTurtleById(turtleId);
         getSightingByTurtleId(turtleId);
         getTurtleImages(turtleId);

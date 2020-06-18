@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
 SightingEditScreen is for editing the information of a specific citing.
 */
 export default function SightingEditScreen({ navigation }) {
-    tempId = navigation.getParam('turtleId') !== undefined ? navigation.getParam('turtleId') : 1
-    sighting = navigation.getParam('sighting')
+    const tempId = navigation.getParam('turtleId') !== undefined ? navigation.getParam('turtleId') : 1
+    const sighting = navigation.getParam('sighting')
     useEffect(() => { 
         getTurtleById(tempId); 
     }, []);
@@ -47,8 +47,9 @@ export default function SightingEditScreen({ navigation }) {
     const [latitude, setLatitude] = useState(42.931870);
     const [longitude, setLongitude] = useState(-85.582130);
     const [showDatePicker, setShowDatePicker] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
+    const isEdit = navigation.getParam('edit') != undefined && navigation.getParam('edit')
 
     useEffect(() => {
         if (isEdit) {
@@ -100,8 +101,6 @@ export default function SightingEditScreen({ navigation }) {
             } 
         }
     }, []);
-
-    // const [img, setImg] = useState('img');
 
     function getTurtleById(id) {
         return fetch(BASE_URL + `/turtle/${id}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
@@ -218,10 +217,10 @@ export default function SightingEditScreen({ navigation }) {
     getCameraPermission()
     getCameraRollPermission()
 
-    dateRef = React.createRef()
-    locRef = React.createRef()
-    lengthRef = React.createRef()
-    notesRef = React.createRef()
+    const dateRef = React.createRef()
+    const locRef = React.createRef()
+    const lengthRef = React.createRef()
+    const notesRef = React.createRef()
 
     return (
         <Screen>
@@ -305,15 +304,20 @@ export default function SightingEditScreen({ navigation }) {
                 <Button
                     bold={true}
                     type={"solid"}
-                    title={"submit sighting"}
+                    title={isSubmitting ? "submitting..." : "submit sighting"}
+                    disabled={isSubmitting}
                     onPress={isEdit ?
                         async () => {
+                            setIsSubmitting(true)
                             await editSightingById(sighting.id, turtle.id)
+                            setIsSubmitting(false)
                             navigation.goBack()
                             navigation.state.params.refreshSightingView()
                         } :
                         async () => {
+                            setIsSubmitting(true)
                             await createSighting(turtle.id, latitude, longitude);
+                            setIsSubmitting(false)
                             const replaceAction = StackActions.replace({ routeName: 'TurtleView', params: { turtleId: turtle.id }})
                             navigation.dispatch(replaceAction);
                             if (navigation.state.params.refreshTurtleView != undefined) {

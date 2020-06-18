@@ -71,8 +71,8 @@ export default function SightingViewScreen({ navigation }) {
         return await ref.getDownloadURL();
     }
 
-    sightingId = navigation.getParam('sightingId');
-    turtleId = navigation.getParam('turtleId');
+    const sightingId = navigation.getParam('sightingId');
+    const turtleId = navigation.getParam('turtleId');
     const [length, setLength] = useState();
     const [location, setLocation] = useState();
     const [date, setDate] = useState();

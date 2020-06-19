@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, RefreshControl } from 'react-native';
+import moment from 'moment';
 import { firebase, BASE_URL, BACKEND_SECRET } from '../../env';
 import TurtleMapView from '../../components/TurtleMapView';
 import Gallery from '../../components/Gallery';
@@ -148,8 +149,8 @@ export default function TurtleViewScreen({ navigation }) {
                 <View>
                     <TurtleCard
                         turtle={turtle}
-                        originalDate={originalDate}
-                        recentDate={recentDate}
+                        originalDate={ originalDate.valueOf() > 9999999999999 ? new Date(undefined) : originalDate}
+                        recentDate={recentDate.valueOf() <= 0 ? new Date(undefined) : recentDate}
                         recentLength={recentLength}
                         markerList={markerList}
                         images={images}

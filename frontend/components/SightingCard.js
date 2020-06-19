@@ -16,7 +16,7 @@ export default function SightingCard({navigation, sighting}) {
                 <BottomDivider containerStyle={styles.divider}/>
                 <SightingText titleText={"Location"} baseText={sighting.turtle_location}/>
                 <BottomDivider containerStyle={styles.divider}/>
-                <SightingText titleText={"Length"} baseText={`${sighting.carapace_length} mm`}/>
+                <SightingText titleText={"Length"} baseText={sighting.carapace_length === null ? "" : `${sighting.carapace_length} mm`}/>
                 <BottomDivider containerStyle={styles.divider}/>
                 <SightingText titleText={"Notes"} baseText={sighting.notes} containerStyle={{marginBottom: 15}}/>
                 <Button 

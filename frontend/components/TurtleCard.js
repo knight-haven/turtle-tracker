@@ -21,7 +21,7 @@ export default function TurtleCard({turtle, originalDate, recentDate, recentLeng
                 <View style={styles.rowContainer}>
                     <TurtleText titleText='Sex' baseText={turtle.sex[0].toUpperCase() + turtle.sex.slice(1)} />
                     <Divider/>
-                    <TurtleText titleText='Carapace Length' baseText={`${recentLength} mm`} />
+                    <TurtleText titleText='Carapace Length' baseText={ recentLength === null ? "" : `${recentLength} mm`} />
                 </View>
                 <BottomDivider/>
                 <View style={styles.rowContainer}>

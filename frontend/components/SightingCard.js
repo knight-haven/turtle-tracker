@@ -22,7 +22,7 @@ export default function SightingCard({navigation, sighting}) {
                 <Button 
                     bold={true}
                     type="solid"
-                    style={styles.button}
+                    titleStyle={styles.buttonTitle}
                     title="View Sighting"
                     onPress={() => navigation.navigate('SightingView', {turtleId: sighting.turtle_id, sightingId: sighting.id })}
                     />
@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginTop: 5,
     },
-    button: {
-
+    buttonTitle: {
+        fontSize: 12,
     },
     divider: {
         marginTop: 15,

@@ -17,6 +17,8 @@ export default function DatePicker({date, onChange, onClose}) {
                 value={date}
                 display="default"
                 onChange={onChange}
+                maximumDate={new Date(Date.now())}
+                minimumDate={new Date(1985, 0, 1)}
             />
         </TouchableOpacity>
     )

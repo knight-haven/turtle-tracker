@@ -12,7 +12,7 @@ export default function SightingCard({navigation, sighting}) {
     return (
         <View style={[styles.container, s.shadow]}>
             <View>
-                <SightingText titleText={"Date"} baseText={moment(new Date(Date.parse(sighting.time_seen))).format('l')} containerStyle={{marginTop: 25}}/>
+                <SightingText titleText={"Date"} baseText={moment(new Date(Date.parse(sighting.time_seen))).format('l')} containerStyle={{marginTop: 15}}/>
                 <BottomDivider containerStyle={styles.divider}/>
                 <SightingText titleText={"Location"} baseText={sighting.turtle_location}/>
                 <BottomDivider containerStyle={styles.divider}/>
@@ -21,6 +21,7 @@ export default function SightingCard({navigation, sighting}) {
                 <SightingText titleText={"Notes"} baseText={sighting.notes} containerStyle={{marginBottom: 15}}/>
                 <Button 
                     bold={true}
+                    type="solid"
                     style={styles.button}
                     title="View Sighting"
                     onPress={() => navigation.navigate('SightingView', {turtleId: sighting.turtle_id, sightingId: sighting.id })}

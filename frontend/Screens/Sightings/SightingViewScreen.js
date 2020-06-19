@@ -21,7 +21,7 @@ export default function SightingViewScreen({ navigation }) {
         return fetch(BASE_URL + `/turtle/${id}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
             .then(response => response.json())
             .then(responseJson => {
-                data = responseJson[0]
+                const data = responseJson[0]
                 setTurtleNumber(data.turtle_number)
                 setMark(data.mark)
                 setLoading(false);
@@ -33,8 +33,8 @@ export default function SightingViewScreen({ navigation }) {
         return fetch(BASE_URL + `/sighting/${id}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
             .then((response) => response.json())
             .then((responseJson) => {
-                data = responseJson[0];
-                coordinate = {
+                let data = responseJson[0];
+                let coordinate = {
                     "coordinate": {
                         "latitude": data.latitude,
                         "longitude": data.longitude
@@ -81,7 +81,7 @@ export default function SightingViewScreen({ navigation }) {
     const [notes, setNotes] = useState();
     const [turtleNumber, setTurtleNumber] = useState();
     const [markerList, setMarkerList] = useState([]);
-    const [images, onImagesChange] = useState([{ uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg' }]);
+    const [images, onImagesChange] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {

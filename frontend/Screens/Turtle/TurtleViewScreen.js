@@ -162,9 +162,11 @@ export default function TurtleViewScreen({ navigation }) {
                             longitude={markerList.length > 0 ? markerList[0].coordinate.longitude : null}
                         />
                     </View>
+                    { images != undefined && images.length > 0 ?
                     <View style={[s.card, s.shadow]}>
                         <Gallery images={images} />
-                    </View>
+                    </View> : null
+                    }
                     {
                         sightings.map((item, index) => (
                             <SightingCard

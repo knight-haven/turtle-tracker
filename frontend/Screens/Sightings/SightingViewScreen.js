@@ -146,9 +146,11 @@ export default function SightingViewScreen({ navigation }) {
                             longitude={markerList.length > 0 ? markerList[0].coordinate.longitude : null}
                             pointerEvents="none" />
                     </View>
+                    { images != undefined && images.length > 0 ?
                     <View style={[s.shadow, s.card]}>
                         <Gallery images={images} />
-                    </View>
+                    </View> : null
+                    }
                 </View>
             }
         </Screen>

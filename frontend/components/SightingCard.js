@@ -7,7 +7,7 @@ import TurtleMapView from './TurtleMapView';
 import Button from './Button';
 import s from './Styles';
 
-export default function SightingCard({navigation, sighting}) {
+export default function SightingCard({navigation, sighting, refresh}) {
 
     return (
         <View style={[styles.container, s.shadow]}>

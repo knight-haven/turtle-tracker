@@ -58,9 +58,10 @@ export default function SightingViewScreen({ navigation }) {
             .then(async (responseJson) => {
                 var imageList = []
                 for (var i = 0; i < responseJson.length; i++) {
-                    imageList.push({ uri: await getPhoto(responseJson[i].name) })
+                    imageList.push({ id: responseJson[i].id, uri: await getPhoto(responseJson[i].name) })
                 }
                 onImagesChange(imageList);
+                navigation.setParams({images: imageList})
             })
             .catch((error) => {
                 console.log(error);
@@ -167,7 +168,9 @@ SightingViewScreen.navigationOptions = ({ navigation }) => ({
                     sighting: navigation.getParam('sighting'),
                     markerList: navigation.getParam('markerList'),
                     turtleId: navigation.getParam('turtleId'),
+                    images: navigation.getParam('images'),
                     refreshSightingView: navigation.getParam('refreshSightingView'),
+                    refreshTurtleView: navigation.getParam('refreshTurtleView'),
                     edit: true,
                 })}
             name={'edit'}

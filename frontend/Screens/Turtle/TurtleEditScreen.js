@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 import { StackActions } from 'react-navigation';
 import Screen from '../../components/Screen';
 import HeaderButton from '../../components/HeaderButton';
 import TextField, { setFieldValue } from '../../components/TextField';
 import Button from '../../components/Button';
+import DeleteButton from '../../components/DeleteButton';
 import { BASE_URL, BACKEND_SECRET } from '../../env';
 
 /*
@@ -32,6 +33,16 @@ export default function TurtleEditScreen({ navigation }) {
                 mark: carapaceMark,
                 sex
             })
+        })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    function deleteTurtleById(id) {
+        return fetch(BASE_URL + `/turtle/${id}`, {
+            method: 'DELETE',
+            headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': `Bearer ` + BACKEND_SECRET }),
         })
             .catch((error) => {
                 console.error(error);
@@ -158,6 +169,22 @@ export default function TurtleEditScreen({ navigation }) {
                             }
                         }
                     />
+                    { isEdit != undefined && isEdit == "true" ?
+                    <View>
+                        <Text></Text>
+                        <DeleteButton
+                            title="delete turtle"
+                            alertTitle={`Delete Turtle ${carapaceMark}`}
+                            alert="Are you sure you would like to delete this turtle?"
+                            onPress= { async () => {
+                                await deleteTurtleById(turtleProps.id)
+                                navigation.navigate('TurtleList')
+                                navigation.state.params.refreshTurtleList() 
+                            }
+                        }
+                    />
+                    </View> : null
+                    }
                 </View>
             </View>
         </Screen>

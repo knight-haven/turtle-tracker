@@ -64,6 +64,11 @@ export default function TurtleList(props) {
     getTurtles();
   }, [refreshing]);
 
+  function refresh() {
+    setRefreshing(true);
+    getTurtles();
+  }
+
   const [turtleList, onTurtleListChange] = useState([])
   const [refreshing, setRefreshing] = useState(false)
   const [loading, setLoading] = useState(false);
@@ -85,7 +90,7 @@ export default function TurtleList(props) {
             title="New Turtle"
             chevron
             bottomDivider
-            onPress={() => { props.navigation.navigate('TurtleEdit') }}
+            onPress={() => { props.navigation.navigate('TurtleEdit')}}
           />
         </View> : null}
       {
@@ -95,6 +100,7 @@ export default function TurtleList(props) {
             item={item}
             onPressPage={props.onPressPage}
             navigation={props.navigation}
+            refresh={refresh}
           />
         ))
       }

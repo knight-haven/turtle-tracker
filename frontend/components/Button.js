@@ -15,21 +15,25 @@ export default function Button(props) {
         type,
         style,
         titleStyle,
+        color,
     } = props;
     title = title.toUpperCase()
     type = type ? type.toLowerCase() : "outline"
+    if (color == undefined) {
+        color = 'green'
+    }
     return (
         <B
             type={type}
             {...props}
             title={title}
-            titleStyle={[type == 'solid' ? styles.raisedTitle : styles.title, bold ? styles.bold : {}, titleStyle]}
-            buttonStyle={[type == 'solid' ? [styles.raised, s.shadow] : {}, styles.button, style]}
+            titleStyle={[type == 'solid' ? styles.raisedTitle : {color}, bold ? styles.bold : {}, titleStyle]}
+            buttonStyle={[type == 'solid' ? [{backgroundColor: color}, s.shadow] : {}, {borderColor: color}, style]}
             icon={iconName ? 
                 <Icon
                     name={iconName}
                     type='material-community'
-                    color='green'
+                    color={color}
                     containerStyle={styles.iconContainer}
                 />
                 :
@@ -41,20 +45,11 @@ export default function Button(props) {
 }
 
 const styles = StyleSheet.create({
-    title: {
-        color: 'green',
-    },
     bold: {
         fontWeight: 'bold',
     },
     raisedTitle: {
         color: 'white',
-    },
-    raised: {
-        backgroundColor: 'green',  
-    },
-    button: {
-        borderColor: 'green',
     },
     iconContainer: {
         paddingRight: 7,

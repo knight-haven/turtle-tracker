@@ -4,8 +4,8 @@ import * as ImagePicker from 'expo-image-picker';
 import Gallery from '../components/Gallery';
 import Button from '../components/Button';
 
-export default function CameraGallery({ parentCallback }) {
-  const [images, setImages] = useState([]);
+export default function CameraGallery({ parentCallback, imageList }) {
+  const [images, setImages] = useState(imageList == undefined ? [] : imageList);
 
   // takes an image using the camera and appends it to the images
   async function takeImage() {
@@ -37,7 +37,9 @@ export default function CameraGallery({ parentCallback }) {
   // creates the buttons and shows the selected images
   return (
     <View>
-      <Gallery images={images} />
+      <Gallery 
+        images={images}
+      />
 
       <View style={styles.takePicButtons}>
         <Button

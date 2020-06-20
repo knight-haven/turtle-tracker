@@ -47,7 +47,7 @@ export default function SightingEditScreen({ navigation }) {
   const [location, setLocation] = useState('');
   const [notes, setNotes] = useState('');
   const [markerList, setMarkerList] = useState([]);
-  const [images, setImages] = useState(imageList);
+  const [images, setImages] = useState(imageList == undefined ? [] : imageList);
   const [latitude, setLatitude] = useState(42.931870);
   const [longitude, setLongitude] = useState(-85.582130);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -334,7 +334,9 @@ export default function SightingEditScreen({ navigation }) {
               await editSightingById(sighting.id, turtle.id)
               setIsSubmitting(false)
               navigation.goBack()
-              navigation.state.params.refreshSightingView()
+              if (navigation.state.params.refreshSightingView != undefined) {
+                navigation.state.params.refreshSightingView()
+              }
             } :
             async () => {
               setIsSubmitting(true)
@@ -358,7 +360,9 @@ export default function SightingEditScreen({ navigation }) {
               onPress={async () => {
                 await deleteSightingById(sighting.id)
                 navigation.navigate('TurtleView')
-                navigation.state.params.refreshTurtleView()
+                if (navigation.state.params.refreshTurtleView != undefined) {
+                  navigation.state.params.refreshTurtleView()
+                }
               }
               }
             />

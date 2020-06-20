@@ -41,7 +41,9 @@ export default function DeleteImage({ navigation, source, style, photoId }) {
                 text: "Yes", onPress: async () => {
                   await deletePhotoById(photoId)
                   navigation.navigate('SightingView')
-                  navigation.state.params.refreshSightingView()
+                  if (navigation.state.params.refreshSightingView != undefined) {
+                    navigation.state.params.refreshSightingView()
+                  }
                 }
               }
             ],

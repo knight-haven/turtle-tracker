@@ -132,12 +132,16 @@ export default function SightingViewScreen({ navigation }) {
             </View>
             <BottomDivider />
             <View style={{ justifyContent: 'space-evenly', flexDirection: 'row' }}>
-              <TurtleText titleText="Length" baseText={`${length} mm`} />
+              <TurtleText titleText="Length" baseText={length === null ? "0 mm" : `${length} mm`} />
               <Divider />
               <TurtleText titleText="Location" baseText={location} />
             </View>
-            <BottomDivider />
-            <TurtleText titleText="Notes" baseText={notes} />
+            {notes != undefined && notes != "" ?
+              <View>
+                <BottomDivider />
+                <TurtleText titleText="Notes" baseText={notes} />
+              </View> : null
+            }
           </View>
           {/* map */}
           <View style={[s.shadow, s.card, { width: '100%', height: 200 }]}>

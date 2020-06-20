@@ -161,7 +161,9 @@ export default function TurtleEditScreen({ navigation }) {
                 await editTurtleById(turtleProps.id)
                 setIsSubmitting(false)
                 navigation.goBack()
-                navigation.state.params.refreshTurtleView()
+                if (navigation.state.params.refreshTurtleView != undefined) {
+                  navigation.state.params.refreshTurtleView()
+                }
               } :
               () => {
                 setIsSubmitting(true)
@@ -179,7 +181,9 @@ export default function TurtleEditScreen({ navigation }) {
                 onPress={async () => {
                   await deleteTurtleById(turtleProps.id)
                   navigation.navigate('TurtleList')
-                  navigation.state.params.refreshTurtleList()
+                  if (navigation.state.params.refreshTurtleList != undefined) {
+                    navigation.state.params.refreshTurtleList()
+                  }
                 }
                 }
               />

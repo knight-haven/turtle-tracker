@@ -108,7 +108,7 @@ export default function TurtleViewScreen({ navigation }) {
   const [originalDate, onOriginalDateChange] = useState(new Date(99999999999999));
   const [recentDate, onRecentDateChange] = useState(new Date(0));
   const [recentLength, onRecentLengthChange] = useState(0);
-  const [images, onImagesChange] = useState([{ uri: 'https://previews.123rf.com/images/tackgalichstudio/tackgalichstudio1405/tackgalichstudio140500025/28036032-question-mark-symbol-on-gray-background.jpg' }]);
+  const [images, onImagesChange] = useState([]);
 
   const [refreshing, setRefreshing] = useState(false);
 

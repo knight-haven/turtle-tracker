@@ -8,7 +8,9 @@ export default function LoadingImage(props) {
     return (
         <View>
             { loading && 
-                <LoadingSpinner style={styles.spinnerContainer} animating={loading} />
+                <View style={styles.spinnerContainer}>
+                    <LoadingSpinner animating={loading} />
+                </View>
             }
                 <Image 
                     {...props}

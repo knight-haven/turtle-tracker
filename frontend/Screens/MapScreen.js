@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import React, { useEffect, useRef, useState } from 'react';
+import { View } from 'react-native';
+import Button from '../components/Button';
 import IconButton from '../components/IconButton';
 import TurtleMapView from '../components/TurtleMapView';
-import Button from '../components/Button';
-import { BASE_URL, BACKEND_SECRET } from '../env';
+import { BACKEND_SECRET, BASE_URL } from '../env';
 
 /*
 MapScreen.js contains the basic map screen with turtle sightings.
@@ -96,10 +96,10 @@ export default function MapScreen({ navigation }) {
         scrollEnabled={true}
         showsMyLocationButton={false}
 
-        //onLongPress={handlePress}
+      //onLongPress={handlePress}
       />
       <IconButton
-        onPress={() => navigation.navigate('Settings', {email: navigation.getParam('email')})}
+        onPress={() => navigation.navigate('Settings', { email: navigation.getParam('email') })}
         name={'settings'}
         size={45}
         containerStyle={{ left: 7, top: 7, position: 'absolute', flexDirection: 'row', }} />

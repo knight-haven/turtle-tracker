@@ -21,6 +21,9 @@
     "prettier.semi": true,
     "prettier.singleQuote": true,
     "prettier.tabWidth": 2,
-    "editor.wordWrap": "off"
+    "editor.wordWrap": "off",
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
   }
 }

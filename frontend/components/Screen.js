@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, SafeAreaView, View, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import s from './Styles';
 
 /*
@@ -7,33 +7,33 @@ import s from './Styles';
     TODO: Allow for content to remove margin. See Turtle List View.
 */
 export default function Screen(props) {
-    return (
-        <SafeAreaView style={styles.background}>
-            <ScrollView style={styles.background}
-                refreshControl={props.refreshControl}
-                contentContainerStyle={{ flexGrow: 1 }}
-            >
-                <View
-                    style={[styles.content, s.shadow, props.contentStyle]}
-                >
-                    {props.children}
-                </View>
-            </ScrollView>
-        </SafeAreaView>
-    )
+  return (
+    <SafeAreaView style={styles.background}>
+      <ScrollView style={styles.background}
+        refreshControl={props.refreshControl}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View
+          style={[styles.content, s.shadow, props.contentStyle]}
+        >
+          {props.children}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({
-    background: {
-        backgroundColor: '#F5F5F5',
-        height: '100%',
-    },
-    content: {
-        backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 7,
-        marginTop: 7,
-        marginBottom: 7,
-        flex: 1,
-    }
+  background: {
+    backgroundColor: '#F5F5F5',
+    height: '100%',
+  },
+  content: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 7,
+    marginTop: 7,
+    marginBottom: 7,
+    flex: 1,
+  }
 });

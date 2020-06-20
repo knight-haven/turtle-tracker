@@ -1,8 +1,8 @@
+import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import Gallery from '../components/Gallery';
 import Button from '../components/Button';
+import Gallery from '../components/Gallery';
 
 export default function CameraGallery({ parentCallback, imageList }) {
   const [images, setImages] = useState(imageList == undefined ? [] : imageList);
@@ -37,7 +37,7 @@ export default function CameraGallery({ parentCallback, imageList }) {
   // creates the buttons and shows the selected images
   return (
     <View>
-      <Gallery 
+      <Gallery
         images={images}
       />
 

@@ -2,24 +2,25 @@
   AppNavigator.js handels the basic tab and stack navigation for the app.
 */
 
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { createAppContainer, NavigationActions, StackActions, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator, NavigationActions, StackActions } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { Ionicons } from '@expo/vector-icons';
-
-// Import Screens
-import TurtleListScreen from './Screens/TurtleListScreen';
-import SelectTurtleScreen from './Screens/SelectTurtleScreen';
-import TurtleViewScreen from './Screens/Turtle/TurtleViewScreen';
-import TurtleEditScreen from './Screens/Turtle/TurtleEditScreen';
-import SettingsScreen from './Screens/SettingsScreen';
+//  import screens 
+import AlternateLoginScreen from './Screens/AlternateLoginScreen';
+import LandingScreen from './Screens/LandingScreen';
+import LoginScreen from './Screens/LoginScreen';
 import MapScreen from './Screens/MapScreen';
+import SelectTurtleScreen from './Screens/SelectTurtleScreen';
+import SettingsScreen from './Screens/SettingsScreen';
 import SightingEditScreen from './Screens/Sightings/SightingEditScreen';
 import SightingViewScreen from './Screens/Sightings/SightingViewScreen';
-import LoginScreen from './Screens/LoginScreen';
-import LandingScreen from './Screens/LandingScreen';
-import AlternateLoginScreen from './Screens/AlternateLoginScreen';
+import TurtleEditScreen from './Screens/Turtle/TurtleEditScreen';
+import TurtleViewScreen from './Screens/Turtle/TurtleViewScreen';
+import TurtleListScreen from './Screens/TurtleListScreen';
+
+
 
 // Screens shared across stacks.
 const CommonScreens = {

@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, RefreshControl } from 'react-native';
-import TurtleListItem from './TurtleListItem'
+import React, { useCallback, useEffect, useState } from 'react';
+import { RefreshControl, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { firebase, BASE_URL, BACKEND_SECRET } from '../env';
 import Screen from '../components/Screen';
+import { BACKEND_SECRET, BASE_URL, firebase } from '../env';
 import LoadingSpinner from './LoadingSpinner';
+import TurtleListItem from './TurtleListItem';
 
 /*
   TurtleList displays a list of all of the turtles in the Eco Preserve.
@@ -90,7 +90,7 @@ export default function TurtleList(props) {
             title="New Turtle"
             chevron
             bottomDivider
-            onPress={() => { props.navigation.navigate('TurtleEdit')}}
+            onPress={() => { props.navigation.navigate('TurtleEdit') }}
           />
         </View> : null}
       {

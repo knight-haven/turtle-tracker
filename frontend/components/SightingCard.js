@@ -1,34 +1,32 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
 import moment from 'moment';
-import TurtleText from './TurtleText';
-import Divider from './Divider';
-import TurtleMapView from './TurtleMapView';
-import IconButton from './IconButton';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import BottomDivider from './BottomDivider';
+import Button from './Button';
+import SightingText from './SightingText';
 import s from './Styles';
 
-export default function SightingCard({navigation, sighting, refresh}) {
+export default function SightingCard({ navigation, sighting, refresh }) {
 
-    return (
-        <View style={[styles.container, s.shadow]}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-evenly', marginBottom: 5}}>
-                <IconButton 
-                    styles={styles.infoButton}
-                    onPress={() => navigation.navigate('SightingView', {turtleId: sighting.turtle_id, sightingId: sighting.id, refreshTurtleView: refresh })}
-                    name="info"/>
-                <View style={{maxWidth: '37%'}}>
-                    <TurtleText titleText={"Date"} baseText={moment(new Date(Date.parse(sighting.time_seen))).format('l')}/>
-                </View>
-                <Divider/>
-                <View style={{maxWidth: '32%'}}>
-                    <TurtleText titleText={"Location"} baseText={sighting.turtle_location}/>
-                </View>
-                <Divider/>
-                <View style={{maxWidth: '28%'}}>
-                    <TurtleText titleText={"Length"} baseText={`${sighting.carapace_length} mm`}/>
-                </View>
-            </View>
-            {/* <TurtleMapView 
+  return (
+    <View style={[styles.container, s.shadow]}>
+      <View>
+        <SightingText titleText={"Date"} baseText={moment(new Date(Date.parse(sighting.time_seen))).format('l')} containerStyle={{ marginTop: 15 }} />
+        <BottomDivider containerStyle={styles.divider} />
+        <SightingText titleText={"Location"} baseText={sighting.turtle_location} />
+        <BottomDivider containerStyle={styles.divider} />
+        <SightingText titleText={"Length"} baseText={sighting.carapace_length === null ? "" : `${sighting.carapace_length} mm`} />
+        <BottomDivider containerStyle={styles.divider} />
+        <SightingText titleText={"Notes"} baseText={sighting.notes} containerStyle={{ marginBottom: 15 }} />
+        <Button
+          bold={true}
+          type="solid"
+          titleStyle={styles.buttonTitle}
+          title="View Sighting"
+          onPress={() => navigation.navigate('SightingView', { turtleId: sighting.turtle_id, sightingId: sighting.id })}
+        />
+      </View>
+      {/* <TurtleMapView 
                 markers={[{
                     "coordinate": {
                         "latitude": sighting.latitude,
@@ -41,34 +39,36 @@ export default function SightingCard({navigation, sighting, refresh}) {
                 longitude={sighting.longitude}
                 height={150}
             /> */}
-            <Text style={styles.notes}>{sighting.notes}</Text>
-        </View>
-    )
+      {/* <Text style={styles.notes}>{sighting.notes}</Text> */}
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-    container: { 
-        flex: 1, 
-        backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 7,
-        marginTop: 7,
-        marginBottom: 7,
-        justifyContent: 'space-evenly',
-    },
-    text: {
-        fontSize: 15,
-        fontWeight: 'bold',
-    },
-    notes: {
-        fontSize: 14,
-        textAlign: 'center',
-        flexWrap: 'wrap',
-        marginTop: 5,
-    },
-    infoButton: {
-        position: 'relative',
-        height: '50%',
-        marginTop: 20,
-    }
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 7,
+    marginTop: 7,
+    marginBottom: 7,
+    justifyContent: 'space-evenly',
+  },
+  text: {
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  notes: {
+    fontSize: 14,
+    textAlign: 'center',
+    flexWrap: 'wrap',
+    marginTop: 5,
+  },
+  buttonTitle: {
+    fontSize: 12,
+  },
+  divider: {
+    marginTop: 15,
+    marginBottom: 15,
+  },
 })

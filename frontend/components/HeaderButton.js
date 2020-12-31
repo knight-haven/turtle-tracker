@@ -6,11 +6,11 @@ import IconButton from './IconButton';
 */
 
 export default function HeaderButton(props) {
-    return (
-        <IconButton
-            {...props}
-            size={20}
-            containerStyle={{ paddingLeft: 7, paddingRight: 7 }}
-        />
-    )
+  return (
+    <IconButton
+      {...props}
+      size={20}
+      containerStyle={{ paddingLeft: 7, paddingRight: 7 }}
+    />
+  )
 }

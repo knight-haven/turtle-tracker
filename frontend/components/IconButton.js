@@ -1,19 +1,19 @@
-import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Haptics from 'expo-haptics';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import s from './Styles';
 
 // define styles
 const styles = StyleSheet.create({
-    icon: {
-        color: "white",
-    },
-    opacity: {
-        backgroundColor: "green",
-        borderRadius: 100,
-        padding: 5,
-    },
+  icon: {
+    color: "white",
+  },
+  opacity: {
+    backgroundColor: "green",
+    borderRadius: 100,
+    padding: 5,
+  },
 })
 
 /*
@@ -22,27 +22,27 @@ const styles = StyleSheet.create({
     and additional styles.
 */
 export default function IconButton(props) {
-    const {
-        onPress,
-        name,
-        containerStyle,
-        type,
-        disabled,
-        size,
-        color,
-    } = props
+  const {
+    onPress,
+    name,
+    containerStyle,
+    type,
+    disabled,
+    size,
+    color,
+  } = props
 
-    iconType = type == undefined ? 'materal' : type
-    return (
-        <View style={[containerStyle]}>
-            <TouchableOpacity
-                disabled={disabled}
-                onPress={onPress}
-                style={[s.shadow, styles.opacity, color == undefined ? null : {backgroundColor: color}]}
-                borderRadius={'100%'}
-                onPressIn={() => Haptics.impactAsync('medium')}>
-                <Icon name={name} style={styles.icon} size={size} />
-            </TouchableOpacity>
-        </View>
-    )
+  iconType = type == undefined ? 'materal' : type
+  return (
+    <View style={[containerStyle]}>
+      <TouchableOpacity
+        disabled={disabled}
+        onPress={onPress}
+        style={[s.shadow, styles.opacity, color == undefined ? null : { backgroundColor: color }]}
+        borderRadius={'100%'}
+        onPressIn={() => Haptics.impactAsync('medium')}>
+        <Icon name={name} style={styles.icon} size={size} />
+      </TouchableOpacity>
+    </View>
+  )
 }

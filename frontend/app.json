@@ -6,7 +6,7 @@
     "ios": {
       "bundleIdentifier": "com.knighthaven.turtletracker",
       "supportsTablet": true,
-      "buildNumber": "1.0.6",
+      "buildNumber": "1.0.8",
       "config": {
         "googleMapsApiKey": "AIzaSyCH-5qAL5WwDtLKWENncC5511JpXm5VuZw"
       }
@@ -14,7 +14,7 @@
     "android": {
       "permissions": ["ACCESS_FINE_LOCATION"],
       "package": "com.knighthaven.turtletracker",
-      "versionCode": 6,
+      "versionCode": 8,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBuNdkbh_N6-iBzEm_n_Z4lbcb9ClPAKn4"
@@ -22,7 +22,7 @@
       }
     },
     "platforms": ["ios", "android", "web"],
-    "version": "1.0.6",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {

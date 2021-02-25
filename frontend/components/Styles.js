@@ -1,13 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 /* A Shared StyleSheet
-*/
+ */
 
 export default StyleSheet.create({
   shadow: {
-
     // TODO? Maybe remove this UI feature.
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -18,7 +17,7 @@ export default StyleSheet.create({
   },
   card: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
     padding: 7,
     marginTop: 4,

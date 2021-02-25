@@ -8,40 +8,40 @@ import s from './Styles';
     Basic button class with icon and haptic feedback.
 */
 export default function Button(props) {
-  let {
-    iconName,
-    title,
-    bold,
-    type,
-    style,
-    titleStyle,
-    color,
-  } = props;
-  title = title.toUpperCase()
-  type = type ? type.toLowerCase() : "outline"
+  let { iconName, title, bold, type, style, titleStyle, color } = props;
+  title = title.toUpperCase();
+  type = type ? type.toLowerCase() : 'outline';
   if (color == undefined) {
-    color = 'green'
+    color = 'green';
   }
   return (
     <B
       type={type}
       {...props}
       title={title}
-      titleStyle={[type == 'solid' ? styles.raisedTitle : { color }, bold ? styles.bold : {}, titleStyle]}
-      buttonStyle={[type == 'solid' ? [{ backgroundColor: color }, s.shadow] : {}, { borderColor: color }, style]}
-      icon={iconName ?
-        <Icon
-          name={iconName}
-          type='material-community'
-          color={color}
-          containerStyle={styles.iconContainer}
-        />
-        :
-        undefined
+      titleStyle={[
+        type == 'solid' ? styles.raisedTitle : { color },
+        bold ? styles.bold : {},
+        titleStyle,
+      ]}
+      buttonStyle={[
+        type == 'solid' ? [{ backgroundColor: color }, s.shadow] : {},
+        { borderColor: color },
+        style,
+      ]}
+      icon={
+        iconName ? (
+          <Icon
+            name={iconName}
+            type='material-community'
+            color={color}
+            containerStyle={styles.iconContainer}
+          />
+        ) : undefined
       }
       onPressIn={() => Haptics.impactAsync('medium')}
     />
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     paddingRight: 7,
-    marginBottom: -5
+    marginBottom: -5,
   },
 });

@@ -12,5 +12,5 @@ export default function HeaderButton(props) {
       size={20}
       containerStyle={{ paddingLeft: 7, paddingRight: 7 }}
     />
-  )
+  );
 }

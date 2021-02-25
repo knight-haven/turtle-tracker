@@ -18,7 +18,7 @@ export default class TurtleText extends Component {
       titleStyle,
       baseStyle,
       titleText,
-      baseText
+      baseText,
     } = this.props;
     return (
       <View style={[styles.container, viewStyle]}>

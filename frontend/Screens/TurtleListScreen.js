@@ -9,10 +9,7 @@ import TurtleList from '../components/TurtleList';
 export default function TurtleListScreen({ navigation }) {
   return (
     <View>
-      <TurtleList
-        navigation={navigation}
-        onPressPage="TurtleView"
-      />
+      <TurtleList navigation={navigation} onPressPage='TurtleView' />
     </View>
   );
 }
@@ -31,4 +28,4 @@ TurtleListScreen.navigationOptions = ({ navigation }) => ({
       onPress={() => navigation.navigate('Settings')}
     />
   ),
-})
+});

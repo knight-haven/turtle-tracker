@@ -12,28 +12,27 @@ import { LOGIN_PASS, USERS } from '../env';
 export default function AlternateLoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  usernameRef = React.createRef()
-  passwordRef = React.createRef()
+  usernameRef = React.createRef();
+  passwordRef = React.createRef();
 
   function handleLogin() {
-    let pw = password.localeCompare(LOGIN_PASS) == 0
-    let user = USERS.includes(username)
+    let pw = password.localeCompare(LOGIN_PASS) == 0;
+    let user = USERS.includes(username);
     if (user && pw) {
-      navigation.navigate({ routeName: 'Map' })
-    }
-    else if (!user) {
+      navigation.navigate({ routeName: 'Map' });
+    } else if (!user) {
       Alert.alert(
         `unknown username: ${username}`,
-        "Please try again",
-        [{ text: "Close", onPress: () => { } }],
-        { cancelable: false }
+        'Please try again',
+        [{ text: 'Close', onPress: () => {} }],
+        { cancelable: false },
       );
     } else {
       Alert.alert(
         `Incorrect password for ${username}`,
-        "Please try again",
-        [{ text: "Close", onPress: () => { } }],
-        { cancelable: false }
+        'Please try again',
+        [{ text: 'Close', onPress: () => {} }],
+        { cancelable: false },
       );
     }
   }
@@ -42,14 +41,14 @@ export default function AlternateLoginScreen({ navigation }) {
     <Screen>
       <TextField
         label={'Username: '}
-        onChangeText={username => setUsername(username)}
+        onChangeText={(username) => setUsername(username)}
         value={username}
         reference={usernameRef}
         autoCapitalize={'none'}
       />
       <TextField
         label={'Password: '}
-        onChangeText={password => setPassword(password)}
+        onChangeText={(password) => setPassword(password)}
         value={password}
         reference={passwordRef}
         autoCapitalize={'none'}
@@ -58,16 +57,16 @@ export default function AlternateLoginScreen({ navigation }) {
       <Button
         title={'submit'}
         bold={true}
-        type={"solid"}
+        type={'solid'}
         raised={true}
         onPress={handleLogin}
         ViewComponent={LinearGradient}
         linearGradientProps={{
           colors: ['lime', 'green'],
           start: { x: 0, y: 0 },
-          end: { x: .8, y: .8 },
+          end: { x: 0.8, y: 0.8 },
         }}
       />
     </Screen>
-  )
+  );
 }

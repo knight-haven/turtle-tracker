@@ -14,21 +14,23 @@ import TurtleListItem from './TurtleListItem';
 export default function TurtleList(props) {
   function getTurtles() {
     setLoading(true);
-    return fetch(BASE_URL + `/turtle`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
+    return fetch(BASE_URL + `/turtle`, {
+      headers: new Headers({ Authorization: `Bearer ` + BACKEND_SECRET }),
+    })
       .then((response) => response.json())
       .then(async (responseJson) => {
         for (var i = 0; i < responseJson.length; i++) {
           try {
-            let turtleId = responseJson[i].id
-            let photoName = await getTurtleAvatar(turtleId)
+            let turtleId = responseJson[i].id;
+            let photoName = await getTurtleAvatar(turtleId);
             if (photoName != null) {
               // TODO: This should be changed, because the await causes it to block if firebase is down.
               // Not sure the best way to fix it though. Usually is fine.
-              let url = await getPhoto(photoName)
-              responseJson[i].avatar = url
+              let url = await getPhoto(photoName);
+              responseJson[i].avatar = url;
             }
           } catch (e) {
-            console.log(e)
+            console.log(e);
           }
         }
         onTurtleListChange(responseJson);
@@ -42,14 +44,15 @@ export default function TurtleList(props) {
 
   async function getTurtleAvatar(turtleId) {
     try {
-      let response = await fetch(BASE_URL + `/photo/turtle/${turtleId}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) });
+      let response = await fetch(BASE_URL + `/photo/turtle/${turtleId}`, {
+        headers: new Headers({ Authorization: `Bearer ` + BACKEND_SECRET }),
+      });
       let responseJson = await response.json();
       if (responseJson.length > 0) {
         return responseJson[0].name;
       }
       return null;
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
     }
   }
@@ -69,42 +72,44 @@ export default function TurtleList(props) {
     getTurtles();
   }
 
-  const [turtleList, onTurtleListChange] = useState([])
-  const [refreshing, setRefreshing] = useState(false)
+  const [turtleList, onTurtleListChange] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
-  useEffect(() => { getTurtles() }, []);
+  useEffect(() => {
+    getTurtles();
+  }, []);
   return (
     <Screen
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
-      {
-        loading && !refreshing &&
-        <LoadingSpinner animating={loading} />
       }
+    >
+      {loading && !refreshing && <LoadingSpinner animating={loading} />}
 
-      {props.navigation.state.routeName == "SelectTurtle" ?
-        !loading && <View>
-          <ListItem
-            leftAvatar
-            title="New Turtle"
-            chevron
-            bottomDivider
-            onPress={() => { props.navigation.navigate('TurtleEdit') }}
-          />
-        </View> : null}
-      {
-        turtleList.map((item, index) => (
-          <TurtleListItem
-            key={index + 1}
-            item={item}
-            onPressPage={props.onPressPage}
-            navigation={props.navigation}
-            refresh={refresh}
-          />
-        ))
-      }
+      {props.navigation.state.routeName == 'SelectTurtle'
+        ? !loading && (
+            <View>
+              <ListItem
+                leftAvatar
+                title='New Turtle'
+                chevron
+                bottomDivider
+                onPress={() => {
+                  props.navigation.navigate('TurtleEdit');
+                }}
+              />
+            </View>
+          )
+        : null}
+      {turtleList.map((item, index) => (
+        <TurtleListItem
+          key={index + 1}
+          item={item}
+          onPressPage={props.onPressPage}
+          navigation={props.navigation}
+          refresh={refresh}
+        />
+      ))}
     </Screen>
-  )
+  );
 }
-

@@ -6,9 +6,14 @@ import Divider from './Divider';
 import s from './Styles';
 import TurtleText from './TurtleText';
 
-
-export default function TurtleCard({ turtle, originalDate, recentDate, recentLength, markerList, images }) {
-
+export default function TurtleCard({
+  turtle,
+  originalDate,
+  recentDate,
+  recentLength,
+  markerList,
+  images,
+}) {
   return (
     <View>
       <View style={[s.card, s.shadow]}>
@@ -19,19 +24,35 @@ export default function TurtleCard({ turtle, originalDate, recentDate, recentLen
         </View>
         <BottomDivider />
         <View style={styles.rowContainer}>
-          <TurtleText titleText='Sex' baseText={turtle.sex == undefined ? "" : turtle.sex[0].toUpperCase() + turtle.sex.slice(1)} />
+          <TurtleText
+            titleText='Sex'
+            baseText={
+              turtle.sex == undefined
+                ? ''
+                : turtle.sex[0].toUpperCase() + turtle.sex.slice(1)
+            }
+          />
           <Divider />
-          <TurtleText titleText='Carapace Length' baseText={recentLength === null ? "0 mm" : `${recentLength} mm`} />
+          <TurtleText
+            titleText='Carapace Length'
+            baseText={recentLength === null ? '0 mm' : `${recentLength} mm`}
+          />
         </View>
         <BottomDivider />
         <View style={styles.rowContainer}>
-          <TurtleText titleText='Date Found' baseText={moment(originalDate).format('l')} />
+          <TurtleText
+            titleText='Date Found'
+            baseText={moment(originalDate).format('l')}
+          />
           <Divider />
-          <TurtleText titleText='Date Last Seen' baseText={moment(recentDate).format('l')} />
+          <TurtleText
+            titleText='Date Last Seen'
+            baseText={moment(recentDate).format('l')}
+          />
         </View>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -39,5 +60,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     marginBottom: 5,
-  }
-})
+  },
+});

@@ -16,21 +16,28 @@ export default class TurtleTextInput extends Component {
   render() {
     return (
       <View style={[styles.container, this.props.viewStyle]}>
-        <Text style={[styles.titleText, this.props.titleStyle]}>{this.props.titleText}</Text>
-        {this.props.multiline
-          ? <TextInput style={[styles.baseText, this.props.baseStyle]}
+        <Text style={[styles.titleText, this.props.titleStyle]}>
+          {this.props.titleText}
+        </Text>
+        {this.props.multiline ? (
+          <TextInput
+            style={[styles.baseText, this.props.baseStyle]}
             onChangeText={this.props.onChangeText}
             value={this.props.value}
             placeholder={this.props.placeholder}
-            returnKeyType="done"
+            returnKeyType='done'
             numberOfLines={this.props.numberOfLines}
-            multiline={true} />
-          : <TextInput style={[styles.baseText, this.props.baseStyle]}
+            multiline={true}
+          />
+        ) : (
+          <TextInput
+            style={[styles.baseText, this.props.baseStyle]}
             onChangeText={this.props.onChangeText}
             value={this.props.value}
             placeholder={this.props.placeholder}
-            returnKeyType="done" />
-        }
+            returnKeyType='done'
+          />
+        )}
       </View>
     );
   }
@@ -48,7 +55,7 @@ const styles = StyleSheet.create({
   baseText: {
     height: 28,
     borderColor: 'gray',
-    borderWidth: .25,
+    borderWidth: 0.25,
     paddingLeft: 6,
     paddingRight: 6,
     minWidth: 200,

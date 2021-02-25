@@ -5,52 +5,57 @@ import IconButton from './IconButton';
 import LoadingImage from './LoadingImage';
 
 export default function DeleteImage({ navigation, source, style, photoId }) {
-
   function deletePhotoById(id) {
     return fetch(BASE_URL + `/photo/${id}`, {
       method: 'DELETE',
-      headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': `Bearer ` + BACKEND_SECRET }),
-    })
-      .catch((error) => {
-        console.error(error);
-      });
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ` + BACKEND_SECRET,
+      }),
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 
   return (
     <View>
-      <LoadingImage
-        source={source}
-        style={style}
-      />
+      <LoadingImage source={source} style={style} />
       <IconButton
-        name="close"
+        name='close'
         size={22}
-        containerStyle={{ paddingLeft: 7, paddingRight: 7, position: 'absolute' }}
-        color="red"
+        containerStyle={{
+          paddingLeft: 7,
+          paddingRight: 7,
+          position: 'absolute',
+        }}
+        color='red'
         onPress={() =>
           Alert.alert(
-            "Delete Photo",
-            "Are you sure you would like to delete this photo?",
+            'Delete Photo',
+            'Are you sure you would like to delete this photo?',
             [
               {
-                text: "No",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel"
+                text: 'No',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
               },
               {
-                text: "Yes", onPress: async () => {
-                  await deletePhotoById(photoId)
-                  navigation.navigate('SightingView')
-                  if (navigation.state.params.refreshSightingView != undefined) {
-                    navigation.state.params.refreshSightingView()
+                text: 'Yes',
+                onPress: async () => {
+                  await deletePhotoById(photoId);
+                  navigation.navigate('SightingView');
+                  if (
+                    navigation.state.params.refreshSightingView != undefined
+                  ) {
+                    navigation.state.params.refreshSightingView();
                   }
-                }
-              }
+                },
+              },
             ],
-            { cancelable: false }
+            { cancelable: false },
           )
         }
       />
     </View>
-  )
+  );
 }

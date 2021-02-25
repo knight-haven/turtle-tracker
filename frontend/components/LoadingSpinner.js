@@ -8,10 +8,11 @@ export default function LoadingSpinner(props) {
   return (
     <ActivityIndicator
       animating={props.animating}
-      size="large"
+      size='large'
       color='green'
-      style={[props.style, styles.activityIndicator]} />
-  )
+      style={[props.style, styles.activityIndicator]}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
@@ -19,6 +20,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 80
-  }
-})
+    height: 80,
+  },
+});

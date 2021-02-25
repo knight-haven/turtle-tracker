@@ -4,10 +4,15 @@
 
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { createAppContainer, createSwitchNavigator, NavigationActions, StackActions } from 'react-navigation';
+import {
+  createAppContainer,
+  createSwitchNavigator,
+  NavigationActions,
+  StackActions,
+} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-//  import screens 
+//  import screens
 import AlternateLoginScreen from './Screens/AlternateLoginScreen';
 import LandingScreen from './Screens/LandingScreen';
 import LoginScreen from './Screens/LoginScreen';
@@ -20,13 +25,11 @@ import TurtleEditScreen from './Screens/Turtle/TurtleEditScreen';
 import TurtleViewScreen from './Screens/Turtle/TurtleViewScreen';
 import TurtleListScreen from './Screens/TurtleListScreen';
 
-
-
 // Screens shared across stacks.
 const CommonScreens = {
   TurtleList: {
     screen: TurtleListScreen,
-    navigationOptions: { title: 'Turtles' }
+    navigationOptions: { title: 'Turtles' },
   },
   TurtleView: {
     screen: TurtleViewScreen,
@@ -36,45 +39,38 @@ const CommonScreens = {
   },
   SelectTurtle: {
     screen: SelectTurtleScreen,
-    navigationOptions: { title: 'Select Turtle' }
+    navigationOptions: { title: 'Select Turtle' },
   },
   Settings: {
     screen: SettingsScreen,
-    navigationOptions: { title: 'Settings' }
+    navigationOptions: { title: 'Settings' },
   },
-  SightingView:
-  {
-    screen: SightingViewScreen
+  SightingView: {
+    screen: SightingViewScreen,
   },
-  SightingEdit:
-  {
-    screen: SightingEditScreen
+  SightingEdit: {
+    screen: SightingEditScreen,
   },
-}
+};
 
 // Stack of screens for the Map Tab.
-const MapStack = createStackNavigator(
-  {
-    Map: {
-      screen: MapScreen,
-      navigationOptions: {
-        title: 'Tracker',
-        headerStyle: {
-          backgroundColor: 'white',
-        }
-      }
+const MapStack = createStackNavigator({
+  Map: {
+    screen: MapScreen,
+    navigationOptions: {
+      title: 'Tracker',
+      headerStyle: {
+        backgroundColor: 'white',
+      },
     },
-    ...CommonScreens,
   },
-);
+  ...CommonScreens,
+});
 
 // Stacks of Screens for the Turtles Lab
-const TurtleListStack = createStackNavigator(
-  {
-    ...CommonScreens
-  },
-
-);
+const TurtleListStack = createStackNavigator({
+  ...CommonScreens,
+});
 
 // Combine the two stacks together under their own tabs.
 const TabNav = createBottomTabNavigator(
@@ -90,7 +86,7 @@ const TabNav = createBottomTabNavigator(
         tabBarLabel: 'Turtles',
       },
       screen: TurtleListStack,
-    }
+    },
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -102,18 +98,23 @@ const TabNav = createBottomTabNavigator(
 
         // Then load the screen
         if (routeName === 'MapTab') {
-          navigation.dispatch(StackActions.reset({
-            index: 0,
-            key: null,
-            actions: [NavigationActions.navigate({ routeName: 'Map' })]
-          }))
-        }
-        else if (routeName === 'TurtleTab') {
-          navigation.dispatch(StackActions.reset({
-            index: 0,
-            key: null,
-            actions: [NavigationActions.navigate({ routeName: 'TurtleList' })]
-          }))
+          navigation.dispatch(
+            StackActions.reset({
+              index: 0,
+              key: null,
+              actions: [NavigationActions.navigate({ routeName: 'Map' })],
+            }),
+          );
+        } else if (routeName === 'TurtleTab') {
+          navigation.dispatch(
+            StackActions.reset({
+              index: 0,
+              key: null,
+              actions: [
+                NavigationActions.navigate({ routeName: 'TurtleList' }),
+              ],
+            }),
+          );
         }
       },
 
@@ -134,21 +135,21 @@ const TabNav = createBottomTabNavigator(
       activeTintColor: 'green',
       inactiveTintColor: 'gray',
     },
-  }
+  },
 );
 
 // Stack for the landing page and login.
 const LandingNav = createStackNavigator({
   Landing: {
-    screen: LandingScreen
+    screen: LandingScreen,
   },
   ADLogin: {
-    screen: LoginScreen
+    screen: LoginScreen,
   },
   AltLogin: {
-    screen: AlternateLoginScreen
-  }
-})
+    screen: AlternateLoginScreen,
+  },
+});
 
 // Combine all of the screens into one navigation
 const MainNavigator = createSwitchNavigator(
@@ -158,7 +159,7 @@ const MainNavigator = createSwitchNavigator(
   },
   {
     initialRouteName: 'Login',
-  }
-)
+  },
+);
 
 export default createAppContainer(MainNavigator);

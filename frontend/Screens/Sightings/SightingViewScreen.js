@@ -16,31 +16,34 @@ import { BACKEND_SECRET, BASE_URL, firebase } from '../../env';
 Turtle Sighting Screen for information on one particular sighting
 */
 export default function SightingViewScreen({ navigation }) {
-
   function getTurtleById(id) {
-    return fetch(BASE_URL + `/turtle/${id}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
-      .then(response => response.json())
-      .then(responseJson => {
-        const data = responseJson[0]
-        setTurtleNumber(data.turtle_number)
-        setMark(data.mark)
+    return fetch(BASE_URL + `/turtle/${id}`, {
+      headers: new Headers({ Authorization: `Bearer ` + BACKEND_SECRET }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        const data = responseJson[0];
+        setTurtleNumber(data.turtle_number);
+        setMark(data.mark);
         setLoading(false);
         setRefreshing(false);
-      })
+      });
   }
 
   function getSightingById(id) {
-    return fetch(BASE_URL + `/sighting/${id}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
+    return fetch(BASE_URL + `/sighting/${id}`, {
+      headers: new Headers({ Authorization: `Bearer ` + BACKEND_SECRET }),
+    })
       .then((response) => response.json())
       .then((responseJson) => {
         let data = responseJson[0];
         let coordinate = {
-          "coordinate": {
-            "latitude": data.latitude,
-            "longitude": data.longitude
+          coordinate: {
+            latitude: data.latitude,
+            longitude: data.longitude,
           },
-        }
-        setMarkerList([coordinate])
+        };
+        setMarkerList([coordinate]);
         setDate(new Date(Date.parse(data.time_seen)));
         setNotes(data.notes);
         setLength(data.carapace_length);
@@ -53,15 +56,20 @@ export default function SightingViewScreen({ navigation }) {
   }
 
   function getSightingImages(turtleId) {
-    return fetch(BASE_URL + `/photo/sighting/${sightingId}`, { headers: new Headers({ 'Authorization': `Bearer ` + BACKEND_SECRET }) })
+    return fetch(BASE_URL + `/photo/sighting/${sightingId}`, {
+      headers: new Headers({ Authorization: `Bearer ` + BACKEND_SECRET }),
+    })
       .then((response) => response.json())
       .then(async (responseJson) => {
-        var imageList = []
+        var imageList = [];
         for (var i = 0; i < responseJson.length; i++) {
-          imageList.push({ id: responseJson[i].id, uri: await getPhoto(responseJson[i].name) })
+          imageList.push({
+            id: responseJson[i].id,
+            uri: await getPhoto(responseJson[i].name),
+          });
         }
         onImagesChange(imageList);
-        navigation.setParams({ images: imageList })
+        navigation.setParams({ images: imageList });
       })
       .catch((error) => {
         console.log(error);
@@ -87,9 +95,9 @@ export default function SightingViewScreen({ navigation }) {
 
   useEffect(() => {
     setLoading(true);
-    getSightingById(sightingId)
-    getTurtleById(turtleId)
-    getSightingImages(sightingId)
+    getSightingById(sightingId);
+    getTurtleById(turtleId);
+    getSightingImages(sightingId);
   }, []);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -106,58 +114,76 @@ export default function SightingViewScreen({ navigation }) {
     setRefreshing(true);
     refresh();
   }, [refreshing]);
-  useEffect(() => { navigation.setParams({ refreshSightingView: refresh }); }, []);
+  useEffect(() => {
+    navigation.setParams({ refreshSightingView: refresh });
+  }, []);
 
   return (
     <Screen
-      contentStyle={{ backgroundColor: 'transparent', shadowColor: 'transparent' }}
+      contentStyle={{
+        backgroundColor: 'transparent',
+        shadowColor: 'transparent',
+      }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {
-        loading && !refreshing &&
-        <LoadingSpinner animating={loading} />
-      }
-      {
-        !loading &&
+      {loading && !refreshing && <LoadingSpinner animating={loading} />}
+      {!loading && (
         <View>
           <View style={[s.shadow, s.card]}>
-            <View style={{ justifyContent: 'space-evenly', flexDirection: 'row' }}>
+            <View
+              style={{ justifyContent: 'space-evenly', flexDirection: 'row' }}
+            >
               {/* TODO: Replace sightingId with the number sighting for the specific turtle. */}
               {/* <TurtleText titleText={`Sighting #${sightingId}`} /> */}
-              <TurtleText titleText="Mark" baseText={mark} />
+              <TurtleText titleText='Mark' baseText={mark} />
               <Divider />
-              <TurtleText titleText="Date" baseText={moment(date).format('l')} />
+              <TurtleText
+                titleText='Date'
+                baseText={moment(date).format('l')}
+              />
             </View>
             <BottomDivider />
-            <View style={{ justifyContent: 'space-evenly', flexDirection: 'row' }}>
-              <TurtleText titleText="Length" baseText={length === null ? "0 mm" : `${length} mm`} />
+            <View
+              style={{ justifyContent: 'space-evenly', flexDirection: 'row' }}
+            >
+              <TurtleText
+                titleText='Length'
+                baseText={length === null ? '0 mm' : `${length} mm`}
+              />
               <Divider />
-              <TurtleText titleText="Location" baseText={location} />
+              <TurtleText titleText='Location' baseText={location} />
             </View>
-            {notes != undefined && notes != "" ?
+            {notes != undefined && notes != '' ? (
               <View>
                 <BottomDivider />
-                <TurtleText titleText="Notes" baseText={notes} />
-              </View> : null
-            }
+                <TurtleText titleText='Notes' baseText={notes} />
+              </View>
+            ) : null}
           </View>
           {/* map */}
           <View style={[s.shadow, s.card, { width: '100%', height: 200 }]}>
             <TurtleMapView
               markers={markerList}
-              latitude={markerList.length > 0 ? markerList[0].coordinate.latitude : null}
-              longitude={markerList.length > 0 ? markerList[0].coordinate.longitude : null}
-              pointerEvents="none" />
+              latitude={
+                markerList.length > 0 ? markerList[0].coordinate.latitude : null
+              }
+              longitude={
+                markerList.length > 0
+                  ? markerList[0].coordinate.longitude
+                  : null
+              }
+              pointerEvents='none'
+            />
           </View>
-          {images != undefined && images.length > 0 ?
+          {images != undefined && images.length > 0 ? (
             <View style={[s.shadow, s.card]}>
               <Gallery images={images} />
-            </View> : null
-          }
+            </View>
+          ) : null}
         </View>
-      }
+      )}
     </Screen>
   );
 }
@@ -167,8 +193,8 @@ SightingViewScreen.navigationOptions = ({ navigation }) => ({
   title: 'Sighting',
   headerRight: () => (
     <HeaderButton
-      onPress={() => navigation.navigate('SightingEdit',
-        {
+      onPress={() =>
+        navigation.navigate('SightingEdit', {
           sighting: navigation.getParam('sighting'),
           markerList: navigation.getParam('markerList'),
           turtleId: navigation.getParam('turtleId'),
@@ -176,7 +202,8 @@ SightingViewScreen.navigationOptions = ({ navigation }) => ({
           refreshSightingView: navigation.getParam('refreshSightingView'),
           refreshTurtleView: navigation.getParam('refreshTurtleView'),
           edit: true,
-        })}
+        })
+      }
       name={'edit'}
     />
   ),

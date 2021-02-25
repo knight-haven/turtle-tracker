@@ -7,14 +7,14 @@ import s from './Styles';
 // define styles
 const styles = StyleSheet.create({
   icon: {
-    color: "white",
+    color: 'white',
   },
   opacity: {
-    backgroundColor: "green",
+    backgroundColor: 'green',
     borderRadius: 100,
     padding: 5,
   },
-})
+});
 
 /*
     IconButton is a customized button component.
@@ -22,27 +22,24 @@ const styles = StyleSheet.create({
     and additional styles.
 */
 export default function IconButton(props) {
-  const {
-    onPress,
-    name,
-    containerStyle,
-    type,
-    disabled,
-    size,
-    color,
-  } = props
+  const { onPress, name, containerStyle, type, disabled, size, color } = props;
 
-  iconType = type == undefined ? 'materal' : type
+  iconType = type == undefined ? 'materal' : type;
   return (
     <View style={[containerStyle]}>
       <TouchableOpacity
         disabled={disabled}
         onPress={onPress}
-        style={[s.shadow, styles.opacity, color == undefined ? null : { backgroundColor: color }]}
+        style={[
+          s.shadow,
+          styles.opacity,
+          color == undefined ? null : { backgroundColor: color },
+        ]}
         borderRadius={'100%'}
-        onPressIn={() => Haptics.impactAsync('medium')}>
+        onPressIn={() => Haptics.impactAsync('medium')}
+      >
         <Icon name={name} style={styles.icon} size={size} />
       </TouchableOpacity>
     </View>
-  )
+  );
 }

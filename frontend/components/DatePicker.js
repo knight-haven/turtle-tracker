@@ -1,6 +1,12 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React from 'react';
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 // https://medium.com/@buchereli/how-to-react-native-date-picker-872c600af41b
 export default function DatePicker({ date, onChange, onClose }) {
@@ -15,13 +21,13 @@ export default function DatePicker({ date, onChange, onClose }) {
       )}
       <DateTimePicker
         value={date}
-        display="default"
+        display='default'
         onChange={onChange}
         maximumDate={new Date(Date.now())}
         minimumDate={new Date(1985, 0, 1)}
       />
     </TouchableOpacity>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -39,5 +45,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderColor: 'grey',
-  }
-})
+  },
+});

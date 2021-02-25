@@ -6,10 +6,7 @@ import TurtleList from '../components/TurtleList';
 export default function SelectTurtleScreen({ navigation }) {
   return (
     <View style={{ justifyContent: 'center' }}>
-      <TurtleList
-        navigation={navigation}
-        onPressPage="SightingEdit"
-      />
+      <TurtleList navigation={navigation} onPressPage='SightingEdit' />
     </View>
   );
 }
@@ -20,5 +17,5 @@ SelectTurtleScreen.navigationOptions = ({ navigation }) => ({
       onPress={() => navigation.goBack()}
       name={'navigate-before'}
     />
-  )
-})
+  ),
+});

@@ -5,7 +5,5 @@ import MainNavigator from './AppNavigator';
 const AppContainer = createAppContainer(MainNavigator);
 
 export default function App() {
-  return (
-    <AppContainer />
-  )
+  return <AppContainer />;
 }

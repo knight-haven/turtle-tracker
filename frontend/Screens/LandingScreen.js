@@ -13,24 +13,24 @@ export default function LandingScreen({ navigation }) {
       <Button
         title={'submit'}
         bold={true}
-        type={"solid"}
-        title={"Sign in with Outlook"}
-        onPress={() => navigation.navigate("ADLogin")}
+        type={'solid'}
+        title={'Sign in with Outlook'}
+        onPress={() => navigation.navigate('ADLogin')}
         style={{ paddingBottom: 14 }}
         ViewComponent={LinearGradient}
         linearGradientProps={{
           colors: ['lime', 'green'],
           start: { x: 0, y: 0 },
-          end: { x: .8, y: .8 },
+          end: { x: 0.8, y: 0.8 },
         }}
       />
       <Button
         title={'submit'}
         bold={true}
-        title={"Sign in"}
+        title={'Sign in'}
         raised={true}
-        onPress={() => navigation.navigate("AltLogin")}
+        onPress={() => navigation.navigate('AltLogin')}
       />
     </Screen>
-  )
+  );
 }

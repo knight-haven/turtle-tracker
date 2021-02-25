@@ -1,13 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function SightingText({ titleStyle, baseStyle, containerStyle, titleText, baseText }) {
+export default function SightingText({
+  titleStyle,
+  baseStyle,
+  containerStyle,
+  titleText,
+  baseText,
+}) {
   return (
     <View style={[styles.container, containerStyle]}>
       <Text style={[styles.titleText, titleStyle]}>{titleText}</Text>
       <Text style={[styles.baseText, baseStyle]}>{baseText}</Text>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

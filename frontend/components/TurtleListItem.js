@@ -12,17 +12,27 @@ export default class TurtleListItem extends Component {
         leftAvatar={{ source: { uri: this.props.item.avatar } }}
         title={
           <View>
-            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{this.props.item.mark}</Text>
+            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+              {this.props.item.mark}
+            </Text>
           </View>
         }
         subtitle={
           <View>
-            <Text style={{ paddingLeft: 2, fontSize: 14 }}>{this.props.item.sex[0].toUpperCase() + this.props.item.sex.slice(1)}</Text>
+            <Text style={{ paddingLeft: 2, fontSize: 14 }}>
+              {this.props.item.sex[0].toUpperCase() +
+                this.props.item.sex.slice(1)}
+            </Text>
           </View>
         }
         chevron
         bottomDivider
-        onPress={() => { this.props.navigation.navigate(this.props.onPressPage, { turtleId: this.props.item.id, refreshTurtleList: this.props.refresh }) }}
+        onPress={() => {
+          this.props.navigation.navigate(this.props.onPressPage, {
+            turtleId: this.props.item.id,
+            refreshTurtleList: this.props.refresh,
+          });
+        }}
       />
     );
   }

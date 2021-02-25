@@ -14,13 +14,13 @@ export default function CameraGallery({ parentCallback, imageList }) {
       allowsEditing: false,
     });
     saveImage(result);
-  };
+  }
 
   // retrieves an image from a gallery
   async function pickImage() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false
+      allowsEditing: false,
     });
     saveImage(result);
   }
@@ -37,9 +37,7 @@ export default function CameraGallery({ parentCallback, imageList }) {
   // creates the buttons and shows the selected images
   return (
     <View>
-      <Gallery
-        images={images}
-      />
+      <Gallery images={images} />
 
       <View style={styles.takePicButtons}>
         <Button
@@ -60,7 +58,6 @@ export default function CameraGallery({ parentCallback, imageList }) {
 }
 
 const styles = StyleSheet.create({
-
   contentContainer: {
     paddingLeft: 65,
     alignItems: 'center',
@@ -76,11 +73,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-around',
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
   },
   button: {
     marginTop: 3,
-  }
+  },
 });
 
 // reference/source: https://docs.expo.io/versions/latest/sdk/imagepicker/

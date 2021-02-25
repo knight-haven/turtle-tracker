@@ -11,5 +11,5 @@ export default function Divider() {
         top: '5%',
       }}
     />
-  )
+  );
 }

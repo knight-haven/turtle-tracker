@@ -7,26 +7,50 @@ import SightingText from './SightingText';
 import s from './Styles';
 
 export default function SightingCard({ navigation, sighting, refresh }) {
-
   return (
     <View style={[styles.container, s.shadow]}>
       <View>
-        <SightingText titleText={"Date"} baseText={moment(new Date(Date.parse(sighting.time_seen))).format('l')} containerStyle={{ marginTop: 15 }} />
+        <SightingText
+          titleText={'Date'}
+          baseText={moment(new Date(Date.parse(sighting.time_seen))).format(
+            'l',
+          )}
+          containerStyle={{ marginTop: 15 }}
+        />
         <BottomDivider containerStyle={styles.divider} />
-        <SightingText titleText={"Location"} baseText={sighting.turtle_location} />
+        <SightingText
+          titleText={'Location'}
+          baseText={sighting.turtle_location}
+        />
         <BottomDivider containerStyle={styles.divider} />
-        <SightingText titleText={"Length"} baseText={sighting.carapace_length === null ? "" : `${sighting.carapace_length} mm`} />
+        <SightingText
+          titleText={'Length'}
+          baseText={
+            sighting.carapace_length === null
+              ? ''
+              : `${sighting.carapace_length} mm`
+          }
+        />
         <BottomDivider containerStyle={styles.divider} />
-        <SightingText titleText={"Notes"} baseText={sighting.notes} containerStyle={{ marginBottom: 15 }} />
+        <SightingText
+          titleText={'Notes'}
+          baseText={sighting.notes}
+          containerStyle={{ marginBottom: 15 }}
+        />
         <Button
           bold={true}
-          type="solid"
+          type='solid'
           titleStyle={styles.buttonTitle}
-          title="View Sighting"
-          onPress={() => navigation.navigate('SightingView', { turtleId: sighting.turtle_id, sightingId: sighting.id })}
+          title='View Sighting'
+          onPress={() =>
+            navigation.navigate('SightingView', {
+              turtleId: sighting.turtle_id,
+              sightingId: sighting.id,
+            })
+          }
         />
       </View>
-      {/* <TurtleMapView 
+      {/* <TurtleMapView
                 markers={[{
                     "coordinate": {
                         "latitude": sighting.latitude,
@@ -41,7 +65,7 @@ export default function SightingCard({ navigation, sighting, refresh }) {
             /> */}
       {/* <Text style={styles.notes}>{sighting.notes}</Text> */}
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -71,4 +95,4 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 15,
   },
-})
+});

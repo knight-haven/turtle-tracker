@@ -1,3 +1,4 @@
+import { StackActions } from '@react-navigation/native';
 import * as Permissions from 'expo-permissions';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -8,7 +9,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { StackActions } from 'react-navigation';
 import uuidv1 from 'uuid/v1';
 import Button from '../../components/Button';
 import CameraGallery from '../../components/CameraGallery';
@@ -370,7 +370,7 @@ export default function SightingEditScreen({ navigation }) {
                   await createSighting(turtle.id, latitude, longitude);
                   setIsSubmitting(false);
                   const replaceAction = StackActions.replace({
-                    routeName: 'TurtleView',
+                    name: 'TurtleView',
                     params: { turtleId: turtle.id },
                   });
                   navigation.dispatch(replaceAction);

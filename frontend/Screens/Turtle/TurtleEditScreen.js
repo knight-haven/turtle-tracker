@@ -1,7 +1,7 @@
+import { StackActions } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
-import { StackActions } from 'react-navigation';
 import Button from '../../components/Button';
 import DeleteButton from '../../components/DeleteButton';
 import HeaderButton from '../../components/HeaderButton';
@@ -70,7 +70,7 @@ export default function TurtleEditScreen({ navigation }) {
       .then((responseJson) => {
         setIsSubmitting(false);
         const replaceAction = StackActions.replace({
-          routeName: 'SightingEdit',
+          name: 'SightingEdit',
           params: { turtleId: responseJson },
         });
         navigation.dispatch(replaceAction);

@@ -13,13 +13,8 @@ import { StyleSheet, Text, View } from 'react-native';
 */
 export default class TurtleText extends Component {
   render() {
-    const {
-      viewStyle,
-      titleStyle,
-      baseStyle,
-      titleText,
-      baseText,
-    } = this.props;
+    const { viewStyle, titleStyle, baseStyle, titleText, baseText } =
+      this.props;
     return (
       <View style={[styles.container, viewStyle]}>
         <Text style={[styles.titleText, titleStyle]}>{titleText}</Text>

@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import Button from '../components/Button';
 import IconButton from '../components/IconButton';
 import TurtleMapView from '../components/TurtleMapView';
+import { AuthContext } from '../context';
 import { BACKEND_SECRET, BASE_URL } from '../env';
 
 /*
@@ -14,6 +15,7 @@ export default function MapScreen({ navigation }) {
   const [longitude, onLongitudeChange] = useState(-85.58213);
   const [markerList, onMarkerListChange] = useState([]);
   const markerListRef = useRef(markerList);
+  const { setUserSignedIn } = React.useContext(AuthContext);
 
   useEffect(() => {
     markerListRef.current = markerList;
@@ -135,7 +137,9 @@ export default function MapScreen({ navigation }) {
       />
 
       <Button
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => {
+          setUserSignedIn(false);
+        }}
         title={'Logout'}
         style={{
           right: 7,

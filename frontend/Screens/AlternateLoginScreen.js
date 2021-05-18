@@ -1,10 +1,10 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
-import { AuthContext } from '../AppNavigator';
 import Button from '../components/Button';
 import Screen from '../components/Screen';
 import TextField from '../components/TextField';
+import { AuthContext } from '../context';
 import { LOGIN_PASS, USERS } from '../env';
 
 /*
@@ -21,7 +21,6 @@ export default function AlternateLoginScreen({ navigation }) {
     let pw = password.localeCompare(LOGIN_PASS) == 0;
     let user = USERS.includes(username);
     if (user && pw) {
-      // navigation.navigate('Map');
       setUserSignedIn(true);
     } else if (!user) {
       Alert.alert(

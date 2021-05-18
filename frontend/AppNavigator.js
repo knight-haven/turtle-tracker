@@ -5,11 +5,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { AuthContext } from './context';
 //  import screens
 import AlternateLoginScreen from './Screens/AlternateLoginScreen';
 import LandingScreen from './Screens/LandingScreen';
 import LoginScreen from './Screens/LoginScreen';
 import MapScreen from './Screens/MapScreen';
+import SelectTurtleScreen from './Screens/SelectTurtleScreen';
 import SettingsScreen from './Screens/SettingsScreen';
 import SightingEditScreen from './Screens/Sightings/SightingEditScreen';
 import SightingViewScreen from './Screens/Sightings/SightingViewScreen';
@@ -35,6 +37,7 @@ export const TurtleListStack = () => {
       <Stack.Screen name='TurtleList' component={TurtleListScreen} />
       <Stack.Screen name='TurtleView' component={TurtleViewScreen} />
       <Stack.Screen name='TurtleEdit' component={TurtleEditScreen} />
+      <Stack.Screen name='SelectTurtle' component={SelectTurtleScreen} />
       <Stack.Screen name='Settings' component={SettingsScreen} />
       <Stack.Screen name='SightingView' component={SightingViewScreen} />
       <Stack.Screen name='SightingEdit' component={SightingEditScreen} />
@@ -64,8 +67,6 @@ export const LandingNav = () => {
     </Stack.Navigator>
   );
 };
-
-export const AuthContext = React.createContext();
 
 // Combine all of the screens into one navigation
 const MainNavigator = () => {

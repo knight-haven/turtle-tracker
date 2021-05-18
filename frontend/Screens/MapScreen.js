@@ -1,4 +1,3 @@
-import { useRoute } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -11,7 +10,7 @@ import { BACKEND_SECRET, BASE_URL } from '../env';
 /*
 MapScreen.js contains the basic map screen with turtle sightings.
 */
-export default function MapScreen({ navigation }) {
+export default function MapScreen({ route, navigation }) {
   const [latitude, onLatitudeChange] = useState(42.93187);
   const [longitude, onLongitudeChange] = useState(-85.58213);
   const [markerList, onMarkerListChange] = useState([]);
@@ -90,7 +89,7 @@ export default function MapScreen({ navigation }) {
     ]);
   }
 
-  const route = useRoute();
+  // TODO: route.params.email is undefined
   const email =
     (route.params && route.params.email) || 'cek26@students.calvin.edu';
 
@@ -113,6 +112,7 @@ export default function MapScreen({ navigation }) {
 
         //onLongPress={handlePress}
       />
+
       <IconButton
         onPress={() =>
           navigation.navigate('Settings', {

@@ -5,14 +5,14 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 /*
     TurtleMapView is a custom MapView
 */
-export default function TurtleMapView(props) {
+export default function TurtleMapView({ markers, ...props }) {
   return (
     <View
       style={[
         { flex: 1 },
         {
-          height: props.height == null ? 200 : props.height,
-          width: props.width == null ? '100%' : props.width,
+          height: props.height ? props.height : 200,
+          width: props.width ? props.width : '100%',
         },
       ]}
     >
@@ -38,15 +38,19 @@ export default function TurtleMapView(props) {
         scrollEnabled={false}
         {...props}
       >
-        {props.markers.map((marker, i) => {
-          return (
-            <Marker key={i} {...marker}>
-              <Image
-                style={{ height: 40, width: 40 }}
-                source={require('../assets/turtle_outline.png')}
-              />
-            </Marker>
-          );
+        {markers?.map((marker) => {
+          if (marker.coordinate.latitude && marker.coordinate.latitude) {
+            return (
+              <Marker key={JSON.stringify(marker.coordinate)} {...marker}>
+                <Image
+                  style={{ height: 40, width: 40 }}
+                  source={require('../assets/turtle_outline.png')}
+                />
+              </Marker>
+            );
+          } else {
+            return <></>;
+          }
         })}
       </MapView>
     </View>

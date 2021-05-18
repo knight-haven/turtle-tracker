@@ -1,7 +1,7 @@
 /*
   AppNavigator.js handles the basic tab and stack navigation for the app.
 */
-
+import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
@@ -50,9 +50,25 @@ const Tab = createBottomTabNavigator();
 
 export const TabNav = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name='MapTab' component={MapStack} />
-      <Tab.Screen name='TurtleTab' component={TurtleListStack} />
+    <Tab.Navigator tabBarOptions={{ activeTintColor: 'green' }}>
+      <Tab.Screen
+        name='Tracker'
+        component={MapStack}
+        options={{
+          tabBarIcon: ({ color }) => {
+            return <Ionicons name={'ios-map'} size={25} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name='Turtles'
+        component={TurtleListStack}
+        options={{
+          tabBarIcon: ({ color }) => {
+            return <Ionicons name={'ios-list'} size={25} color={color} />;
+          },
+        }}
+      />
     </Tab.Navigator>
   );
 };

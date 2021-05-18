@@ -1,3 +1,4 @@
+import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import { Alert, Text } from 'react-native';
 import Button from '../components/Button';
@@ -34,7 +35,10 @@ export default function SettingsScreen({ navigation }) {
     }
   }
 
-  email = navigation.getParam('email');
+  const route = useRoute();
+  const email =
+    (route.params && route.params.email) || 'cek26@students.calvin.edu';
+
   return (
     <Screen>
       <Button

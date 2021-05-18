@@ -1,3 +1,4 @@
+import { useRoute } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -89,6 +90,10 @@ export default function MapScreen({ navigation }) {
     ]);
   }
 
+  const route = useRoute();
+  const email =
+    (route.params && route.params.email) || 'cek26@students.calvin.edu';
+
   // builds the map to the user's location
   return (
     <View style={{ flex: 1 }}>
@@ -111,7 +116,7 @@ export default function MapScreen({ navigation }) {
       <IconButton
         onPress={() =>
           navigation.navigate('Settings', {
-            email: navigation.getParam('email'),
+            email,
           })
         }
         name={'settings'}

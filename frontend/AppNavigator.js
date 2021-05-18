@@ -26,6 +26,13 @@ export const MapStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name='Map' component={MapScreen} />
+      <Stack.Screen name='TurtleList' component={TurtleListScreen} />
+      <Stack.Screen name='TurtleView' component={TurtleViewScreen} />
+      <Stack.Screen name='TurtleEdit' component={TurtleEditScreen} />
+      <Stack.Screen name='SelectTurtle' component={SelectTurtleScreen} />
+      <Stack.Screen name='Settings' component={SettingsScreen} />
+      <Stack.Screen name='SightingView' component={SightingViewScreen} />
+      <Stack.Screen name='SightingEdit' component={SightingEditScreen} />
     </Stack.Navigator>
   );
 };
@@ -90,7 +97,7 @@ const MainNavigator = () => {
 
   return (
     <AuthContext.Provider value={{ userSignedIn, setUserSignedIn }}>
-      <Stack.Navigator>
+      <Stack.Navigator headerMode='none'>
         {userSignedIn ? (
           <Stack.Screen name='TabScreens' component={TabNav} />
         ) : (

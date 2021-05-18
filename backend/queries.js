@@ -136,15 +136,8 @@ const getSightingById = (request, response) => {
 };
 
 const createSighting = (request, response) => {
-  const {
-    turtleId,
-    time,
-    location,
-    latitude,
-    longitude,
-    length,
-    notes,
-  } = request.body;
+  const { turtleId, time, location, latitude, longitude, length, notes } =
+    request.body;
 
   pool.query(
     'INSERT INTO sighting (turtle_id, time_seen, turtle_location, latitude, longitude, carapace_length, notes) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
@@ -160,15 +153,8 @@ const createSighting = (request, response) => {
 
 const updateSighting = (request, response) => {
   const id = parseInt(request.params.id);
-  const {
-    turtleId,
-    time,
-    location,
-    latitude,
-    longitude,
-    length,
-    notes,
-  } = request.body;
+  const { turtleId, time, location, latitude, longitude, length, notes } =
+    request.body;
 
   pool.query(
     'UPDATE sighting SET turtle_id = $1, time_seen = $2, turtle_location = $3, latitude = $4, longitude = $5, carapace_length = $6, notes = $7 WHERE id = $8',
@@ -375,8 +361,7 @@ const sendEmail = (request, response) => {
         to: emailAddress,
         from: 'turtletrackerbackend@gmail.com',
         subject: 'Calvin EcoPreserve Turtle Data',
-        text:
-          'Dear Turtle Tracker User,\n\nAttached is a csv file with the all the box turtle data at the Calvin EcoPreserve.\n\nSincerely,\nThe Turtle Tracker Team',
+        text: 'Dear Turtle Tracker User,\n\nAttached is a csv file with the all the box turtle data at the Calvin EcoPreserve.\n\nSincerely,\nThe Turtle Tracker Team',
         attachments: [
           {
             content: attachment,

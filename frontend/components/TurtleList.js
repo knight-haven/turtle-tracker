@@ -1,3 +1,4 @@
+import { useNavigationState } from '@react-navigation/core';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
@@ -5,6 +6,8 @@ import Screen from '../components/Screen';
 import { BACKEND_SECRET, BASE_URL, firebase } from '../env';
 import LoadingSpinner from './LoadingSpinner';
 import TurtleListItem from './TurtleListItem';
+
+const SELECT_TURTLE = 1;
 
 /*
   TurtleList displays a list of all of the turtles in the Eco Preserve.
@@ -78,6 +81,9 @@ export default function TurtleList(props) {
   useEffect(() => {
     getTurtles();
   }, []);
+
+  const index = useNavigationState((state) => state.index);
+
   return (
     <Screen
       refreshControl={
@@ -86,7 +92,7 @@ export default function TurtleList(props) {
     >
       {loading && !refreshing && <LoadingSpinner animating={loading} />}
 
-      {props.navigation.state.routeName == 'SelectTurtle'
+      {index === SELECT_TURTLE
         ? !loading && (
             <View>
               <ListItem

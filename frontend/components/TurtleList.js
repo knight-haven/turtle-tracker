@@ -7,8 +7,6 @@ import { BACKEND_SECRET, BASE_URL, firebase } from '../env';
 import LoadingSpinner from './LoadingSpinner';
 import TurtleListItem from './TurtleListItem';
 
-const SELECT_TURTLE = 1;
-
 /*
   TurtleList displays a list of all of the turtles in the Eco Preserve.
   Each list element is a turtle which can be tapped on to get more info.
@@ -82,7 +80,8 @@ export default function TurtleList(props) {
     getTurtles();
   }, []);
 
-  const index = useNavigationState((state) => state.index);
+  const routes = useNavigationState((state) => state.routes);
+  const currentRoute = routes[routes.length - 1].name;
 
   return (
     <Screen
@@ -92,7 +91,7 @@ export default function TurtleList(props) {
     >
       {loading && !refreshing && <LoadingSpinner animating={loading} />}
 
-      {index === SELECT_TURTLE
+      {currentRoute === 'SelectTurtle'
         ? !loading && (
             <View>
               <ListItem

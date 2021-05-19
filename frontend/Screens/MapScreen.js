@@ -32,7 +32,7 @@ export default function MapScreen({ route, navigation }) {
         onLatitudeChange(position.coords.latitude);
         onLongitudeChange(position.coords.longitude);
       },
-      { enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 },
+      () => ({ enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 }),
     );
   }, []);
 

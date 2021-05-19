@@ -13,8 +13,8 @@ import { LOGIN_PASS, USERS } from '../env';
 export default function AlternateLoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  usernameRef = React.createRef();
-  passwordRef = React.createRef();
+  const usernameRef = React.useRef();
+  const passwordRef = React.useRef();
   const { setUserSignedIn } = React.useContext(AuthContext);
 
   function handleLogin() {

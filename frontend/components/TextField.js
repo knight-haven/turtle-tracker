@@ -1,5 +1,5 @@
-import { OutlinedTextField } from '@ubaids/react-native-material-textfield';
 import React from 'react';
+import { OutlinedTextField } from 'rn-material-ui-textfield';
 
 /*
     OutlinedTextField with a custom style.

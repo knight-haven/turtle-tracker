@@ -1,4 +1,4 @@
-import { LinearGradient } from 'expo-linear-gradient';
+// import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import Button from '../components/Button';
 import Screen from '../components/Screen';
@@ -10,7 +10,7 @@ import Screen from '../components/Screen';
 export default function LandingScreen({ navigation }) {
   return (
     <Screen>
-      <Button
+      {/* <Button
         title={'submit'}
         bold={true}
         type={'solid'}
@@ -23,7 +23,7 @@ export default function LandingScreen({ navigation }) {
           start: { x: 0, y: 0 },
           end: { x: 0.8, y: 0.8 },
         }}
-      />
+      /> */}
       <Button
         title={'submit'}
         bold={true}

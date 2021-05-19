@@ -22,9 +22,8 @@ const styles = StyleSheet.create({
     and additional styles.
 */
 export default function IconButton(props) {
-  const { onPress, name, containerStyle, type, disabled, size, color } = props;
+  const { onPress, name, containerStyle, disabled, size, color } = props;
 
-  iconType = type == undefined ? 'materal' : type;
   return (
     <View style={[containerStyle]}>
       <TouchableOpacity

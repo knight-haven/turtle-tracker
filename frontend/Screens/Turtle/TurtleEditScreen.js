@@ -68,9 +68,8 @@ export default function TurtleEditScreen({ route, navigation }) {
       .then((response) => response.json())
       .then((responseJson) => {
         setIsSubmitting(false);
-        const replaceAction = StackActions.replace({
-          name: 'SightingEdit',
-          params: { turtleId: responseJson },
+        const replaceAction = StackActions.replace('SightingEdit', {
+          turtleId: responseJson,
         });
         navigation.dispatch(replaceAction);
       });
@@ -165,15 +164,13 @@ export default function TurtleEditScreen({ route, navigation }) {
             title={isSubmitting ? 'submitting...' : 'submit turtle'}
             disabled={isSubmitting}
             onPress={
-              isEdit != undefined && isEdit == 'true'
+              isEdit
                 ? async () => {
                     setIsSubmitting(true);
                     await editTurtleById(turtleProps.id);
                     setIsSubmitting(false);
                     navigation.goBack();
-                    if (
-                      navigation.state.params.refreshTurtleView != undefined
-                    ) {
+                    if (navigation.state.params.refreshTurtleView) {
                       navigation.state.params.refreshTurtleView();
                     }
                   }
@@ -183,7 +180,7 @@ export default function TurtleEditScreen({ route, navigation }) {
                   }
             }
           />
-          {isEdit != undefined && isEdit == 'true' ? (
+          {isEdit && (
             <View>
               <Text></Text>
               <DeleteButton
@@ -199,7 +196,7 @@ export default function TurtleEditScreen({ route, navigation }) {
                 }}
               />
             </View>
-          ) : null}
+          )}
         </View>
       </View>
     </Screen>

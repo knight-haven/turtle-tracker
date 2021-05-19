@@ -89,9 +89,8 @@ export default function MapScreen({ route, navigation }) {
     ]);
   }
 
-  // TODO: route.params.email is undefined
-  const email =
-    (route.params && route.params.email) || 'cek26@students.calvin.edu';
+  // TODO: route.params.email is undefined at times
+  const email = route.params?.email || 'cek26@students.calvin.edu';
 
   // builds the map to the user's location
   return (

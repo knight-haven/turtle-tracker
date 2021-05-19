@@ -110,7 +110,7 @@ const getCommon = (Stack) => {
     <Stack.Screen
       name='SightingView'
       component={SightingViewScreen}
-      options={({ navigation }) => ({
+      options={({ route, navigation }) => ({
         title: 'Sighting',
         headerRight: () => (
           <HeaderButton

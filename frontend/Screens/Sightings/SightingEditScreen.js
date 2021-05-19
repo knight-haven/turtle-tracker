@@ -37,8 +37,7 @@ const styles = StyleSheet.create({
 SightingEditScreen is for editing the information of a specific citing.
 */
 export default function SightingEditScreen({ route, navigation }) {
-  const tempId =
-    route.params.turtleId !== undefined ? route.params.turtleId : 1;
+  const tempId = route.params.turtleId;
   const sighting = route.params.sighting;
   const isEdit = route.params.edit || false;
   const imageList = route.params.images;
@@ -366,9 +365,8 @@ export default function SightingEditScreen({ route, navigation }) {
                   setIsSubmitting(true);
                   await createSighting(turtle.id, latitude, longitude);
                   setIsSubmitting(false);
-                  const replaceAction = StackActions.replace({
-                    name: 'TurtleView',
-                    params: { turtleId: turtle.id },
+                  const replaceAction = StackActions.replace('TurtleView', {
+                    turtleId: turtle.id,
                   });
                   navigation.dispatch(replaceAction);
                   if (navigation.state.params.refreshTurtleView != undefined) {

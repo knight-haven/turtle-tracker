@@ -13,7 +13,7 @@ import { BACKEND_SECRET, BASE_URL, firebase } from '../../env';
 /*
     TurtleViewScreen views the contents of one turtle
 */
-export default function TurtleViewScreen({ navigation }) {
+export default function TurtleViewScreen({ route, navigation }) {
   const [loading, setLoading] = useState(true);
 
   // Update the sighting table.
@@ -110,7 +110,7 @@ export default function TurtleViewScreen({ navigation }) {
     }
   }
 
-  const turtleId = navigation.getParam('turtleId');
+  const turtleId = route.params.turtleId;
   const [turtle, onTurtleChange] = useState({});
   const [sightings, onSightingsChange] = useState([]);
   const [markerList, onMarkerListChange] = useState([]);
@@ -125,7 +125,7 @@ export default function TurtleViewScreen({ navigation }) {
 
   function refresh() {
     setRefreshing(true);
-    const turtleId = navigation.getParam('turtleId');
+    const turtleId = route.params.turtleId;
     getTurtleById(turtleId);
     getSightingByTurtleId(turtleId);
     getTurtleImages(turtleId);
@@ -142,7 +142,7 @@ export default function TurtleViewScreen({ navigation }) {
     getTurtleImages(turtleId);
     navigation.setParams({
       refreshTurtleView: refresh,
-      refreshTurtleList: navigation.getParam('refreshTurtleList'),
+      refreshTurtleList: route.params.refreshTurtleList,
     });
   }, []);
 
@@ -222,22 +222,20 @@ const styles = StyleSheet.create({
 });
 
 // Sets the navigation options.
-TurtleViewScreen.navigationOptions = ({ navigation }) => ({
-  title:
-    navigation.getParam('turtle') == null
-      ? ''
-      : navigation.getParam('turtle').mark,
+// TODO: this does not update the header
+TurtleViewScreen.navigationOptions = ({ route, navigation }) => ({
+  title: route.turtle ? route.params.turtle.mark : '',
   headerRight: () => (
     <HeaderButton
       onPress={() =>
         navigation.navigate('TurtleEdit', {
           edit: 'true',
-          turtle: navigation.getParam('turtle'),
-          originalDate: navigation.getParam('originalDate'),
-          recentDate: navigation.getParam('recentDate'),
-          recentLength: navigation.getParam('recentLength'),
-          refreshTurtleView: navigation.getParam('refreshTurtleView'),
-          refreshTurtleList: navigation.getParam('refreshTurtleList'),
+          turtle: route.params.turtle,
+          originalDate: route.params.originalDate,
+          recentDate: route.params.recentDate,
+          recentLength: route.params.recentLength,
+          refreshTurtleView: route.params.refreshTurtleView,
+          refreshTurtleList: route.params.refreshTurtleList,
         })
       }
       name={'edit'}

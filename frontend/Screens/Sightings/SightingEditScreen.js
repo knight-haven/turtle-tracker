@@ -37,15 +37,12 @@ const styles = StyleSheet.create({
 /*
 SightingEditScreen is for editing the information of a specific citing.
 */
-export default function SightingEditScreen({ navigation }) {
+export default function SightingEditScreen({ route, navigation }) {
   const tempId =
-    navigation.getParam('turtleId') !== undefined
-      ? navigation.getParam('turtleId')
-      : 1;
-  const sighting = navigation.getParam('sighting');
-  const isEdit =
-    navigation.getParam('edit') != undefined && navigation.getParam('edit');
-  const imageList = navigation.getParam('images');
+    route.params.turtleId !== undefined ? route.params.turtleId : 1;
+  const sighting = route.params.sighting;
+  const isEdit = route.params.edit != undefined && route.params.edit;
+  const imageList = route.params.images;
   useEffect(() => {
     getTurtleById(tempId);
   }, []);
@@ -105,8 +102,8 @@ export default function SightingEditScreen({ navigation }) {
         setNotes(notes);
         setFieldValue(notesRef, notes);
       }
-      if (navigation.getParam('markerList') != null) {
-        setMarkerList(navigation.getParam('markerList'));
+      if (route.params.markerList != null) {
+        setMarkerList(route.params.markerList);
       }
     }
   }, []);
@@ -403,9 +400,9 @@ export default function SightingEditScreen({ navigation }) {
 }
 
 // Sets the navigation options.
-SightingEditScreen.navigationOptions = ({ navigation }) => ({
+SightingEditScreen.navigationOptions = ({ route, navigation }) => ({
   title:
-    navigation.getParam('edit') != undefined && navigation.getParam('edit')
+    route.params.edit != undefined && route.params.edit
       ? 'Edit Sighting'
       : 'Add Sighting',
   headerLeft: () => (

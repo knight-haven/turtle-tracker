@@ -1,4 +1,3 @@
-import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import { Alert, Text } from 'react-native';
 import Button from '../components/Button';
@@ -9,7 +8,7 @@ import { BACKEND_SECRET, BASE_URL, USERS } from '../env';
 /*
     SettingsScreen will be used to toggle the specific user settings.
 */
-export default function SettingsScreen({ navigation }) {
+export default function SettingsScreen({ route }) {
   function sendCsv(email) {
     if (email == null) {
       Alert.alert('Could not access email');
@@ -35,9 +34,7 @@ export default function SettingsScreen({ navigation }) {
     }
   }
 
-  const route = useRoute();
-  const email =
-    (route.params && route.params.email) || 'cek26@students.calvin.edu';
+  const email = route.params.email;
 
   return (
     <Screen>

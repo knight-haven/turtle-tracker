@@ -15,7 +15,7 @@ import { BACKEND_SECRET, BASE_URL, firebase } from '../../env';
 /*
 Turtle Sighting Screen for information on one particular sighting
 */
-export default function SightingViewScreen({ navigation }) {
+export default function SightingViewScreen({ route, navigation }) {
   function getTurtleById(id) {
     return fetch(BASE_URL + `/turtle/${id}`, {
       headers: new Headers({ Authorization: `Bearer ` + BACKEND_SECRET }),
@@ -81,8 +81,8 @@ export default function SightingViewScreen({ navigation }) {
     return await ref.getDownloadURL();
   }
 
-  const sightingId = navigation.getParam('sightingId');
-  const turtleId = navigation.getParam('turtleId');
+  const sightingId = route.params.sightingId;
+  const turtleId = route.params.turtleId;
   const [length, setLength] = useState();
   const [location, setLocation] = useState();
   const [date, setDate] = useState();
@@ -103,8 +103,8 @@ export default function SightingViewScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
 
   function refresh() {
-    const sightingId = navigation.getParam('sightingId');
-    const turtleId = navigation.getParam('turtleId');
+    const sightingId = route.params.sightingId;
+    const turtleId = route.params.turtleId;
     getSightingById(sightingId);
     getTurtleById(turtleId);
     getSightingImages(sightingId);
@@ -195,12 +195,12 @@ SightingViewScreen.navigationOptions = ({ navigation }) => ({
     <HeaderButton
       onPress={() =>
         navigation.navigate('SightingEdit', {
-          sighting: navigation.getParam('sighting'),
-          markerList: navigation.getParam('markerList'),
-          turtleId: navigation.getParam('turtleId'),
-          images: navigation.getParam('images'),
-          refreshSightingView: navigation.getParam('refreshSightingView'),
-          refreshTurtleView: navigation.getParam('refreshTurtleView'),
+          sighting: route.params.sighting,
+          markerList: route.params.markerList,
+          turtleId: route.params.turtleId,
+          images: route.params.images,
+          refreshSightingView: route.params.refreshSightingView,
+          refreshTurtleView: route.params.refreshTurtleView,
           edit: true,
         })
       }

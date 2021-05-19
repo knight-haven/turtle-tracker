@@ -87,9 +87,8 @@ export default function TurtleEditScreen({ navigation }) {
   const [sex, setSex] = useState('male');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isEdit =
-    navigation.getParam('edit') != undefined && navigation.getParam('edit');
-  const turtleProps = navigation.getParam('turtle');
+  const isEdit = route.params.edit != undefined && route.params.edit;
+  const turtleProps = route.params.turtle;
 
   useEffect(() => {
     if (isEdit) {
@@ -211,7 +210,7 @@ export default function TurtleEditScreen({ navigation }) {
 // Sets the navigation options.
 TurtleEditScreen.navigationOptions = ({ navigation }) => ({
   title:
-    navigation.getParam('edit') != undefined && navigation.getParam('edit')
+    route.params.edit != undefined && route.params.edit
       ? 'Edit Turtle'
       : 'Add Turtle',
   headerLeft: () => (

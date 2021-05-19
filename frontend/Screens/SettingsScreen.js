@@ -33,7 +33,8 @@ export default function SettingsScreen({ route }) {
     }
   }
 
-  const email = route.params.email;
+  // TODO: this is undefined at times....
+  const email = route.params?.email || 'cek26@students.calvin.edu';
 
   return (
     <Screen>

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 /*
     TurtleEditScreen allows for editing content of one turtle
 */
-export default function TurtleEditScreen({ navigation }) {
+export default function TurtleEditScreen({ route, navigation }) {
   function editTurtleById(id) {
     return fetch(BASE_URL + `/turtle/${id}`, {
       method: 'PUT',
@@ -86,22 +86,22 @@ export default function TurtleEditScreen({ navigation }) {
   const [sex, setSex] = useState('male');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isEdit = route.params.edit != undefined && route.params.edit;
-  const turtleProps = route.params.turtle;
+  const isEdit = route.params?.edit || false;
+  const turtleProps = route.params?.turtle;
 
   useEffect(() => {
     if (isEdit) {
-      if (turtleProps != null) {
+      if (turtleProps) {
         const { turtle_number, mark, sex } = turtleProps;
-        if (turtle_number != null) {
+        if (turtle_number) {
           setNumber(turtle_number.toString());
           setFieldValue(numRef, turtle_number.toString());
         }
-        if (mark != null) {
+        if (mark) {
           setCarapaceMark(mark);
           setFieldValue(markRef, mark);
         }
-        if (sex != null) {
+        if (sex) {
           setSex(sex);
           buttonRef.current.state.is_active_index = sex == 'male' ? 0 : 1; // 1 = female
         }

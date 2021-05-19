@@ -73,11 +73,8 @@ const getCommon = (Stack) => {
     <Stack.Screen
       name='TurtleEdit'
       component={TurtleEditScreen}
-      options={({ navigation }) => ({
-        title:
-          route.params.edit != undefined && route.params.edit
-            ? 'Edit Turtle'
-            : 'Add Turtle',
+      options={({ route, navigation }) => ({
+        title: route.params?.edit ? 'Edit Turtle' : 'Add Turtle',
         headerLeft: () => (
           <HeaderButton
             onPress={() => navigation.goBack()}
@@ -148,10 +145,7 @@ const getCommon = (Stack) => {
       name='SightingEdit'
       component={SightingEditScreen}
       options={({ route, navigation }) => ({
-        title:
-          route.params.edit != undefined && route.params.edit
-            ? 'Edit Sighting'
-            : 'Add Sighting',
+        title: route.params.edit ? 'Edit Sighting' : 'Add Sighting',
         headerLeft: () => (
           <HeaderButton
             onPress={() => navigation.goBack()}
@@ -179,12 +173,13 @@ export const MapStack = () => {
 export const TurtleListStack = () => {
   const Stack = createStackNavigator();
   const commonScreens = getCommon(Stack);
-  return <Stack.Navigator headerMode='none'>{commonScreens}</Stack.Navigator>;
+  return <Stack.Navigator>{commonScreens}</Stack.Navigator>;
 };
 
 // Combine the two stacks together under their own tabs.
 const Tab = createBottomTabNavigator();
 
+// TODO: does not refresh when you press the other screens.
 export const TabNav = () => {
   return (
     <Tab.Navigator tabBarOptions={{ activeTintColor: 'green' }}>

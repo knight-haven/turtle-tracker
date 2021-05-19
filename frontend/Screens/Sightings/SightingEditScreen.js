@@ -40,7 +40,7 @@ export default function SightingEditScreen({ route, navigation }) {
   const tempId =
     route.params.turtleId !== undefined ? route.params.turtleId : 1;
   const sighting = route.params.sighting;
-  const isEdit = route.params.edit != undefined && route.params.edit;
+  const isEdit = route.params.edit || false;
   const imageList = route.params.images;
   useEffect(() => {
     getTurtleById(tempId);

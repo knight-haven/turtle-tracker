@@ -4,7 +4,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 import Button from '../../components/Button';
 import DeleteButton from '../../components/DeleteButton';
-import HeaderButton from '../../components/HeaderButton';
 import Screen from '../../components/Screen';
 import TextField, { setFieldValue } from '../../components/TextField';
 import { BACKEND_SECRET, BASE_URL } from '../../env';
@@ -206,17 +205,3 @@ export default function TurtleEditScreen({ navigation }) {
     </Screen>
   );
 }
-
-// Sets the navigation options.
-TurtleEditScreen.navigationOptions = ({ navigation }) => ({
-  title:
-    route.params.edit != undefined && route.params.edit
-      ? 'Edit Turtle'
-      : 'Add Turtle',
-  headerLeft: () => (
-    <HeaderButton
-      onPress={() => navigation.goBack()}
-      name={'navigate-before'}
-    />
-  ),
-});

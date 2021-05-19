@@ -4,7 +4,6 @@ import { RefreshControl, View } from 'react-native';
 import BottomDivider from '../../components/BottomDivider';
 import Divider from '../../components/Divider';
 import Gallery from '../../components/Gallery';
-import HeaderButton from '../../components/HeaderButton';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Screen from '../../components/Screen';
 import s from '../../components/Styles';
@@ -187,35 +186,3 @@ export default function SightingViewScreen({ route, navigation }) {
     </Screen>
   );
 }
-
-// Sets the navigation options.
-SightingViewScreen.navigationOptions = ({ navigation }) => ({
-  title: 'Sighting',
-  headerRight: () => (
-    <HeaderButton
-      onPress={() =>
-        navigation.navigate('SightingEdit', {
-          sighting: route.params.sighting,
-          markerList: route.params.markerList,
-          turtleId: route.params.turtleId,
-          images: route.params.images,
-          refreshSightingView: route.params.refreshSightingView,
-          refreshTurtleView: route.params.refreshTurtleView,
-          edit: true,
-        })
-      }
-      name={'edit'}
-    />
-  ),
-  headerLeft: () => (
-    <HeaderButton
-      onPress={() => {
-        navigation.goBack();
-        if (navigation.state.params.refreshTurtleView != undefined) {
-          navigation.state.params.refreshTurtleView();
-        }
-      }}
-      name={'navigate-before'}
-    />
-  ),
-});

@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-import HeaderButton from '../components/HeaderButton';
 import TurtleList from '../components/TurtleList';
 
 /*
@@ -13,19 +12,3 @@ export default function TurtleListScreen({ navigation }) {
     </View>
   );
 }
-
-// Sets the navigation options.
-TurtleListScreen.navigationOptions = ({ navigation }) => ({
-  headerRight: () => (
-    <HeaderButton
-      name={'add-location'}
-      onPress={() => navigation.navigate('SelectTurtle')}
-    />
-  ),
-  headerLeft: () => (
-    <HeaderButton
-      name={'settings'}
-      onPress={() => navigation.navigate('Settings')}
-    />
-  ),
-});

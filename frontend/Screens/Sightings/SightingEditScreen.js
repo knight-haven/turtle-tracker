@@ -16,7 +16,6 @@ import DatePicker from '../../components/DatePicker';
 import DeleteButton from '../../components/DeleteButton';
 import Divider from '../../components/Divider';
 import Gallery from '../../components/Gallery';
-import HeaderButton from '../../components/HeaderButton';
 import Screen from '../../components/Screen';
 import TextField, { setFieldValue } from '../../components/TextField';
 import TurtleMapView from '../../components/TurtleMapView';
@@ -350,6 +349,7 @@ export default function SightingEditScreen({ route, navigation }) {
           title={isSubmitting ? 'submitting...' : 'submit sighting'}
           disabled={isSubmitting}
           onPress={
+            // TODO: this doesn't navigate correctly after submitting
             isEdit
               ? async () => {
                   setIsSubmitting(true);
@@ -398,17 +398,3 @@ export default function SightingEditScreen({ route, navigation }) {
     </Screen>
   );
 }
-
-// Sets the navigation options.
-SightingEditScreen.navigationOptions = ({ route, navigation }) => ({
-  title:
-    route.params.edit != undefined && route.params.edit
-      ? 'Edit Sighting'
-      : 'Add Sighting',
-  headerLeft: () => (
-    <HeaderButton
-      onPress={() => navigation.goBack()}
-      name={'navigate-before'}
-    />
-  ),
-});

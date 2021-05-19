@@ -1,7 +1,6 @@
 import React from 'react';
 import { Alert, Text } from 'react-native';
 import Button from '../components/Button';
-import HeaderButton from '../components/HeaderButton';
 import Screen from '../components/Screen';
 import { BACKEND_SECRET, BASE_URL, USERS } from '../env';
 
@@ -207,12 +206,3 @@ export default function SettingsScreen({ route }) {
     </Screen>
   );
 }
-
-SettingsScreen.navigationOptions = ({ navigation }) => ({
-  headerLeft: () => (
-    <HeaderButton
-      onPress={() => navigation.goBack()}
-      name={'navigate-before'}
-    />
-  ),
-});

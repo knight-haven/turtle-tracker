@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
 import Gallery from '../../components/Gallery';
-import HeaderButton from '../../components/HeaderButton';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Screen from '../../components/Screen';
 import SightingCard from '../../components/SightingCard';
@@ -219,32 +218,4 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   btnText: { textAlign: 'center' },
-});
-
-// Sets the navigation options.
-// TODO: this does not update the header
-TurtleViewScreen.navigationOptions = ({ route, navigation }) => ({
-  title: route.turtle ? route.params.turtle.mark : '',
-  headerRight: () => (
-    <HeaderButton
-      onPress={() =>
-        navigation.navigate('TurtleEdit', {
-          edit: 'true',
-          turtle: route.params.turtle,
-          originalDate: route.params.originalDate,
-          recentDate: route.params.recentDate,
-          recentLength: route.params.recentLength,
-          refreshTurtleView: route.params.refreshTurtleView,
-          refreshTurtleList: route.params.refreshTurtleList,
-        })
-      }
-      name={'edit'}
-    />
-  ),
-  headerLeft: () => (
-    <HeaderButton
-      onPress={() => navigation.goBack()}
-      name={'navigate-before'}
-    />
-  ),
 });

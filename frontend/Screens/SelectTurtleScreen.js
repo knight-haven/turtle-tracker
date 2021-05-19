@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-import HeaderButton from '../components/HeaderButton';
 import TurtleList from '../components/TurtleList';
 
 export default function SelectTurtleScreen({ navigation }) {
@@ -10,12 +9,3 @@ export default function SelectTurtleScreen({ navigation }) {
     </View>
   );
 }
-
-SelectTurtleScreen.navigationOptions = ({ navigation }) => ({
-  headerLeft: () => (
-    <HeaderButton
-      onPress={() => navigation.goBack()}
-      name={'navigate-before'}
-    />
-  ),
-});

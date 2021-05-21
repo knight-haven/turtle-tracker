@@ -1,6 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { Image, View } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import uuidv1 from 'uuid/v1';
 
 /*
     TurtleMapView is a custom MapView
@@ -40,7 +41,6 @@ export default function TurtleMapView({ markers, ...props }) {
         scrollEnabled={false}
         {...props}
       >
-        {/* TODO: does not seem like markers are working */}
         {markers?.map((marker) => {
           if (marker.coordinate.latitude && marker.coordinate.latitude) {
             return (

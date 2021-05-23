@@ -1,5 +1,11 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import s from './Styles';
 
 /*
@@ -22,10 +28,12 @@ export default function Screen(props) {
   );
 }
 
+const isWeb = Platform.OS === 'web';
+
 const styles = StyleSheet.create({
   background: {
     backgroundColor: '#F5F5F5',
-    height: '100vh',
+    height: isWeb ? '80vh' : '100%',
   },
   content: {
     backgroundColor: 'white',

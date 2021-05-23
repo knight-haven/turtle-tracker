@@ -1,8 +1,10 @@
 import * as Haptics from 'expo-haptics';
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import s from './Styles';
+
+const isWeb = Platform.OS === 'web';
 
 // define styles
 const styles = StyleSheet.create({
@@ -35,7 +37,9 @@ export default function IconButton(props) {
           color == undefined ? null : { backgroundColor: color },
         ]}
         borderRadius={'100%'}
-        onPressIn={() => Haptics.impactAsync('medium')}
+        onPressIn={() => {
+          !isWeb && Haptics.impactAsync('medium');
+        }}
       >
         <Icon name={name} style={styles.icon} size={size} />
       </TouchableOpacity>

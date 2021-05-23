@@ -20,7 +20,7 @@ import Screen from '../../components/Screen';
 import TextField, { setFieldValue } from '../../components/TextField';
 import TurtleMapView from '../../components/TurtleMapView';
 import TurtleText from '../../components/TurtleText';
-import { BACKEND_SECRET, BASE_URL, firebase } from '../../env';
+import { BACKEND_SECRET, BASE_URL, firebaseApp } from '../../env';
 
 /*
 Define a couple useful styles
@@ -207,7 +207,7 @@ export default function SightingEditScreen({ route, navigation }) {
   async function uploadPhoto(uri, imageName) {
     const response = await fetch(uri);
     const responseBlob = await response.blob();
-    var ref = firebase
+    var ref = firebaseApp
       .storage()
       .ref()
       .child('images/' + imageName);

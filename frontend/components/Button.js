@@ -4,7 +4,6 @@ import { Platform, StyleSheet } from 'react-native';
 import { Button as B, Icon } from 'react-native-elements';
 import s from './Styles';
 
-// TODO: make this instead with haptics import that or not import anything
 const isWeb = Platform.OS === 'web';
 
 /*

@@ -1,11 +1,13 @@
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import Button from '../components/Button';
 import IconButton from '../components/IconButton';
 import TurtleMapView from '../components/TurtleMapView';
 import { AuthContext } from '../context';
 import { BACKEND_SECRET, BASE_URL } from '../env';
+
+const isWeb = Platform.OS === 'web';
 
 /*
 MapScreen.js contains the basic map screen with turtle sightings.
@@ -78,7 +80,7 @@ export default function MapScreen({ route, navigation }) {
 
   // when the markers are placed
   function handlePress(event) {
-    Haptics.impactAsync('heavy');
+    !isWeb && Haptics.impactAsync('heavy');
     onMarkerListChange([
       ...markerList,
       {

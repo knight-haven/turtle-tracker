@@ -9,7 +9,7 @@ import Screen from '../../components/Screen';
 import s from '../../components/Styles';
 import TurtleMapView from '../../components/TurtleMapView';
 import TurtleText from '../../components/TurtleText';
-import { BACKEND_SECRET, BASE_URL, firebase } from '../../env';
+import { BACKEND_SECRET, BASE_URL, firebaseApp } from '../../env';
 
 /*
 Turtle Sighting Screen for information on one particular sighting
@@ -76,7 +76,7 @@ export default function SightingViewScreen({ route, navigation }) {
   }
 
   async function getPhoto(photoName) {
-    const ref = firebase.storage().ref().child(`images/${photoName}`);
+    const ref = firebaseApp.storage().ref().child(`images/${photoName}`);
     return await ref.getDownloadURL();
   }
 

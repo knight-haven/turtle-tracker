@@ -17,7 +17,10 @@ export default function TurtleViewScreen({ route, navigation }) {
 
   // Update the sighting table.
   function getDerivedTurtleInfo(sightings) {
-    (oDate = new Date(99999999999999)), (rDate = new Date(0)), (rLength = 0);
+    let oDate = new Date(99999999999999);
+    let rDate = new Date(0);
+    let rLength = 0;
+
     for (var i = 0; i < sightings.length; i++) {
       var sightingDate = new Date(Date.parse(sightings[i].time_seen));
       if (sightingDate.getTime() < oDate.getTime()) {
@@ -61,6 +64,7 @@ export default function TurtleViewScreen({ route, navigation }) {
         getDerivedTurtleInfo(responseJson);
         onSightingsChange(responseJson);
         var markers = [];
+        let sightingId = -1;
         for (var i = 0; i < responseJson.length; i++) {
           sightingId = responseJson[i].id;
           markers.push({

@@ -45,7 +45,7 @@ const getCommon = (Stack) => {
       name='TurtleView'
       component={TurtleViewScreen}
       options={({ route, navigation }) => ({
-        title: route.turtle ? route.params.turtle.mark : '',
+        title: route.params.turtle ? route.params.turtle.mark : 'turtle',
         headerRight: () => (
           <HeaderButton
             onPress={() =>

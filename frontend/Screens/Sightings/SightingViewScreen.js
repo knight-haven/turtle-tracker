@@ -90,7 +90,8 @@ export default function SightingViewScreen({ route, navigation }) {
   const [turtleNumber, setTurtleNumber] = useState();
   const [markerList, setMarkerList] = useState([]);
   const [images, onImagesChange] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -98,8 +99,6 @@ export default function SightingViewScreen({ route, navigation }) {
     getTurtleById(turtleId);
     getSightingImages(sightingId);
   }, []);
-
-  const [refreshing, setRefreshing] = useState(false);
 
   function refresh() {
     const sightingId = route.params.sightingId;
@@ -165,6 +164,7 @@ export default function SightingViewScreen({ route, navigation }) {
           <View style={[s.shadow, s.card, { width: '100%', height: 200 }]}>
             <TurtleMapView
               markers={markerList}
+              pointerEvents='none'
               latitude={
                 markerList.length > 0 ? markerList[0].coordinate.latitude : null
               }
@@ -173,7 +173,6 @@ export default function SightingViewScreen({ route, navigation }) {
                   ? markerList[0].coordinate.longitude
                   : null
               }
-              pointerEvents='none'
             />
           </View>
           {images != undefined && images.length > 0 ? (

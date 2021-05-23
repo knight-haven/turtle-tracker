@@ -25,7 +25,7 @@ export default function Screen(props) {
 const styles = StyleSheet.create({
   background: {
     backgroundColor: '#F5F5F5',
-    height: '100%',
+    height: '100vh',
   },
   content: {
     backgroundColor: 'white',

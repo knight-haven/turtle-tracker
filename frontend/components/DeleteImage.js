@@ -42,7 +42,6 @@ export default function DeleteImage({
             [
               {
                 text: 'No',
-                onPress: () => console.log('Cancel Pressed'),
                 style: 'cancel',
               },
               {

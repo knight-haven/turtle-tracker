@@ -1,9 +1,17 @@
 // Deploy with: git subtree push --prefix backend heroku master
 const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
 const app = express();
 const db = require('./queries');
-require('dotenv').config();
 const SECRET = process.env.BACKEND_SECRET;
+const USE_CORS = Boolean(process.env.USE_CORS);
+
+if (USE_CORS) {
+  console.log('allowing cors');
+  console.log(USE_CORS);
+  app.use(cors());
+}
 
 app.use(express.json());
 app.use(

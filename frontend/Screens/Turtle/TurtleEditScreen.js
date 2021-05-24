@@ -5,7 +5,7 @@ import RadioForm from 'react-native-simple-radio-button';
 import Button from '../../components/Button';
 import DeleteButton from '../../components/DeleteButton';
 import Screen from '../../components/Screen';
-import TextField, { setFieldValue } from '../../components/TextField';
+import TextField from '../../components/TextField';
 import { BACKEND_SECRET, BASE_URL } from '../../env';
 
 /*
@@ -94,11 +94,9 @@ export default function TurtleEditScreen({ route, navigation }) {
         const { turtle_number, mark, sex } = turtleProps;
         if (turtle_number) {
           setNumber(turtle_number.toString());
-          setFieldValue(numRef, turtle_number.toString());
         }
         if (mark) {
           setCarapaceMark(mark);
-          setFieldValue(markRef, mark);
         }
         if (sex) {
           setSex(sex);
@@ -108,8 +106,6 @@ export default function TurtleEditScreen({ route, navigation }) {
     }
   }, []);
 
-  const numRef = React.createRef();
-  const markRef = React.createRef();
   const buttonRef = React.createRef();
 
   return (
@@ -125,7 +121,6 @@ export default function TurtleEditScreen({ route, navigation }) {
             label={'Turtle Number'}
             onChangeText={(number) => setNumber(number)}
             value={number}
-            reference={numRef}
           />
           {/* <TurtleTextInput titleText='Date Found: ' onChangeText={originalDateEdit => setOriginalDate(originalDateEdit)} value={originalDateEdit} placeholder="Original Sighting Date"/> */}
           {/* <TurtleTextInput titleText='Date Last Seen: ' onChangeText={recentDateEdit => setRecentDate(recentDateEdit)} value={recentDateEdit} placeholder="Most Recent Sighting Date"/> */}
@@ -133,7 +128,6 @@ export default function TurtleEditScreen({ route, navigation }) {
             label={'Mark'}
             onChangeText={(newMark) => setCarapaceMark(newMark)}
             value={carapaceMark}
-            reference={markRef}
           />
           <Text
             style={{

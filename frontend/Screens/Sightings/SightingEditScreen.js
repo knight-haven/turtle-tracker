@@ -1,4 +1,5 @@
 import { StackActions } from '@react-navigation/native';
+import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -17,12 +18,10 @@ import DeleteButton from '../../components/DeleteButton';
 import Divider from '../../components/Divider';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
-import TextField, { setFieldValue } from '../../components/TextField';
+import TextField from '../../components/TextField';
 import TurtleMapView from '../../components/TurtleMapView';
 import TurtleText from '../../components/TurtleText';
 import { BACKEND_SECRET, BASE_URL, firebaseApp } from '../../env';
-
-const isWeb = Platform.OS === 'web';
 
 /*
 Define a couple useful styles
@@ -47,6 +46,16 @@ export default function SightingEditScreen({ route, navigation }) {
     getTurtleById(tempId);
   }, []);
 
+  const [cameraPermission, askCameraPermission, getCameraPermission] =
+    Permissions.usePermissions(Permissions.CAMERA, { ask: true });
+  const [locationPermission, askLocationPermission, getLocationPermission] =
+    Permissions.usePermissions(Permissions.LOCATION_FOREGROUND, { ask: true });
+  const [
+    mediaLibraryPermission,
+    askMediaLibraryPermission,
+    getMediaLibraryPermission,
+  ] = Permissions.usePermissions(Permissions.MEDIA_LIBRARY, { ask: true });
+
   const [turtle, setTurtle] = useState({});
   const [turtleNumber, setTurtleNumber] = useState('');
   const [length, setLength] = useState('');
@@ -65,21 +74,25 @@ export default function SightingEditScreen({ route, navigation }) {
       setLatitude(sighting.latitude);
       setLongitude(sighting.longitude);
     } else {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-          setMarkerList([
-            {
-              coordinate: {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              },
+      (async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          console.warn('Permission to access location was denied');
+          return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        setLatitude(location.coords.latitude);
+        setLongitude(location.coords.longitude);
+        setMarkerList([
+          {
+            coordinate: {
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
             },
-          ]);
-        },
-        () => ({ enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 }),
-      );
+          },
+        ]);
+      })();
     }
   }, []);
 
@@ -88,19 +101,15 @@ export default function SightingEditScreen({ route, navigation }) {
       const { carapace_length, time_seen, turtle_location, notes } = sighting;
       if (carapace_length != null) {
         setLength(carapace_length.toString());
-        setFieldValue(lengthRef, carapace_length);
       }
       if (time_seen != null) {
         setDate(new Date(Date.parse(time_seen)));
-        setFieldValue(dateRef, moment(time_seen).format('L'));
       }
       if (turtle_location != null) {
         setLocation(turtle_location);
-        setFieldValue(locRef, turtle_location);
       }
       if (notes != null) {
         setNotes(notes);
-        setFieldValue(notesRef, notes);
       }
       if (route.params.markerList != null) {
         setMarkerList(route.params.markerList);
@@ -184,36 +193,6 @@ export default function SightingEditScreen({ route, navigation }) {
     });
   }
 
-  async function getLocationPermission() {
-    const { status, permissions } = await Permissions.askAsync(
-      Permissions.LOCATION_FOREGROUND,
-    );
-    if (status === 'granted') {
-    } else {
-      throw new Error('Location permission not granted');
-    }
-  }
-
-  async function getCameraPermission() {
-    const { status, permissions } = await Permissions.askAsync(
-      Permissions.CAMERA,
-    );
-    if (status === 'granted') {
-    } else {
-      throw new Error('Camera permission not granted');
-    }
-  }
-
-  async function getMediaLibraryPermission() {
-    const { status, permissions } = await Permissions.askAsync(
-      Permissions.MEDIA_LIBRARY,
-    );
-    if (status === 'granted') {
-    } else {
-      throw new Error('Media library permission not granted');
-    }
-  }
-
   async function uploadPhoto(uri, imageName) {
     const response = await fetch(uri);
     const responseBlob = await response.blob();
@@ -243,28 +222,32 @@ export default function SightingEditScreen({ route, navigation }) {
   const onDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
-    setFieldValue(dateRef, moment(currentDate).format('L'));
   };
 
   const onDateClose = (d) => {
     if (d && Platform.OS !== 'ios') {
       setShowDatePicker(false);
       setDate(d);
-      setFieldValue(dateRef, moment(d).format('L'));
     } else {
       setShowDatePicker(false);
     }
   };
 
   // TODO: Move this to ask when button is pressed.
-  !isWeb && ggetLocationPermission();
-  !isWeb && ggetCameraPermission();
-  !isWeb && getMediaLibraryPermission();
-
-  const dateRef = React.createRef();
-  const locRef = React.createRef();
-  const lengthRef = React.createRef();
-  const notesRef = React.createRef();
+  useEffect(() => {
+    if (!cameraPermission || cameraPermission.status !== 'granted') {
+      askCameraPermission();
+    }
+    if (!locationPermission || locationPermission.status !== 'granted') {
+      askLocationPermission();
+    }
+    if (
+      !mediaLibraryPermission ||
+      mediaLibraryPermission.status !== 'granted'
+    ) {
+      askMediaLibraryPermission();
+    }
+  }, []);
 
   return (
     <Screen>
@@ -285,11 +268,7 @@ export default function SightingEditScreen({ route, navigation }) {
         >
           <View>
             <View pointerEvents='none'>
-              <TextField
-                label='Date: '
-                value={moment(date).format('L')}
-                reference={dateRef}
-              />
+              <TextField label='Date: ' value={moment(date).format('L')} />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -309,7 +288,6 @@ export default function SightingEditScreen({ route, navigation }) {
             }
           }}
           value={location}
-          reference={locRef}
         />
         <TextField
           label='Length: '
@@ -320,7 +298,6 @@ export default function SightingEditScreen({ route, navigation }) {
             }
           }}
           value={length}
-          reference={lengthRef}
           suffix={'mm'}
         />
         <TextField
@@ -334,7 +311,6 @@ export default function SightingEditScreen({ route, navigation }) {
           value={notes}
           multiline={true}
           characterRestriction={140}
-          reference={notesRef}
         />
       </View>
       {/* for the image:

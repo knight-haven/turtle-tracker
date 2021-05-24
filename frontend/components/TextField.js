@@ -1,11 +1,11 @@
 import React from 'react';
-import { OutlinedTextField } from 'react-native-material-textfield';
+import { OutlinedTextField } from 'rn-material-ui-textfield';
 
 /*
     OutlinedTextField with a custom style.
 */
 export default function TextField(props) {
-  const { reference } = props;
+  const { reference, label } = props;
   return (
     <OutlinedTextField
       {...props}
@@ -13,6 +13,7 @@ export default function TextField(props) {
       fontSize={20}
       labelFontSize={16}
       tintColor='rgb(34,139,34)'
+      placeholder={label}
     />
   );
 }

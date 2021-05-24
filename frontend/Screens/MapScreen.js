@@ -1,19 +1,23 @@
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import Button from '../components/Button';
 import IconButton from '../components/IconButton';
 import TurtleMapView from '../components/TurtleMapView';
+import { AuthContext } from '../context';
 import { BACKEND_SECRET, BASE_URL } from '../env';
+
+const isWeb = Platform.OS === 'web';
 
 /*
 MapScreen.js contains the basic map screen with turtle sightings.
 */
-export default function MapScreen({ navigation }) {
+export default function MapScreen({ route, navigation }) {
   const [latitude, onLatitudeChange] = useState(42.93187);
   const [longitude, onLongitudeChange] = useState(-85.58213);
   const [markerList, onMarkerListChange] = useState([]);
   const markerListRef = useRef(markerList);
+  const { setUserSignedIn } = React.useContext(AuthContext);
 
   useEffect(() => {
     markerListRef.current = markerList;
@@ -30,7 +34,7 @@ export default function MapScreen({ navigation }) {
         onLatitudeChange(position.coords.latitude);
         onLongitudeChange(position.coords.longitude);
       },
-      { enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 },
+      () => ({ enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 }),
     );
   }, []);
 
@@ -76,7 +80,7 @@ export default function MapScreen({ navigation }) {
 
   // when the markers are placed
   function handlePress(event) {
-    Haptics.impactAsync('heavy');
+    !isWeb && Haptics.impactAsync('heavy');
     onMarkerListChange([
       ...markerList,
       {
@@ -86,6 +90,9 @@ export default function MapScreen({ navigation }) {
       },
     ]);
   }
+
+  // TODO: route.params.email is undefined at times
+  const email = route.params?.email || 'cek26@students.calvin.edu';
 
   // builds the map to the user's location
   return (
@@ -106,17 +113,18 @@ export default function MapScreen({ navigation }) {
 
         //onLongPress={handlePress}
       />
+
       <IconButton
         onPress={() =>
           navigation.navigate('Settings', {
-            email: navigation.getParam('email'),
+            email,
           })
         }
         name={'settings'}
         size={45}
         containerStyle={{
           left: 7,
-          top: 7,
+          bottom: 7,
           position: 'absolute',
           flexDirection: 'row',
         }}
@@ -135,7 +143,9 @@ export default function MapScreen({ navigation }) {
       />
 
       <Button
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => {
+          setUserSignedIn(false);
+        }}
         title={'Logout'}
         style={{
           right: 7,

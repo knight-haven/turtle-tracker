@@ -1,17 +1,12 @@
 /*
-  AppNavigator.js handels the basic tab and stack navigation for the app.
+  AppNavigator.js handles the basic tab and stack navigation for the app.
 */
-
 import { Ionicons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import {
-  createAppContainer,
-  createSwitchNavigator,
-  NavigationActions,
-  StackActions,
-} from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import HeaderButton from './components/HeaderButton';
+import { AuthContext } from './context';
 //  import screens
 import AlternateLoginScreen from './Screens/AlternateLoginScreen';
 import LandingScreen from './Screens/LandingScreen';
@@ -25,141 +20,218 @@ import TurtleEditScreen from './Screens/Turtle/TurtleEditScreen';
 import TurtleViewScreen from './Screens/Turtle/TurtleViewScreen';
 import TurtleListScreen from './Screens/TurtleListScreen';
 
-// Screens shared across stacks.
-const CommonScreens = {
-  TurtleList: {
-    screen: TurtleListScreen,
-    navigationOptions: { title: 'Turtles' },
-  },
-  TurtleView: {
-    screen: TurtleViewScreen,
-  },
-  TurtleEdit: {
-    screen: TurtleEditScreen,
-  },
-  SelectTurtle: {
-    screen: SelectTurtleScreen,
-    navigationOptions: { title: 'Select Turtle' },
-  },
-  Settings: {
-    screen: SettingsScreen,
-    navigationOptions: { title: 'Settings' },
-  },
-  SightingView: {
-    screen: SightingViewScreen,
-  },
-  SightingEdit: {
-    screen: SightingEditScreen,
-  },
+// ref: https://github.com/react-navigation/react-navigation/issues/3790#issuecomment-688669597
+const getCommon = (Stack) => {
+  return [
+    <Stack.Screen
+      name='TurtleList'
+      component={TurtleListScreen}
+      options={({ navigation }) => ({
+        headerRight: () => (
+          <HeaderButton
+            name={'add-location'}
+            onPress={() => navigation.navigate('SelectTurtle')}
+          />
+        ),
+        headerLeft: () => (
+          <HeaderButton
+            name={'settings'}
+            onPress={() => navigation.navigate('Settings')}
+          />
+        ),
+      })}
+    />,
+    <Stack.Screen
+      name='TurtleView'
+      component={TurtleViewScreen}
+      options={({ route, navigation }) => ({
+        title: route.params.turtle ? route.params.turtle.mark : 'turtle',
+        headerRight: () => (
+          <HeaderButton
+            onPress={() =>
+              navigation.navigate('TurtleEdit', {
+                edit: 'true',
+                turtle: route.params.turtle,
+                originalDate: route.params.originalDate,
+                recentDate: route.params.recentDate,
+                recentLength: route.params.recentLength,
+                refreshTurtleView: route.params.refreshTurtleView,
+                refreshTurtleList: route.params.refreshTurtleList,
+              })
+            }
+            name={'edit'}
+          />
+        ),
+        headerLeft: () => (
+          <HeaderButton
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+          />
+        ),
+      })}
+    />,
+    <Stack.Screen
+      name='TurtleEdit'
+      component={TurtleEditScreen}
+      options={({ route, navigation }) => ({
+        title: route.params?.edit ? 'Edit Turtle' : 'Add Turtle',
+        headerLeft: () => (
+          <HeaderButton
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+          />
+        ),
+      })}
+    />,
+    <Stack.Screen
+      name='SelectTurtle'
+      component={SelectTurtleScreen}
+      options={({ navigation }) => ({
+        headerLeft: () => (
+          <HeaderButton
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+          />
+        ),
+      })}
+    />,
+    <Stack.Screen
+      name='Settings'
+      component={SettingsScreen}
+      options={({ navigation }) => ({
+        headerLeft: () => (
+          <HeaderButton
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+          />
+        ),
+      })}
+    />,
+    <Stack.Screen
+      name='SightingView'
+      component={SightingViewScreen}
+      options={({ route, navigation }) => ({
+        title: 'Sighting',
+        headerRight: () => (
+          <HeaderButton
+            onPress={() =>
+              navigation.navigate('SightingEdit', {
+                sighting: route.params.sighting,
+                markerList: route.params.markerList,
+                turtleId: route.params.turtleId,
+                images: route.params.images,
+                refreshSightingView: route.params.refreshSightingView,
+                refreshTurtleView: route.params.refreshTurtleView,
+                edit: true,
+              })
+            }
+            name={'edit'}
+          />
+        ),
+        headerLeft: () => (
+          <HeaderButton
+            onPress={() => {
+              navigation.goBack();
+              route.params.refreshTurtleView &&
+                route.params.refreshTurtleView();
+            }}
+            name={'navigate-before'}
+          />
+        ),
+      })}
+    />,
+    <Stack.Screen
+      name='SightingEdit'
+      component={SightingEditScreen}
+      options={({ route, navigation }) => ({
+        title: route.params.edit ? 'Edit Sighting' : 'Add Sighting',
+        headerLeft: () => (
+          <HeaderButton
+            onPress={() => navigation.goBack()}
+            name={'navigate-before'}
+          />
+        ),
+      })}
+    />,
+  ];
 };
 
 // Stack of screens for the Map Tab.
-const MapStack = createStackNavigator({
-  Map: {
-    screen: MapScreen,
-    navigationOptions: {
-      title: 'Tracker',
-      headerStyle: {
-        backgroundColor: 'white',
-      },
-    },
-  },
-  ...CommonScreens,
-});
+export const MapStack = () => {
+  const Stack = createStackNavigator();
+  const commonScreens = getCommon(Stack);
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Map' component={MapScreen} />
+      {commonScreens}
+    </Stack.Navigator>
+  );
+};
 
 // Stacks of Screens for the Turtles Lab
-const TurtleListStack = createStackNavigator({
-  ...CommonScreens,
-});
+export const TurtleListStack = () => {
+  const Stack = createStackNavigator();
+  const commonScreens = getCommon(Stack);
+  return <Stack.Navigator>{commonScreens}</Stack.Navigator>;
+};
 
 // Combine the two stacks together under their own tabs.
-const TabNav = createBottomTabNavigator(
-  {
-    MapTab: {
-      navigationOptions: {
-        tabBarLabel: 'Tracker',
-      },
-      screen: MapStack,
-    },
-    TurtleTab: {
-      navigationOptions: {
-        tabBarLabel: 'Turtles',
-      },
-      screen: TurtleListStack,
-    },
-  },
-  {
-    defaultNavigationOptions: ({ navigation }) => ({
-      tabBarOnPress: ({ defaultHandler }) => {
-        const { routeName } = navigation.state;
+const Tab = createBottomTabNavigator();
 
-        // Move screens
-        defaultHandler();
-
-        // Then load the screen
-        if (routeName === 'MapTab') {
-          navigation.dispatch(
-            StackActions.reset({
-              index: 0,
-              key: null,
-              actions: [NavigationActions.navigate({ routeName: 'Map' })],
-            }),
-          );
-        } else if (routeName === 'TurtleTab') {
-          navigation.dispatch(
-            StackActions.reset({
-              index: 0,
-              key: null,
-              actions: [
-                NavigationActions.navigate({ routeName: 'TurtleList' }),
-              ],
-            }),
-          );
-        }
-      },
-
-      // Icon for tab bar.
-      tabBarIcon: ({ tintColor }) => {
-        const { routeName } = navigation.state;
-        let IconComponent = Ionicons;
-        let iconName;
-        if (routeName === 'MapTab') {
-          iconName = `ios-map`;
-        } else if (routeName === 'TurtleTab') {
-          iconName = `ios-list`;
-        }
-        return <IconComponent name={iconName} size={25} color={tintColor} />;
-      },
-    }),
-    tabBarOptions: {
-      activeTintColor: 'green',
-      inactiveTintColor: 'gray',
-    },
-  },
-);
+// TODO: does not refresh when you press the other screens.
+export const TabNav = () => {
+  return (
+    <Tab.Navigator tabBarOptions={{ activeTintColor: 'green' }}>
+      <Tab.Screen
+        name='Tracker'
+        component={MapStack}
+        options={{
+          tabBarIcon: ({ color }) => {
+            return <Ionicons name={'ios-map'} size={25} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name='Turtles'
+        component={TurtleListStack}
+        options={{
+          tabBarIcon: ({ color }) => {
+            return <Ionicons name={'ios-list'} size={25} color={color} />;
+          },
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 // Stack for the landing page and login.
-const LandingNav = createStackNavigator({
-  Landing: {
-    screen: LandingScreen,
-  },
-  ADLogin: {
-    screen: LoginScreen,
-  },
-  AltLogin: {
-    screen: AlternateLoginScreen,
-  },
-});
+export const LandingNav = () => {
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Landing' component={LandingScreen} />
+      <Stack.Screen name='ADLogin' component={LoginScreen} />
+      <Stack.Screen name='AltLogin' component={AlternateLoginScreen} />
+    </Stack.Navigator>
+  );
+};
 
 // Combine all of the screens into one navigation
-const MainNavigator = createSwitchNavigator(
-  {
-    App: TabNav,
-    Login: LandingNav,
-  },
-  {
-    initialRouteName: 'Login',
-  },
-);
+const MainNavigator = () => {
+  const [userSignedIn, setUserSignedIn] = React.useState(false);
+  const Stack = createStackNavigator();
 
-export default createAppContainer(MainNavigator);
+  return (
+    <AuthContext.Provider value={{ userSignedIn, setUserSignedIn }}>
+      <Stack.Navigator headerMode='none'>
+        {userSignedIn ? (
+          <Stack.Screen name='TabScreens' component={TabNav} />
+        ) : (
+          <Stack.Screen name='LandingScreens' component={LandingNav} />
+        )}
+      </Stack.Navigator>
+    </AuthContext.Provider>
+  );
+};
+
+export default MainNavigator;

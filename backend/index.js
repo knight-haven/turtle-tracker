@@ -1,14 +1,13 @@
 // Deploy with: git subtree push --prefix backend heroku master
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
 const db = require('./queries');
 require('dotenv').config();
 const SECRET = process.env.BACKEND_SECRET;
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(
-  bodyParser.urlencoded({
+  express.urlencoded({
     extended: true,
   }),
 );

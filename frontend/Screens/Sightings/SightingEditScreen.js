@@ -1,3 +1,4 @@
+import { StackActions } from '@react-navigation/native';
 import * as Permissions from 'expo-permissions';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -8,7 +9,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { StackActions } from 'react-navigation';
 import uuidv1 from 'uuid/v1';
 import Button from '../../components/Button';
 import CameraGallery from '../../components/CameraGallery';
@@ -16,12 +16,13 @@ import DatePicker from '../../components/DatePicker';
 import DeleteButton from '../../components/DeleteButton';
 import Divider from '../../components/Divider';
 import Gallery from '../../components/Gallery';
-import HeaderButton from '../../components/HeaderButton';
 import Screen from '../../components/Screen';
 import TextField, { setFieldValue } from '../../components/TextField';
 import TurtleMapView from '../../components/TurtleMapView';
 import TurtleText from '../../components/TurtleText';
-import { BACKEND_SECRET, BASE_URL, firebase } from '../../env';
+import { BACKEND_SECRET, BASE_URL, firebaseApp } from '../../env';
+
+const isWeb = Platform.OS === 'web';
 
 /*
 Define a couple useful styles
@@ -37,15 +38,11 @@ const styles = StyleSheet.create({
 /*
 SightingEditScreen is for editing the information of a specific citing.
 */
-export default function SightingEditScreen({ navigation }) {
-  const tempId =
-    navigation.getParam('turtleId') !== undefined
-      ? navigation.getParam('turtleId')
-      : 1;
-  const sighting = navigation.getParam('sighting');
-  const isEdit =
-    navigation.getParam('edit') != undefined && navigation.getParam('edit');
-  const imageList = navigation.getParam('images');
+export default function SightingEditScreen({ route, navigation }) {
+  const tempId = route.params.turtleId;
+  const sighting = route.params.sighting;
+  const isEdit = route.params.edit || false;
+  const imageList = route.params.images;
   useEffect(() => {
     getTurtleById(tempId);
   }, []);
@@ -81,7 +78,7 @@ export default function SightingEditScreen({ navigation }) {
             },
           ]);
         },
-        { enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 },
+        () => ({ enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 }),
       );
     }
   }, []);
@@ -105,8 +102,8 @@ export default function SightingEditScreen({ navigation }) {
         setNotes(notes);
         setFieldValue(notesRef, notes);
       }
-      if (navigation.getParam('markerList') != null) {
-        setMarkerList(navigation.getParam('markerList'));
+      if (route.params.markerList != null) {
+        setMarkerList(route.params.markerList);
       }
     }
   }, []);
@@ -187,32 +184,40 @@ export default function SightingEditScreen({ navigation }) {
     });
   }
 
-  async function getCameraPermission() {
+  async function getLocationPermission() {
     const { status, permissions } = await Permissions.askAsync(
-      Permissions.CAMERA,
+      Permissions.LOCATION_FOREGROUND,
     );
     if (status === 'granted') {
-      // return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
     } else {
       throw new Error('Location permission not granted');
     }
   }
 
-  async function getCameraRollPermission() {
+  async function getCameraPermission() {
     const { status, permissions } = await Permissions.askAsync(
-      Permissions.CAMERA_ROLL,
+      Permissions.CAMERA,
     );
     if (status === 'granted') {
-      // return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
     } else {
-      throw new Error('Location permission not granted');
+      throw new Error('Camera permission not granted');
+    }
+  }
+
+  async function getMediaLibraryPermission() {
+    const { status, permissions } = await Permissions.askAsync(
+      Permissions.MEDIA_LIBRARY,
+    );
+    if (status === 'granted') {
+    } else {
+      throw new Error('Media library permission not granted');
     }
   }
 
   async function uploadPhoto(uri, imageName) {
     const response = await fetch(uri);
     const responseBlob = await response.blob();
-    var ref = firebase
+    var ref = firebaseApp
       .storage()
       .ref()
       .child('images/' + imageName);
@@ -252,8 +257,9 @@ export default function SightingEditScreen({ navigation }) {
   };
 
   // TODO: Move this to ask when button is pressed.
-  getCameraPermission();
-  getCameraRollPermission();
+  !isWeb && ggetLocationPermission();
+  !isWeb && ggetCameraPermission();
+  !isWeb && getMediaLibraryPermission();
 
   const dateRef = React.createRef();
   const locRef = React.createRef();
@@ -359,24 +365,19 @@ export default function SightingEditScreen({ navigation }) {
                   await editSightingById(sighting.id, turtle.id);
                   setIsSubmitting(false);
                   navigation.goBack();
-                  if (
-                    navigation.state.params.refreshSightingView != undefined
-                  ) {
-                    navigation.state.params.refreshSightingView();
-                  }
+                  route.params.refreshSightingView &&
+                    route.params.refreshSightingView();
                 }
               : async () => {
                   setIsSubmitting(true);
                   await createSighting(turtle.id, latitude, longitude);
                   setIsSubmitting(false);
-                  const replaceAction = StackActions.replace({
-                    routeName: 'TurtleView',
-                    params: { turtleId: turtle.id },
+                  const replaceAction = StackActions.replace('TurtleView', {
+                    turtleId: turtle.id,
                   });
                   navigation.dispatch(replaceAction);
-                  if (navigation.state.params.refreshTurtleView != undefined) {
-                    navigation.state.params.refreshTurtleView();
-                  }
+                  route.params.refreshTurtleView &&
+                    route.params.refreshTurtleView();
                 }
           }
         />
@@ -390,9 +391,8 @@ export default function SightingEditScreen({ navigation }) {
               onPress={async () => {
                 await deleteSightingById(sighting.id);
                 navigation.navigate('TurtleView');
-                if (navigation.state.params.refreshTurtleView != undefined) {
-                  navigation.state.params.refreshTurtleView();
-                }
+                route.params.refreshTurtleView &&
+                  route.params.refreshTurtleView();
               }}
             />
           </View>
@@ -401,17 +401,3 @@ export default function SightingEditScreen({ navigation }) {
     </Screen>
   );
 }
-
-// Sets the navigation options.
-SightingEditScreen.navigationOptions = ({ navigation }) => ({
-  title:
-    navigation.getParam('edit') != undefined && navigation.getParam('edit')
-      ? 'Edit Sighting'
-      : 'Add Sighting',
-  headerLeft: () => (
-    <HeaderButton
-      onPress={() => navigation.goBack()}
-      name={'navigate-before'}
-    />
-  ),
-});

@@ -1,10 +1,9 @@
+import { StackActions } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
-import { StackActions } from 'react-navigation';
 import Button from '../../components/Button';
 import DeleteButton from '../../components/DeleteButton';
-import HeaderButton from '../../components/HeaderButton';
 import Screen from '../../components/Screen';
 import TextField, { setFieldValue } from '../../components/TextField';
 import { BACKEND_SECRET, BASE_URL } from '../../env';
@@ -23,7 +22,7 @@ const styles = StyleSheet.create({
 /*
     TurtleEditScreen allows for editing content of one turtle
 */
-export default function TurtleEditScreen({ navigation }) {
+export default function TurtleEditScreen({ route, navigation }) {
   function editTurtleById(id) {
     return fetch(BASE_URL + `/turtle/${id}`, {
       method: 'PUT',
@@ -69,9 +68,8 @@ export default function TurtleEditScreen({ navigation }) {
       .then((response) => response.json())
       .then((responseJson) => {
         setIsSubmitting(false);
-        const replaceAction = StackActions.replace({
-          routeName: 'SightingEdit',
-          params: { turtleId: responseJson },
+        const replaceAction = StackActions.replace('SightingEdit', {
+          turtleId: responseJson,
         });
         navigation.dispatch(replaceAction);
       });
@@ -87,23 +85,22 @@ export default function TurtleEditScreen({ navigation }) {
   const [sex, setSex] = useState('male');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isEdit =
-    navigation.getParam('edit') != undefined && navigation.getParam('edit');
-  const turtleProps = navigation.getParam('turtle');
+  const isEdit = route.params?.edit || false;
+  const turtleProps = route.params?.turtle;
 
   useEffect(() => {
     if (isEdit) {
-      if (turtleProps != null) {
+      if (turtleProps) {
         const { turtle_number, mark, sex } = turtleProps;
-        if (turtle_number != null) {
+        if (turtle_number) {
           setNumber(turtle_number.toString());
           setFieldValue(numRef, turtle_number.toString());
         }
-        if (mark != null) {
+        if (mark) {
           setCarapaceMark(mark);
           setFieldValue(markRef, mark);
         }
-        if (sex != null) {
+        if (sex) {
           setSex(sex);
           buttonRef.current.state.is_active_index = sex == 'male' ? 0 : 1; // 1 = female
         }
@@ -167,17 +164,14 @@ export default function TurtleEditScreen({ navigation }) {
             title={isSubmitting ? 'submitting...' : 'submit turtle'}
             disabled={isSubmitting}
             onPress={
-              isEdit != undefined && isEdit == 'true'
+              isEdit
                 ? async () => {
                     setIsSubmitting(true);
                     await editTurtleById(turtleProps.id);
                     setIsSubmitting(false);
                     navigation.goBack();
-                    if (
-                      navigation.state.params.refreshTurtleView != undefined
-                    ) {
-                      navigation.state.params.refreshTurtleView();
-                    }
+                    route.params.refreshTurtleView &&
+                      route.params.refreshTurtleView();
                   }
                 : () => {
                     setIsSubmitting(true);
@@ -185,7 +179,7 @@ export default function TurtleEditScreen({ navigation }) {
                   }
             }
           />
-          {isEdit != undefined && isEdit == 'true' ? (
+          {isEdit && (
             <View>
               <Text></Text>
               <DeleteButton
@@ -195,29 +189,14 @@ export default function TurtleEditScreen({ navigation }) {
                 onPress={async () => {
                   await deleteTurtleById(turtleProps.id);
                   navigation.navigate('TurtleList');
-                  if (navigation.state.params.refreshTurtleList != undefined) {
-                    navigation.state.params.refreshTurtleList();
-                  }
+                  route.params.refreshTurtleList &&
+                    route.params.refreshTurtleList();
                 }}
               />
             </View>
-          ) : null}
+          )}
         </View>
       </View>
     </Screen>
   );
 }
-
-// Sets the navigation options.
-TurtleEditScreen.navigationOptions = ({ navigation }) => ({
-  title:
-    navigation.getParam('edit') != undefined && navigation.getParam('edit')
-      ? 'Edit Turtle'
-      : 'Add Turtle',
-  headerLeft: () => (
-    <HeaderButton
-      onPress={() => navigation.goBack()}
-      name={'navigate-before'}
-    />
-  ),
-});

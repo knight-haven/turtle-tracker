@@ -4,18 +4,17 @@ import { RefreshControl, View } from 'react-native';
 import BottomDivider from '../../components/BottomDivider';
 import Divider from '../../components/Divider';
 import Gallery from '../../components/Gallery';
-import HeaderButton from '../../components/HeaderButton';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Screen from '../../components/Screen';
 import s from '../../components/Styles';
 import TurtleMapView from '../../components/TurtleMapView';
 import TurtleText from '../../components/TurtleText';
-import { BACKEND_SECRET, BASE_URL, firebase } from '../../env';
+import { BACKEND_SECRET, BASE_URL, firebaseApp } from '../../env';
 
 /*
 Turtle Sighting Screen for information on one particular sighting
 */
-export default function SightingViewScreen({ navigation }) {
+export default function SightingViewScreen({ route, navigation }) {
   function getTurtleById(id) {
     return fetch(BASE_URL + `/turtle/${id}`, {
       headers: new Headers({ Authorization: `Bearer ` + BACKEND_SECRET }),
@@ -77,12 +76,12 @@ export default function SightingViewScreen({ navigation }) {
   }
 
   async function getPhoto(photoName) {
-    const ref = firebase.storage().ref().child(`images/${photoName}`);
+    const ref = firebaseApp.storage().ref().child(`images/${photoName}`);
     return await ref.getDownloadURL();
   }
 
-  const sightingId = navigation.getParam('sightingId');
-  const turtleId = navigation.getParam('turtleId');
+  const sightingId = route.params.sightingId;
+  const turtleId = route.params.turtleId;
   const [length, setLength] = useState();
   const [location, setLocation] = useState();
   const [date, setDate] = useState();
@@ -91,7 +90,8 @@ export default function SightingViewScreen({ navigation }) {
   const [turtleNumber, setTurtleNumber] = useState();
   const [markerList, setMarkerList] = useState([]);
   const [images, onImagesChange] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -100,11 +100,9 @@ export default function SightingViewScreen({ navigation }) {
     getSightingImages(sightingId);
   }, []);
 
-  const [refreshing, setRefreshing] = useState(false);
-
   function refresh() {
-    const sightingId = navigation.getParam('sightingId');
-    const turtleId = navigation.getParam('turtleId');
+    const sightingId = route.params.sightingId;
+    const turtleId = route.params.turtleId;
     getSightingById(sightingId);
     getTurtleById(turtleId);
     getSightingImages(sightingId);
@@ -166,6 +164,7 @@ export default function SightingViewScreen({ navigation }) {
           <View style={[s.shadow, s.card, { width: '100%', height: 200 }]}>
             <TurtleMapView
               markers={markerList}
+              pointerEvents='none'
               latitude={
                 markerList.length > 0 ? markerList[0].coordinate.latitude : null
               }
@@ -174,7 +173,6 @@ export default function SightingViewScreen({ navigation }) {
                   ? markerList[0].coordinate.longitude
                   : null
               }
-              pointerEvents='none'
             />
           </View>
           {images != undefined && images.length > 0 ? (
@@ -187,35 +185,3 @@ export default function SightingViewScreen({ navigation }) {
     </Screen>
   );
 }
-
-// Sets the navigation options.
-SightingViewScreen.navigationOptions = ({ navigation }) => ({
-  title: 'Sighting',
-  headerRight: () => (
-    <HeaderButton
-      onPress={() =>
-        navigation.navigate('SightingEdit', {
-          sighting: navigation.getParam('sighting'),
-          markerList: navigation.getParam('markerList'),
-          turtleId: navigation.getParam('turtleId'),
-          images: navigation.getParam('images'),
-          refreshSightingView: navigation.getParam('refreshSightingView'),
-          refreshTurtleView: navigation.getParam('refreshTurtleView'),
-          edit: true,
-        })
-      }
-      name={'edit'}
-    />
-  ),
-  headerLeft: () => (
-    <HeaderButton
-      onPress={() => {
-        navigation.goBack();
-        if (navigation.state.params.refreshTurtleView != undefined) {
-          navigation.state.params.refreshTurtleView();
-        }
-      }}
-      name={'navigate-before'}
-    />
-  ),
-});

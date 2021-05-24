@@ -1,15 +1,16 @@
+import { useNavigationState } from '@react-navigation/core';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import Screen from '../components/Screen';
-import { BACKEND_SECRET, BASE_URL, firebase } from '../env';
+import { BACKEND_SECRET, BASE_URL, firebaseApp } from '../env';
 import LoadingSpinner from './LoadingSpinner';
 import TurtleListItem from './TurtleListItem';
 
 /*
   TurtleList displays a list of all of the turtles in the Eco Preserve.
   Each list element is a turtle which can be tapped on to get more info.
-  TODO: Fix this naming convetion. This has a screen but is a component.
+  TODO: Fix this naming convention. This has a screen but is a component.
 */
 export default function TurtleList(props) {
   function getTurtles() {
@@ -58,7 +59,7 @@ export default function TurtleList(props) {
   }
 
   async function getPhoto(photoName) {
-    const ref = firebase.storage().ref().child(`images/${photoName}`);
+    const ref = firebaseApp.storage().ref().child(`images/${photoName}`);
     return await ref.getDownloadURL();
   }
 
@@ -78,6 +79,10 @@ export default function TurtleList(props) {
   useEffect(() => {
     getTurtles();
   }, []);
+
+  const routes = useNavigationState((state) => state.routes);
+  const currentRoute = routes[routes.length - 1].name;
+
   return (
     <Screen
       refreshControl={
@@ -86,7 +91,7 @@ export default function TurtleList(props) {
     >
       {loading && !refreshing && <LoadingSpinner animating={loading} />}
 
-      {props.navigation.state.routeName == 'SelectTurtle'
+      {currentRoute === 'SelectTurtle'
         ? !loading && (
             <View>
               <ListItem

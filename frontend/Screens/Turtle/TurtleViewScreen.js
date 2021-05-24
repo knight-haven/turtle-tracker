@@ -1,24 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
 import Gallery from '../../components/Gallery';
-import HeaderButton from '../../components/HeaderButton';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Screen from '../../components/Screen';
 import SightingCard from '../../components/SightingCard';
 import s from '../../components/Styles';
 import TurtleCard from '../../components/TurtleCard';
 import TurtleMapView from '../../components/TurtleMapView';
-import { BACKEND_SECRET, BASE_URL, firebase } from '../../env';
+import { BACKEND_SECRET, BASE_URL, firebaseApp } from '../../env';
 
 /*
     TurtleViewScreen views the contents of one turtle
 */
-export default function TurtleViewScreen({ navigation }) {
+export default function TurtleViewScreen({ route, navigation }) {
   const [loading, setLoading] = useState(true);
 
   // Update the sighting table.
   function getDerivedTurtleInfo(sightings) {
-    (oDate = new Date(99999999999999)), (rDate = new Date(0)), (rLength = 0);
+    let oDate = new Date(99999999999999);
+    let rDate = new Date(0);
+    let rLength = 0;
+
     for (var i = 0; i < sightings.length; i++) {
       var sightingDate = new Date(Date.parse(sightings[i].time_seen));
       if (sightingDate.getTime() < oDate.getTime()) {
@@ -62,6 +64,7 @@ export default function TurtleViewScreen({ navigation }) {
         getDerivedTurtleInfo(responseJson);
         onSightingsChange(responseJson);
         var markers = [];
+        let sightingId = -1;
         for (var i = 0; i < responseJson.length; i++) {
           sightingId = responseJson[i].id;
           markers.push({
@@ -102,7 +105,7 @@ export default function TurtleViewScreen({ navigation }) {
 
   async function getPhoto(photoName) {
     try {
-      const ref = firebase.storage().ref().child(`images/${photoName}`);
+      const ref = firebaseApp.storage().ref().child(`images/${photoName}`);
       return await ref.getDownloadURL();
     } catch (error) {
       console.log(error);
@@ -110,7 +113,7 @@ export default function TurtleViewScreen({ navigation }) {
     }
   }
 
-  const turtleId = navigation.getParam('turtleId');
+  const turtleId = route.params.turtleId;
   const [turtle, onTurtleChange] = useState({});
   const [sightings, onSightingsChange] = useState([]);
   const [markerList, onMarkerListChange] = useState([]);
@@ -125,7 +128,7 @@ export default function TurtleViewScreen({ navigation }) {
 
   function refresh() {
     setRefreshing(true);
-    const turtleId = navigation.getParam('turtleId');
+    const turtleId = route.params.turtleId;
     getTurtleById(turtleId);
     getSightingByTurtleId(turtleId);
     getTurtleImages(turtleId);
@@ -142,7 +145,7 @@ export default function TurtleViewScreen({ navigation }) {
     getTurtleImages(turtleId);
     navigation.setParams({
       refreshTurtleView: refresh,
-      refreshTurtleList: navigation.getParam('refreshTurtleList'),
+      refreshTurtleList: route.params.refreshTurtleList,
     });
   }, []);
 
@@ -219,34 +222,4 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   btnText: { textAlign: 'center' },
-});
-
-// Sets the navigation options.
-TurtleViewScreen.navigationOptions = ({ navigation }) => ({
-  title:
-    navigation.getParam('turtle') == null
-      ? ''
-      : navigation.getParam('turtle').mark,
-  headerRight: () => (
-    <HeaderButton
-      onPress={() =>
-        navigation.navigate('TurtleEdit', {
-          edit: 'true',
-          turtle: navigation.getParam('turtle'),
-          originalDate: navigation.getParam('originalDate'),
-          recentDate: navigation.getParam('recentDate'),
-          recentLength: navigation.getParam('recentLength'),
-          refreshTurtleView: navigation.getParam('refreshTurtleView'),
-          refreshTurtleList: navigation.getParam('refreshTurtleList'),
-        })
-      }
-      name={'edit'}
-    />
-  ),
-  headerLeft: () => (
-    <HeaderButton
-      onPress={() => navigation.goBack()}
-      name={'navigate-before'}
-    />
-  ),
 });

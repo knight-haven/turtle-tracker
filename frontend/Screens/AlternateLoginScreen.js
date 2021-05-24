@@ -4,6 +4,7 @@ import { Alert } from 'react-native';
 import Button from '../components/Button';
 import Screen from '../components/Screen';
 import TextField from '../components/TextField';
+import { AuthContext } from '../context';
 import { LOGIN_PASS, USERS } from '../env';
 
 /*
@@ -12,14 +13,15 @@ import { LOGIN_PASS, USERS } from '../env';
 export default function AlternateLoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  usernameRef = React.createRef();
-  passwordRef = React.createRef();
+  const usernameRef = React.useRef();
+  const passwordRef = React.useRef();
+  const { setUserSignedIn } = React.useContext(AuthContext);
 
   function handleLogin() {
     let pw = password.localeCompare(LOGIN_PASS) == 0;
     let user = USERS.includes(username);
     if (user && pw) {
-      navigation.navigate({ routeName: 'Map' });
+      setUserSignedIn(true);
     } else if (!user) {
       Alert.alert(
         `unknown username: ${username}`,

@@ -1,14 +1,13 @@
 import React from 'react';
 import { Alert, Text } from 'react-native';
 import Button from '../components/Button';
-import HeaderButton from '../components/HeaderButton';
 import Screen from '../components/Screen';
 import { BACKEND_SECRET, BASE_URL, USERS } from '../env';
 
 /*
     SettingsScreen will be used to toggle the specific user settings.
 */
-export default function SettingsScreen({ navigation }) {
+export default function SettingsScreen({ route }) {
   function sendCsv(email) {
     if (email == null) {
       Alert.alert('Could not access email');
@@ -34,7 +33,9 @@ export default function SettingsScreen({ navigation }) {
     }
   }
 
-  email = navigation.getParam('email');
+  // TODO: this is undefined at times....
+  const email = route.params?.email || 'cek26@students.calvin.edu';
+
   return (
     <Screen>
       <Button
@@ -206,12 +207,3 @@ export default function SettingsScreen({ navigation }) {
     </Screen>
   );
 }
-
-SettingsScreen.navigationOptions = ({ navigation }) => ({
-  headerLeft: () => (
-    <HeaderButton
-      onPress={() => navigation.goBack()}
-      name={'navigate-before'}
-    />
-  ),
-});

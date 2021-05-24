@@ -1,8 +1,10 @@
 import * as Haptics from 'expo-haptics';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { Button as B, Icon } from 'react-native-elements';
 import s from './Styles';
+
+const isWeb = Platform.OS === 'web';
 
 /*
     Basic button class with icon and haptic feedback.
@@ -39,7 +41,9 @@ export default function Button(props) {
           />
         ) : undefined
       }
-      onPressIn={() => Haptics.impactAsync('medium')}
+      onPressIn={() => {
+        !isWeb && Haptics.impactAsync('medium');
+      }}
     />
   );
 }

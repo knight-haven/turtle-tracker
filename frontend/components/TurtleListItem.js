@@ -7,30 +7,31 @@ import { ListItem } from 'react-native-elements';
 */
 export default class TurtleListItem extends Component {
   render() {
+    const { item, onPressPage, navigation, refresh } = this.props;
+
     return (
       <ListItem
-        leftAvatar={{ source: { uri: this.props.item.avatar } }}
+        leftAvatar={{ source: { uri: item.avatar } }}
         title={
           <View>
             <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-              {this.props.item.mark}
+              {item.mark}
             </Text>
           </View>
         }
         subtitle={
           <View>
             <Text style={{ paddingLeft: 2, fontSize: 14 }}>
-              {this.props.item.sex[0].toUpperCase() +
-                this.props.item.sex.slice(1)}
+              {item.sex && item.sex[0].toUpperCase() + item.sex.slice(1)}
             </Text>
           </View>
         }
         chevron
         bottomDivider
         onPress={() => {
-          this.props.navigation.navigate(this.props.onPressPage, {
-            turtleId: this.props.item.id,
-            refreshTurtleList: this.props.refresh,
+          navigation.navigate(onPressPage, {
+            turtleId: item.id,
+            refreshTurtleList: refresh,
           });
         }}
       />

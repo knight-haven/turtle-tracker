@@ -132,9 +132,8 @@ const getCommon = (Stack) => {
           <HeaderButton
             onPress={() => {
               navigation.goBack();
-              if (navigation.state.params.refreshTurtleView != undefined) {
-                navigation.state.params.refreshTurtleView();
-              }
+              route.params.refreshTurtleView &&
+                route.params.refreshTurtleView();
             }}
             name={'navigate-before'}
           />

@@ -22,6 +22,8 @@ import TurtleMapView from '../../components/TurtleMapView';
 import TurtleText from '../../components/TurtleText';
 import { BACKEND_SECRET, BASE_URL, firebaseApp } from '../../env';
 
+const isWeb = Platform.OS === 'web';
+
 /*
 Define a couple useful styles
 */
@@ -182,25 +184,33 @@ export default function SightingEditScreen({ route, navigation }) {
     });
   }
 
-  async function getCameraPermission() {
+  async function getLocationPermission() {
     const { status, permissions } = await Permissions.askAsync(
-      Permissions.CAMERA,
+      Permissions.LOCATION_FOREGROUND,
     );
     if (status === 'granted') {
-      // return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
     } else {
       throw new Error('Location permission not granted');
     }
   }
 
-  async function getCameraRollPermission() {
+  async function getCameraPermission() {
     const { status, permissions } = await Permissions.askAsync(
-      Permissions.CAMERA_ROLL,
+      Permissions.CAMERA,
     );
     if (status === 'granted') {
-      // return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
     } else {
-      throw new Error('Location permission not granted');
+      throw new Error('Camera permission not granted');
+    }
+  }
+
+  async function getMediaLibraryPermission() {
+    const { status, permissions } = await Permissions.askAsync(
+      Permissions.MEDIA_LIBRARY,
+    );
+    if (status === 'granted') {
+    } else {
+      throw new Error('Media library permission not granted');
     }
   }
 
@@ -247,8 +257,9 @@ export default function SightingEditScreen({ route, navigation }) {
   };
 
   // TODO: Move this to ask when button is pressed.
+  getLocationPermission();
   getCameraPermission();
-  getCameraRollPermission();
+  !isWeb && getMediaLibraryPermission();
 
   const dateRef = React.createRef();
   const locRef = React.createRef();
@@ -355,11 +366,8 @@ export default function SightingEditScreen({ route, navigation }) {
                   await editSightingById(sighting.id, turtle.id);
                   setIsSubmitting(false);
                   navigation.goBack();
-                  if (
-                    navigation.state.params.refreshSightingView != undefined
-                  ) {
-                    navigation.state.params.refreshSightingView();
-                  }
+                  route.params.refreshSightingView &&
+                    route.params.refreshSightingView();
                 }
               : async () => {
                   setIsSubmitting(true);
@@ -369,9 +377,8 @@ export default function SightingEditScreen({ route, navigation }) {
                     turtleId: turtle.id,
                   });
                   navigation.dispatch(replaceAction);
-                  if (navigation.state.params.refreshTurtleView != undefined) {
-                    navigation.state.params.refreshTurtleView();
-                  }
+                  route.params.refreshTurtleView &&
+                    route.params.refreshTurtleView();
                 }
           }
         />
@@ -385,9 +392,8 @@ export default function SightingEditScreen({ route, navigation }) {
               onPress={async () => {
                 await deleteSightingById(sighting.id);
                 navigation.navigate('TurtleView');
-                if (navigation.state.params.refreshTurtleView != undefined) {
-                  navigation.state.params.refreshTurtleView();
-                }
+                route.params.refreshTurtleView &&
+                  route.params.refreshTurtleView();
               }}
             />
           </View>

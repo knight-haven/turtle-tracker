@@ -4,7 +4,13 @@ import { BACKEND_SECRET, BASE_URL } from '../env';
 import IconButton from './IconButton';
 import LoadingImage from './LoadingImage';
 
-export default function DeleteImage({ navigation, source, style, photoId }) {
+export default function DeleteImage({
+  route,
+  navigation,
+  source,
+  style,
+  photoId,
+}) {
   function deletePhotoById(id) {
     return fetch(BASE_URL + `/photo/${id}`, {
       method: 'DELETE',
@@ -44,11 +50,8 @@ export default function DeleteImage({ navigation, source, style, photoId }) {
                 onPress: async () => {
                   await deletePhotoById(photoId);
                   navigation.navigate('SightingView');
-                  if (
-                    navigation.state.params.refreshSightingView != undefined
-                  ) {
-                    navigation.state.params.refreshSightingView();
-                  }
+                  route.params.refreshSightingView &&
+                    route.params.refreshSightingView();
                 },
               },
             ],

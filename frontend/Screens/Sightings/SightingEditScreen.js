@@ -359,7 +359,6 @@ export default function SightingEditScreen({ route, navigation }) {
           title={isSubmitting ? 'submitting...' : 'submit sighting'}
           disabled={isSubmitting}
           onPress={
-            // TODO: this doesn't navigate correctly after submitting
             isEdit
               ? async () => {
                   setIsSubmitting(true);

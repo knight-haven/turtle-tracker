@@ -14,8 +14,6 @@ import { LOGIN_PASS, USERS } from '../env';
 export default function AlternateLoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const usernameRef = React.useRef();
-  const passwordRef = React.useRef();
   const { setUserSignedIn } = React.useContext(AuthContext);
 
   function handleLogin() {
@@ -49,14 +47,12 @@ export default function AlternateLoginScreen() {
         label={'Username: '}
         onChangeText={(username) => setUsername(username)}
         value={username}
-        reference={usernameRef}
         autoCapitalize={'none'}
       />
       <TextField
         label={'Password: '}
         onChangeText={(password) => setPassword(password)}
         value={password}
-        reference={passwordRef}
         autoCapitalize={'none'}
         secureTextEntry={true}
       />

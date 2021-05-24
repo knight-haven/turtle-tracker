@@ -18,7 +18,7 @@ import DeleteButton from '../../components/DeleteButton';
 import Divider from '../../components/Divider';
 import Gallery from '../../components/Gallery';
 import Screen from '../../components/Screen';
-import TextField, { setFieldValue } from '../../components/TextField';
+import TextField from '../../components/TextField';
 import TurtleMapView from '../../components/TurtleMapView';
 import TurtleText from '../../components/TurtleText';
 import { BACKEND_SECRET, BASE_URL, firebaseApp } from '../../env';
@@ -101,19 +101,15 @@ export default function SightingEditScreen({ route, navigation }) {
       const { carapace_length, time_seen, turtle_location, notes } = sighting;
       if (carapace_length != null) {
         setLength(carapace_length.toString());
-        setFieldValue(lengthRef, carapace_length);
       }
       if (time_seen != null) {
         setDate(new Date(Date.parse(time_seen)));
-        setFieldValue(dateRef, moment(time_seen).format('L'));
       }
       if (turtle_location != null) {
         setLocation(turtle_location);
-        setFieldValue(locRef, turtle_location);
       }
       if (notes != null) {
         setNotes(notes);
-        setFieldValue(notesRef, notes);
       }
       if (route.params.markerList != null) {
         setMarkerList(route.params.markerList);
@@ -226,14 +222,12 @@ export default function SightingEditScreen({ route, navigation }) {
   const onDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
-    setFieldValue(dateRef, moment(currentDate).format('L'));
   };
 
   const onDateClose = (d) => {
     if (d && Platform.OS !== 'ios') {
       setShowDatePicker(false);
       setDate(d);
-      setFieldValue(dateRef, moment(d).format('L'));
     } else {
       setShowDatePicker(false);
     }
@@ -255,11 +249,6 @@ export default function SightingEditScreen({ route, navigation }) {
     }
   }, []);
 
-  const dateRef = React.createRef();
-  const locRef = React.createRef();
-  const lengthRef = React.createRef();
-  const notesRef = React.createRef();
-
   return (
     <Screen>
       <View>
@@ -279,11 +268,7 @@ export default function SightingEditScreen({ route, navigation }) {
         >
           <View>
             <View pointerEvents='none'>
-              <TextField
-                label='Date: '
-                value={moment(date).format('L')}
-                reference={dateRef}
-              />
+              <TextField label='Date: ' value={moment(date).format('L')} />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -303,7 +288,6 @@ export default function SightingEditScreen({ route, navigation }) {
             }
           }}
           value={location}
-          reference={locRef}
         />
         <TextField
           label='Length: '
@@ -314,7 +298,6 @@ export default function SightingEditScreen({ route, navigation }) {
             }
           }}
           value={length}
-          reference={lengthRef}
           suffix={'mm'}
         />
         <TextField
@@ -328,7 +311,6 @@ export default function SightingEditScreen({ route, navigation }) {
           value={notes}
           multiline={true}
           characterRestriction={140}
-          reference={notesRef}
         />
       </View>
       {/* for the image:

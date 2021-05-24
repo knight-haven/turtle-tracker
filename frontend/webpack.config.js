@@ -10,6 +10,8 @@ module.exports = async function (env, argv) {
           'rn-material-ui-textfield',
         ],
       },
+      // Support offline support. Can be confusing in dev mode. See: https://github.com/expo/fyi/blob/master/enabling-web-service-workers.md
+      offline: true,
     },
     argv,
   );

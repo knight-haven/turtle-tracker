@@ -23,7 +23,6 @@ export default function DeleteButton({
           [
             {
               text: 'No',
-              onPress: () => console.log('Cancel Pressed'),
               style: 'cancel',
             },
             {

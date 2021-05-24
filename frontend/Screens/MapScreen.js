@@ -38,7 +38,6 @@ export default function MapScreen({ route, navigation }) {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      console.log('location', location);
       onLatitudeChange(location.coords.latitude);
       onLongitudeChange(location.coords.longitude);
     })();

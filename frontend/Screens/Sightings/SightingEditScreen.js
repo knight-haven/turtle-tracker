@@ -74,7 +74,6 @@ export default function SightingEditScreen({ route, navigation }) {
         }
 
         let location = await Location.getCurrentPositionAsync({});
-        console.log('location', location);
         setLatitude(location.coords.latitude);
         setLongitude(location.coords.longitude);
         setMarkerList([

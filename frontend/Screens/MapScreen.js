@@ -1,4 +1,5 @@
 import * as Haptics from 'expo-haptics';
+import * as Location from 'expo-location';
 import React, { useEffect, useRef, useState } from 'react';
 import { Platform, View } from 'react-native';
 import Button from '../components/Button';
@@ -29,13 +30,18 @@ export default function MapScreen({ route, navigation }) {
 
   // accesses the user's location
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        onLatitudeChange(position.coords.latitude);
-        onLongitudeChange(position.coords.longitude);
-      },
-      () => ({ enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 }),
-    );
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.warn('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      console.log('location', location);
+      onLatitudeChange(location.coords.latitude);
+      onLongitudeChange(location.coords.longitude);
+    })();
   }, []);
 
   function getMarkers() {

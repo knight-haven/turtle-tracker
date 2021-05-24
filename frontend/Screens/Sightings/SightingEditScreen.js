@@ -1,4 +1,5 @@
 import { StackActions } from '@react-navigation/native';
+import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -65,21 +66,26 @@ export default function SightingEditScreen({ route, navigation }) {
       setLatitude(sighting.latitude);
       setLongitude(sighting.longitude);
     } else {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-          setMarkerList([
-            {
-              coordinate: {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              },
+      (async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          console.warn('Permission to access location was denied');
+          return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        console.log('location', location);
+        setLatitude(location.coords.latitude);
+        setLongitude(location.coords.longitude);
+        setMarkerList([
+          {
+            coordinate: {
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
             },
-          ]);
-        },
-        () => ({ enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 }),
-      );
+          },
+        ]);
+      })();
     }
   }, []);
 

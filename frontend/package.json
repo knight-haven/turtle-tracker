@@ -6,7 +6,8 @@
     "eject": "expo eject",
     "ios": "expo start --ios",
     "start": "expo start",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build:web": "expo build:web"
   },
   "dependencies": {
     "@expo/vector-icons": "^12.0.0",
@@ -20,8 +21,10 @@
     "expo-haptics": "~10.0.0",
     "expo-image-picker": "~10.1.4",
     "expo-linear-gradient": "~9.1.0",
+    "expo-location": "~12.0.4",
     "expo-permissions": "~12.0.1",
     "firebase": "8.2.3",
+    "logrocket": "1.2.1",
     "moment": "2.29.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",

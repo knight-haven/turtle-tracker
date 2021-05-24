@@ -1,4 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
+import LogRocket from 'logrocket';
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import Button from '../components/Button';
@@ -10,7 +11,7 @@ import { LOGIN_PASS, USERS } from '../env';
 /*
  allow users to sign in with a username and password
 */
-export default function AlternateLoginScreen({ navigation }) {
+export default function AlternateLoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const usernameRef = React.useRef();
@@ -22,6 +23,9 @@ export default function AlternateLoginScreen({ navigation }) {
     let user = USERS.includes(username);
     if (user && pw) {
       setUserSignedIn(true);
+      LogRocket.identify(user, {
+        name: user,
+      });
     } else if (!user) {
       Alert.alert(
         `unknown username: ${username}`,

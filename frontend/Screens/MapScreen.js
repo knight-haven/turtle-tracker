@@ -124,7 +124,7 @@ export default function MapScreen({ route, navigation }) {
         size={45}
         containerStyle={{
           left: 7,
-          top: 7,
+          bottom: 7,
           position: 'absolute',
           flexDirection: 'row',
         }}

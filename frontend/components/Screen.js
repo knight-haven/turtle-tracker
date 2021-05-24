@@ -33,7 +33,7 @@ const isWeb = Platform.OS === 'web';
 const styles = StyleSheet.create({
   background: {
     backgroundColor: '#F5F5F5',
-    height: isWeb ? '80vh' : '100%',
+    height: isWeb ? '70vh' : '100%',
   },
   content: {
     backgroundColor: 'white',

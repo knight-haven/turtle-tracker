@@ -78,7 +78,7 @@ export default function SightingEditScreen({ route, navigation }) {
             },
           ]);
         },
-        { enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 },
+        () => ({ enableHighAccuracy: true, timeout: 30000, maximumAge: 2000 }),
       );
     }
   }, []);
@@ -257,8 +257,8 @@ export default function SightingEditScreen({ route, navigation }) {
   };
 
   // TODO: Move this to ask when button is pressed.
-  getLocationPermission();
-  getCameraPermission();
+  !isWeb && ggetLocationPermission();
+  !isWeb && ggetCameraPermission();
   !isWeb && getMediaLibraryPermission();
 
   const dateRef = React.createRef();

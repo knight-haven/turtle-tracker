@@ -1,5 +1,6 @@
 import * as Haptics from 'expo-haptics';
 import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 import React, { useEffect, useRef, useState } from 'react';
 import { Platform, View } from 'react-native';
 import Button from '../components/Button';
@@ -19,6 +20,14 @@ export default function MapScreen({ route, navigation }) {
   const [markerList, onMarkerListChange] = useState([]);
   const markerListRef = useRef(markerList);
   const { setUserSignedIn } = React.useContext(AuthContext);
+  const [locationPermission, askLocationPermission, getLocationPermission] =
+    Permissions.usePermissions(Permissions.LOCATION_FOREGROUND, { ask: true });
+
+  useEffect(() => {
+    if (!locationPermission || locationPermission.status !== 'granted') {
+      askLocationPermission();
+    }
+  }, []);
 
   useEffect(() => {
     markerListRef.current = markerList;

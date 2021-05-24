@@ -23,8 +23,6 @@ import TurtleMapView from '../../components/TurtleMapView';
 import TurtleText from '../../components/TurtleText';
 import { BACKEND_SECRET, BASE_URL, firebaseApp } from '../../env';
 
-const isWeb = Platform.OS === 'web';
-
 /*
 Define a couple useful styles
 */
@@ -47,6 +45,16 @@ export default function SightingEditScreen({ route, navigation }) {
   useEffect(() => {
     getTurtleById(tempId);
   }, []);
+
+  const [cameraPermission, askCameraPermission, getCameraPermission] =
+    Permissions.usePermissions(Permissions.CAMERA, { ask: true });
+  const [locationPermission, askLocationPermission, getLocationPermission] =
+    Permissions.usePermissions(Permissions.LOCATION_FOREGROUND, { ask: true });
+  const [
+    mediaLibraryPermission,
+    askMediaLibraryPermission,
+    getMediaLibraryPermission,
+  ] = Permissions.usePermissions(Permissions.MEDIA_LIBRARY, { ask: true });
 
   const [turtle, setTurtle] = useState({});
   const [turtleNumber, setTurtleNumber] = useState('');
@@ -189,36 +197,6 @@ export default function SightingEditScreen({ route, navigation }) {
     });
   }
 
-  async function getLocationPermission() {
-    const { status, permissions } = await Permissions.askAsync(
-      Permissions.LOCATION_FOREGROUND,
-    );
-    if (status === 'granted') {
-    } else {
-      throw new Error('Location permission not granted');
-    }
-  }
-
-  async function getCameraPermission() {
-    const { status, permissions } = await Permissions.askAsync(
-      Permissions.CAMERA,
-    );
-    if (status === 'granted') {
-    } else {
-      throw new Error('Camera permission not granted');
-    }
-  }
-
-  async function getMediaLibraryPermission() {
-    const { status, permissions } = await Permissions.askAsync(
-      Permissions.MEDIA_LIBRARY,
-    );
-    if (status === 'granted') {
-    } else {
-      throw new Error('Media library permission not granted');
-    }
-  }
-
   async function uploadPhoto(uri, imageName) {
     const response = await fetch(uri);
     const responseBlob = await response.blob();
@@ -262,9 +240,20 @@ export default function SightingEditScreen({ route, navigation }) {
   };
 
   // TODO: Move this to ask when button is pressed.
-  !isWeb && ggetLocationPermission();
-  !isWeb && ggetCameraPermission();
-  !isWeb && getMediaLibraryPermission();
+  useEffect(() => {
+    if (!cameraPermission || cameraPermission.status !== 'granted') {
+      askCameraPermission();
+    }
+    if (!locationPermission || locationPermission.status !== 'granted') {
+      askLocationPermission();
+    }
+    if (
+      !mediaLibraryPermission ||
+      mediaLibraryPermission.status !== 'granted'
+    ) {
+      askMediaLibraryPermission();
+    }
+  }, []);
 
   const dateRef = React.createRef();
   const locRef = React.createRef();

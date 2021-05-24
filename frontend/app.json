@@ -12,7 +12,7 @@
       }
     },
     "android": {
-      "permissions": ["ACCESS_FINE_LOCATION"],
+      "permissions": ["ACCESS_FINE_LOCATION", "MEDIA_LIBRARY", "CAMERA"],
       "package": "com.knighthaven.turtletracker",
       "versionCode": 8,
       "config": {
